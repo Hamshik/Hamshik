@@ -1,0 +1,53 @@
+header{
+    font-family: 'Algerian', serif;
+    text-align: center;
+    font-size: xx-large;
+    color: #af1212;
+    padding: 20px;
+    text-decoration: dashed;
+    border-bottom: 1px solid black;
+}
+p{
+    font-family: monospace corsica;
+    font-size:x-large;
+    text-decoration: underline;
+}
+ul{
+    list-style-type: circle ;
+    font-family: monospace corsica;
+    font-size:x-large;
+    text-decoration: underline;
+}
+a:hover{
+    font-size: larger;
+    color: #af1212;
+    text-decoration: underline;
+}
+a{
+    font-size: medium;
+    color: blue;
+    text-decoration: none;
+}
+nav {
+    background-color: antiquewhite;
+    height: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+.lform{
+    display: inline-block;
+    font-size: 1.35em;
+    text-decoration: none;
+    padding-right:0.5em;
+    padding-bottom: 0.5em;
+}
+.iform{
+    display: inline-block;
+    font-size: 01.2em;
+    border: 1px solid black;
+    text-decoration: none;
+    padding: 0.01em;
+    width: 25em;
+}

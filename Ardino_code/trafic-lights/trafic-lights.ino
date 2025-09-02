@@ -1,0 +1,153 @@
+// seting the variable for leds
+int r1=2;
+int y1=3;
+int g1=4;
+int r2=5;
+int y2=6;
+int g2=7;
+// Trafic Light
+void setup() 
+{
+  // put your setup code here, to run once:
+  pinMode(r1,OUTPUT);
+  pinMode(y1,OUTPUT);
+  pinMode(g1,OUTPUT);
+  pinMode(r2,OUTPUT);
+  pinMode(y2,OUTPUT);
+  pinMode(g2,OUTPUT);
+  Serial.begin(9600);
+  Serial.read(); 
+
+}
+void loop() {
+  // put your main code here, to run repeatedly:
+  digitalWrite(r2,HIGH);
+  digitalWrite(g1,HIGH);
+  delay(10000);
+  digitalWrite(r2,LOW);
+  digitalWrite(g1,LOW);
+  delay(100);
+  digitalWrite(r1,HIGH);
+  // Making y2 led to blink
+  digitalWrite(y2,HIGH);
+  delay(500);
+  digitalWrite(y2,LOW);
+  delay(500);
+  digitalWrite(y2,HIGH);
+  delay(500);
+  digitalWrite(y2,LOW);
+  delay(500);
+  digitalWrite(y2,HIGH);
+  delay(500);
+  digitalWrite(y2,LOW);
+  delay(500);
+  digitalWrite(y2,HIGH);
+  delay(500);
+  digitalWrite(y2,LOW);
+  delay(500);
+  digitalWrite(y2,HIGH);
+  delay(500);
+  digitalWrite(y2,LOW);
+  delay(500);
+  digitalWrite(y2,HIGH);
+  delay(500);
+  digitalWrite(y2,HIGH);
+  delay(500);
+  digitalWrite(y2,LOW);
+  delay(500);
+  digitalWrite(y2,HIGH);
+  delay(500);
+  digitalWrite(y2,LOW);
+  delay(500);
+  digitalWrite(y2,HIGH);
+  delay(500);
+  digitalWrite(y2,HIGH);
+  delay(500);
+  digitalWrite(y2,LOW);
+  delay(500);
+  digitalWrite(y2,HIGH);
+  delay(500);
+  digitalWrite(y2,LOW);
+  delay(500);
+  digitalWrite(y2,HIGH);
+  delay(500);
+  digitalWrite(y2,HIGH);
+  delay(500);
+  digitalWrite(y2,LOW);
+  delay(500);
+  digitalWrite(y2,HIGH);
+  delay(500);
+  digitalWrite(y2,LOW);
+  delay(500);
+  digitalWrite(y2,HIGH);
+  delay(500);
+  // End of blinking y2 led
+  digitalWrite(r1,LOW);
+  digitalWrite(y2,LOW);
+  delay(100);
+  digitalWrite(y1,HIGH);
+  digitalWrite(g2,HIGH);
+  // Making y1 led to blink
+  digitalWrite(y1,HIGH);
+  delay(500);
+  digitalWrite(y1,LOW);
+  delay(500);
+  digitalWrite(y1,HIGH);
+  delay(500);
+  digitalWrite(y1,LOW);
+  delay(500);
+  digitalWrite(y1,HIGH);
+  delay(500);
+  digitalWrite(y1,HIGH);
+  delay(500);
+  digitalWrite(y1,LOW);
+  delay(500);
+  digitalWrite(y1,HIGH);
+  delay(500);
+  digitalWrite(y1,LOW);
+  delay(500);
+  digitalWrite(y1,HIGH);
+  delay(500);
+  digitalWrite(y1,HIGH);
+  delay(500);
+  digitalWrite(y1,LOW);
+  delay(500);
+  digitalWrite(y1,HIGH);
+  delay(500);
+  digitalWrite(y1,LOW);
+  delay(500);
+  digitalWrite(y1,HIGH);
+  delay(500);
+  digitalWrite(y1,HIGH);
+  delay(500);
+  digitalWrite(y1,LOW);
+  delay(500);
+  digitalWrite(y1,HIGH);
+  delay(500);
+  digitalWrite(y1,LOW);
+  delay(500);
+  digitalWrite(y1,HIGH);
+  delay(500);
+  digitalWrite(y1,HIGH);
+  delay(500);
+  digitalWrite(y1,LOW);
+  delay(500);
+  digitalWrite(y1,HIGH);
+  delay(500);
+  digitalWrite(y1,LOW);
+  delay(500);
+  digitalWrite(y1,HIGH);
+  delay(500);
+  // End of blinking y1 led
+  digitalWrite(y1,LOW);
+  digitalWrite(g2,LOW);
+  delay(100);
+  digitalWrite(g1,HIGH);
+  digitalWrite(r2,HIGH);
+  delay(10000);
+  digitalWrite(r2,LOW);
+  digitalWrite(g1,LOW);
+  delay(100);
+  Serial.println("Completed");
+  extern void exit(int __status);
+}

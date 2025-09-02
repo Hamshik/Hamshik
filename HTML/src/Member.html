@@ -1,0 +1,79 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="CSS/stylesheet.inuvation.css">
+    <title>Become Member of innovation hub</title>
+</head>
+
+<body>
+    <nav>
+        <img src="img/pilicula.logo.png" width="150px" height="65px" alt="Logo">
+        <div style="display: flex; gap: 20px;">
+            <a href="https://mangaloretourism.in/contact-us">Contact Us</a>
+            <a href="about.html">About Us</a>
+            <a href="../innovationhub.html"> Main page</a>
+        </div>
+    </nav>
+    <div>
+        <header> Pilikula Regional Science Center<br>Innovation Hub</header><br><br>
+    </div>
+    <form action="post" enctype="multipart/form-data">
+        <div>
+            <label for="username" class="lform">Name of the Student: </label>
+            <input name="username" id="username" class="iform" type="text" min="3" max="10" placeholder="Spongbob"
+                required>
+
+            <label for="class" class="lform" style="padding-left: 1em;">Class: </label>
+            <input type="number" name="class" id="class" placeholder="10" min="5" max="12" required
+                style="display: inline-block; font-size: 1.2em;"><br>
+
+            <lable for="address" class="lform">Address: </lable>
+            <input name="address" id="address" class="iform"
+                placeholder="Jara, Moodushedde, Mangaluru, Karnataka, India" required min="21" max="30"><br>
+
+            <lable for="contact-no" class="lform">Contact Number(parent's): </lable>
+            <input name="contact-no" id="contact-no" class="iform" placeholder="12345-67890" type="text"
+                pattern="[0-9]{5}-[0-9]{5}" required min="700000000"><br>
+
+            <lable for="intrest" class="lform">Area of intrest: </lable>
+            <input name="intrest" id="intrest" class="iform" placeholder="Electronics" type="text" min="5" max="9"
+                required><br>
+
+            <p>I agree to abide by the rules and requlations of the center.</p>
+
+            <label for="Date" class="lform">Date: </label>
+            <input name="for" id="for" style="display: inline-block; font-size: 1.2em; width: 10em; height: 1.8em;"
+                placeholder="20/8/2025" type="date" required>
+
+            <label for="signature" style="padding-left: 10em;" class="lform">Signature: </label>
+            <input type="file" accept="image"
+                style="height: 10em;display: inline-block; padding-left: 0.1em;font-size: 1.01em;" required><br>
+            <p style="text-decoration: none;">I <select style="width: 10em; height: 2em;display:  inline-block;">
+                    <option>Selet</option>
+                    <option>Father</option>
+                    <option>Mother</option>
+                    <option> Guardian</option>
+                </select> of
+                <input name="username" id="username" type="text" min="3" max="10" placeholder="Spongbob" required
+                    style="width: 15em; height: 2em;display: inline-block;"> hereby agree to send my <select
+                    style="width: 10em; height: 2em;display:  inline-block;">
+                    <option>Selet</option>
+                    <option>Dauther</option>
+                    <option>Son</option>
+                </select> for Innovation Hub activities at PRSC
+            </p>
+            <label for="signature" style="padding-left: 0.5em;" class="lform">Signature: </label>
+            <input type="file" accept="image" style="height: 10em;display: inline-block;font-size: 1.01em;"
+                required><br>
+
+
+            <p style="display: inline-flex; padding-top: 0.1em; ">
+                <input type="reset" style="padding-top: 0.2em;">
+                <input type="submit">
+            </p>
+        </div>
+    </form>
+
+</body>
+
+</html>
