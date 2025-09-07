@@ -22,19 +22,4 @@ class solutions:
                 else:
                     continue
                     return f"Sum of targeted no. of this lists {lists} is not found"
-    def alternativeSolution(lists:list[int],target):
-        while (True):
-            x = 0
-            y = 0
-            sum = lists[x] + y
-            y += 1
-            if y == x:
-                continue
-            elif y == 0:
-                x += 1
-            elif sum == target:
-                return f"{[x,y]}"
-            else:
-                continue
-                return f'targeted no, was not found in this list u provided {lists}'
-print(solutions.alternativeSolution(lists,target))
+print(solutions.solution(lists,target))
