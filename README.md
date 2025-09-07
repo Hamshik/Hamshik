@@ -1,2 +1,0 @@
-# hamshik
-#I love coding

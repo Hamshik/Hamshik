@@ -3,12 +3,12 @@ import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QLineEdit, QPushButton, QLabel, QMainWindow
 from PyQt5.QtGui import QIcon, QPixmap
 
-IconPATH = "C:/Users/hp/OneDrive/Pictures/alram.png"
+IconPATH = "C:/Users/hp/OneDrive/Pictures/Area.png"
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Area Calculator")
-        self.setFixedSize(400, 175)
+        self.setFixedSize(500, 350)
         self.initUI()
         pixmap = QPixmap(IconPATH)
         pic = QIcon(pixmap)
@@ -16,23 +16,31 @@ class MainWindow(QMainWindow):
 
     def initUI(self):
         self.label = QLabel("Enter shape name:", self)
-        self.label.setGeometry(10, 10, 150, 30)
-        self.label.setStyleSheet("font-size:20px; font-family: Algerian; font-weight: bold; color:black;")
+        self.label.setGeometry(30, 20, 180, 35)
+        self.label.setStyleSheet("font-size:18px; font-family: Arial; font-weight: bold; color:#222;")
 
         self.input = QLineEdit(self)
-        self.input.setGeometry(160, 10, 150, 30)
+        self.input.setGeometry(210, 20, 180, 35)
+        self.input.setPlaceholderText("Type help for list of shapes")
+        self.input.setStyleSheet("font-size:16px; font-family: Arial; color:#222; border: 2px solid #0078D7; border-radius: 6px; padding: 4px;")
 
         self.button = QPushButton("Next", self)
-        self.button.setGeometry(320, 10, 60, 30)
+        self.button.setGeometry(400, 20, 70, 35)
+        self.button.setStyleSheet("font-size:16px; font-family: Arial; background-color: #0078D7; color: white; border-radius: 6px;")
         self.button.clicked.connect(self.show_shape_inputs)
-        
 
         self.input_labels = []
         self.input_fields = []
 
         self.result = QLabel("", self)
-        self.result.setGeometry(10, 50, 380, 80)
+        self.result.setGeometry(30, 70, 440, 60)
         self.result.setWordWrap(True)
+        self.result.setStyleSheet("font-size:16px; font-family: Arial; color:#222; background: #D3D3D3; border-radius: 6px; padding: 6px;")
+
+        self.inCorrect = QLabel("", self)
+        self.inCorrect.setGeometry(30, 290, 440, 30)
+        self.inCorrect.setStyleSheet("font-size:15px; font-family: Arial; font-weight: bold; color:#B22222;")
+        self.inCorrect.setWordWrap(True)
 
     def clear_inputs(self):
         for label in self.input_labels:
@@ -49,6 +57,7 @@ class MainWindow(QMainWindow):
         self.clear_inputs()
         shape = self.input.text().strip().lower()
         self.result.clear()
+        self.inCorrect.clear()
         self.shape = shape
         shape_inputs = {
             "circle": ["Radius"],
@@ -75,20 +84,26 @@ class MainWindow(QMainWindow):
         if shape in shape_inputs:
             for i, label_text in enumerate(shape_inputs[shape]):
                 label = QLabel(label_text + ':', self)
-                label.setGeometry(10, 50 + i*40, 150, 30)
+                label.setGeometry(30, 140 + i*40, 170, 32)
+                label.setStyleSheet("font-size:18px; font-family: Arial; font-weight: bold; color:#222;")
                 label.show()
                 field = QLineEdit(self)
-                field.setGeometry(160, 50 + i*40, 150, 30)
+                field.setGeometry(210, 140 + i*40, 180, 32)
+                field.setStyleSheet("font-size:15px; font-family: Arial; color:#222; border: 1.5px solid #0078D7; border-radius: 5px; padding: 3px;")
                 field.show()
                 self.input_labels.append(label)
                 self.input_fields.append(field)
             # Place the Calculate button below the last input field
-            y_pos = 50 + len(shape_inputs[shape]) * 40
+            y_pos = 140 + len(shape_inputs[shape]) * 40
             self.calc_button = QPushButton("Calculate", self)
-            self.calc_button.setGeometry(160, y_pos, 100, 30)
+            self.calc_button.setGeometry(210, y_pos, 120, 36)
+            self.calc_button.setStyleSheet("font-size:16px; font-family: Arial; background-color: #28A745; color: white; border-radius: 6px;")
             self.calc_button.clicked.connect(self.calculate_area)
             self.calc_button.show()
             self.button.setDisabled(True)
+            self.button.setDisabled(True)
+            self.button.setStyleSheet("font-size:16px; font-family: #D3D3D3; color:#222; background-color: #D3D3D3; border-radius: 6px;")
+            self.input.setStyleSheet("font-size:16px; font-family: #D3D3D3; color:#222; border: 2px solid #D3D3D3; border-radius: 6px; padding: 4px;")
         elif shape == "help":
             self.result.setText("Available shapes: " + ", ".join(shape_inputs.keys()))
         elif shape == "exit":
@@ -96,13 +111,14 @@ class MainWindow(QMainWindow):
         elif shape == "":
             self.result.setText("Please enter a shape name.")
         else:
-            self.result.setText("Invalid input")
+            self.inCorrect.setText("Invalid input")
+            self.input.setStyleSheet("font-size:16px; font-family: Arial; color:#222; border: 2px solid red; border-radius: 6px; padding: 4px;")
 
     def calculate_area(self):
         try:
             values = [float(field.text()) for field in self.input_fields]
         except ValueError:
-            self.result.setText("Please enter valid numbers for all fields.")
+            self.inCorrect.setText("Please enter valid numbers for all fields.")
             return
         shape = self.shape
         a = None
@@ -167,7 +183,8 @@ class MainWindow(QMainWindow):
             a = 4 * 3.14 * 3.14 * values[0] * values[1]
             self.result.setText(f"Area of torus is {a}")
         else:
-            self.result.setText("Invalid input")
+            self.inCorrect.setText("Invalid input")
+            self.input.setStyleSheet("border: 2px DOUBLE red;")
 def main():
     app = QApplication(sys.argv)
     window = MainWindow()
