@@ -14,9 +14,6 @@ class solutions:
                 sum = lists[i]+lists[d]
                 if i == d:
                     continue
-                # elif lists[i] == lists[d]:
-                #     continue
-                #     return f"{[i,d]} the no. was same so skiping"
                 if sum == target:
                     return [i,d]
                 else:

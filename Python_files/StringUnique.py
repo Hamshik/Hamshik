@@ -18,7 +18,7 @@ def solution(rawStr:str):
         i += 1
         if (i == len(lists)):
             counter = len(countLetter)
+            return counter
         else:
             continue
-    return counter
 print(solution(rawStr))
