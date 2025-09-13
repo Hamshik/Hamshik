@@ -8,6 +8,7 @@ while True:
     else:
         break
 class solutions:
+    @staticmethod
     def solution(lists:list[int],target):
         for i in range(len(lists)):
             for d in reversed(range(len(lists))):
