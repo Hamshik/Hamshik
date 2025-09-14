@@ -1,24 +1,21 @@
 rawStr: str = input("Enter the letters: ")
-count:int = 0
-def solution(rawStr:str):
+def solution(rawStr:str) -> int:
     i:int = 0;
+    counter:int = 0
     rawList: list[str] = []
-    lists: list[list[str]] = []
-    unilist: list[str] = []
+    lists: list[str] = []
     countList:list[int] = []
-    for ch in rawStr:
-        rawList.append(ch)
-
-    for ch in rawList:
-        if ch not in unilist:
-            unilist.append(ch)
-        if ch in unilist:
-            lists.append(unilist.copy())
-    for countLetter in lists:
-        i += 1
-        if (i == len(lists)):
-            counter = len(countLetter)
-            return counter
+    rawList = [char for char in rawStr]
+    for chars in rawList:
+        if chars in lists:
+            i += 1
+            countList.append(len(lists))
+            lists.clear()
+            lists.append(chars)
         else:
-            continue
+            lists.append(chars)
+        print(f"lists: {lists} counter: {countList}", end="\n")
+    countList.append(len(lists))
+    counter = max(countList)
+    return counter
 print(solution(rawStr))
