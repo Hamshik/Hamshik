@@ -14,7 +14,7 @@ def solution(rawStr:str) -> int:
             lists.append(chars)
         else:
             lists.append(chars)
-        print(f"lists: {lists} counter: {countList}", end="\n")
+        print(f"lists: {lists}", end="\n")
     countList.append(len(lists))
     counter = max(countList)
     return counter
