@@ -1,5 +1,6 @@
 import java.util.Random;
 import java.util.Scanner;
+import java.util.InputMismatchException;
 
 public class slotMachine {
     static public void main(String[]args) {
@@ -8,15 +9,14 @@ public class slotMachine {
         Random random = new Random();
         Scanner input = new Scanner(System.in);
         double balance = 5000;
+        double currentBlance = 5000;
         double bet;
-        boolean isExited = true;
-        
+        boolean isExited = false;
         
         do{
-            System.out.print("Ente the bet: ");
+            System.out.print("Enter the bet: ");
             bet = input.nextDouble();
-            input.nextLine();
-
+                input.nextLine();
             if(bet > balance){
                 System.out.println("Insuffeint balance");
                 continue;
@@ -27,15 +27,19 @@ public class slotMachine {
             }
             else{
                 balance -= bet;
+                currentBlance -= bet;
+                break;
             }
-
+        }while(true);
+        do{
             try {
                 for(int i = 0; i < 3; i++){
-                    System.out.print("\rSpining ");
-                    Thread.sleep(250);
-                    System.out.print("\rSpining  ");
-                    Thread.sleep(250);
-                    System.out.print("\rSpining   ");
+                    System.out.print("\rSpining.  ");
+                    Thread.sleep(150);
+                    System.out.print("\rSpining.. ");
+                    Thread.sleep(150);
+                    System.out.print("\rSpining...");
+                    Thread.sleep(150);
                 }
                 System.out.println();
             } catch (InterruptedException e) {
@@ -54,7 +58,7 @@ public class slotMachine {
                     case "2" -> balance *= 10;
                     case "3" -> balance *= 5;
                 }
-                System.out.println("You won & current balence is " + "₹" + balance);
+                System.out.printf("You won (%f) & current balence is ₹(%f)",balance - currentBlance,balance);
             }
             else if(symbol_out[0].equals(symbol_out[1])){
                 switch(symbol_out[1]){
@@ -62,7 +66,7 @@ public class slotMachine {
                     case "2" -> balance += 12;
                     case "3" -> balance += 6;
                 }
-                System.out.println("You won & current balence is "+ "₹" + balance);
+                System.out.printf("You won %f.2 & current balence is ₹%f.2",balance - currentBlance,balance);
             }
             else if(symbol_out[2].equals(symbol_out[1])){
                 switch(symbol_out[1]){
@@ -70,7 +74,7 @@ public class slotMachine {
                     case "2" -> balance += 12;
                     case "3" -> balance += 6;
                 }
-                System.out.println("You won & current balence is "+ "₹" + balance);
+                System.out.printf("You won (%f) & current balence is ₹(%f)",balance - currentBlance,balance);
             }
             else{
                 System.out.println("Sorry You lost " + "₹" + bet);
@@ -82,15 +86,14 @@ public class slotMachine {
             System.out.println(choice);
             switch(choice){
                 case "YES", "Y" ->  System.out.println("Continuing");
-                default  -> {
+                case "NO", "N" ->{
                     System.out.println("Bye");
-                    isExited = false;
-                    break;
+                    isExited = true;
                 }
-
+                default  -> System.out.println("Enter Y/N!!");
             }
             
-        }while(isExited);
+        }while(!isExited);
         input.close();
     }
 
