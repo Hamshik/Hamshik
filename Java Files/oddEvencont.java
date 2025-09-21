@@ -1,43 +1,51 @@
 import java.util.Scanner;
+import java.util.Collections;
 import java.util.ArrayList;
-public class oddEvencont{
-	public static void main (String[] args){
-		Scanner input = new Scanner(System.in);
-		String rawData;
-		int data;
-		String[] parts;
-		int[] numbers;
-		ArrayList<Integer> even = new ArrayList<>();
-		ArrayList<Integer> odd = new ArrayList<>(); 
 
-		while(true){
-			try{
-				System.out.print("Enter the Number(Seprated with space): ");
-				rawData = input.nextLine();
-				break;
-			}
-			catch(Exception e){
-				System.out.println("Err!! of this " + e.getMessage());
-			}
-		}
+public class OddEvenCounter {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        ArrayList<Integer> even = new ArrayList<>();
+        ArrayList<Integer> odd = new ArrayList<>();
+        ArrayList<Integer> prime = new ArrayList<>();
 
-		parts = rawData.trim().split(" "); 
-		numbers = new int[parts.length];
+        System.out.print("Enter numbers separated by spaces: ");
+        String rawData = input.nextLine();
+        String[] parts = rawData.trim().split(" ");
+        int[] numbers = new int[parts.length];
 
         for (int i = 0; i < parts.length; i++) {
-            numbers[i] = Integer.parseInt(parts[i]); // Convert each to int
-            if(numbers[i] % 2 == 0){
-				even.add(numbers[i]);
-			}
-			else{
-				odd.add(numbers[i]);
-			}
+            numbers[i] = Integer.parseInt(parts[i]);
+
+            if (numbers[i] % 2 == 0) {
+                even.add(numbers[i]);
+            } else {
+                odd.add(numbers[i]);
+            }
+
+            if (isPrime(numbers[i])) {
+                prime.add(numbers[i]);
+            }
         }
 
-		System.out.println(Conter(even, odd));
+        System.out.println(displayResults(even, odd, prime));
+    }
 
-	}
-	static String Conter (ArrayList<Integer> even, ArrayList<Integer> odd){
-		return "Number of even Number:" + even + " Conuter: " + even.size() + "\nNumber of odd Number:" + odd + " Conuter: " + odd.size();
-	}
+    static String displayResults(ArrayList<Integer> even, ArrayList<Integer> odd, ArrayList<Integer> prime) {
+        Collections.sort(even);
+        Collections.sort(odd);
+        Collections.sort(prime);
+
+        return "Even Numbers: " + even + " | Count: " + even.size() +
+             "\nOdd Numbers: " + odd + " | Count: " + odd.size() +
+             "\nPrime Numbers: " + prime + " | Count: " + prime.size();
+    }
+
+    static boolean isPrime(int n) {
+        if (n <= 1) return false;
+        for (int i = 2; i <= Math.sqrt(n); i++) {
+            if (n % i == 0) return false;
+        }
+        return true;
+    }
 }
