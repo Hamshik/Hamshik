@@ -4,6 +4,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
+import src.runTime;
 
 public class AlarmClock {
     public static void main(String[] args) throws InterruptedException {
@@ -20,7 +21,6 @@ public class AlarmClock {
 
         LocalDateTime currentDateTime = LocalDateTime.now();
         String currentFormatted = currentDateTime.format(formatter);
-        LocalDateTime DateTime = null;
 
         LocalDateTime alarmDateTime = null;
         boolean isCorrectlyFormatted = false;
@@ -37,8 +37,6 @@ public class AlarmClock {
                 LocalDate date = LocalDate.parse(choiceDate, formatterDate);
                 LocalTime time = LocalTime.parse(choiceTime, formatterTime);
                 alarmDateTime = LocalDateTime.of(date, time);
-
-                DateTime = LocalDateTime.parse(currentFormatted, formatter);
 
                 String formattedAlarmTime = alarmDateTime.format(formatter);
                 System.out.println("Alarm is set for: " + formattedAlarmTime);

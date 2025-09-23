@@ -39,5 +39,7 @@ public class Number_Guessing_Game{
 			}
 
 		}while(!userGuessed);
+		input.close();
 	}
+
 }
