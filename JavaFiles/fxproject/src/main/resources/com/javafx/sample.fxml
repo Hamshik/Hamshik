@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.javafx.Controller" spacing="10" alignment="CENTER">
+    <TextField fx:id="answerField" promptText="Enter your answer"/>
+    <Button text="Submit" onAction="#handleSubmit"/>
+</VBox>

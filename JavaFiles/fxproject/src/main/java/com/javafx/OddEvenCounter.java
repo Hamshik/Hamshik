@@ -1,3 +1,4 @@
+package com.javafx;
 import java.util.Scanner;
 import java.util.Collections;
 import java.util.ArrayList;

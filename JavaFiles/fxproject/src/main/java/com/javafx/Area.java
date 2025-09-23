@@ -1,3 +1,4 @@
+package com.javafx;
 import java.util.Scanner;
 
 public class Area {

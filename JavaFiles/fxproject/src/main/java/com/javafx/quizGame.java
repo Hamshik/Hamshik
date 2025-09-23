@@ -1,7 +1,8 @@
+package com.javafx;
+
 import java.util.*;
 import java.io.*;
 import com.fasterxml.jackson.databind.*;
-import com.fasterxml.jackson.core.type.TypeReference;
 
 public class quizGame {
     static ArrayList<String> ques = new ArrayList<>();
