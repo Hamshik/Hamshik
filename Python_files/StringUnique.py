@@ -6,15 +6,16 @@ def solution(rawStr:str) -> int:
     lists: list[str] = []
     countList:list[int] = []
     rawList = [char for char in rawStr]
-    for chars in rawList:
-        if chars in lists:
-            i += 1
-            countList.append(len(lists))
-            lists.clear()
-            lists.append(chars)
-        else:
-            lists.append(chars)
-        print(f"lists: {lists}", end="\n")
+    rawAns: str =  ""
+    for chars in range(len(rawList)):
+        for char in range(len(rawList)):
+            rawAns  = rawList[char] + rawList[chars]
+            if rawAns in lists:
+                countList.append(len(rawAns))  
+                rawAns = ""
+                lists.clear()
+            else:
+                lists.append(rawList[char])
     countList.append(len(lists))
     counter = max(countList)
     return counter
