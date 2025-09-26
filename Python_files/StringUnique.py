@@ -4,6 +4,7 @@ def solution(rawStr:str) -> str:
     rawList: list[str] = []
     lists: list[str] = []
     countList:list[int] = []
+    con:bool = False
     rawList = [char for char in rawStr]
     for d in rawList:
         k  += 1
@@ -19,8 +20,13 @@ def solution(rawStr:str) -> str:
                 lists.clear()
                 lists.append(d)
         print(lists)
-    if (rawList[len(rawList) - 2] not in lists):
-        lists.append(rawList[len(rawList) - 2])
+    if(not(len(rawList) < 2)):
+        if (rawList[-1] not in lists):
+            lists.append(rawList[-1])
+    else:
+        con = rawList[len(rawList) - 2] not in lists
+        if (con):
+            lists.append(rawList[len(rawList) - 2])
     print(lists)
     countList.append(len(lists))
     countList.append(len(lists))
