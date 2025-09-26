@@ -18,8 +18,10 @@ def solution(rawStr:str) -> str:
                 countList.append(len(lists))
                 lists.clear()
                 lists.append(d)
-    if (rawList[len(rawList) - 1] not in lists):
-        lists.append(rawList[len(rawList) - 1])
+        print(lists)
+    if (rawList[len(rawList) - 2] not in lists):
+        lists.append(rawList[len(rawList) - 2])
+    print(lists)
     countList.append(len(lists))
     countList.append(len(lists))
     counter = max(countList)
