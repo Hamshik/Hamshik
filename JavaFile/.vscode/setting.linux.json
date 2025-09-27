@@ -1,5 +1,5 @@
 {
-  "java.project.sourcePaths": ["src"],
+  "java.project.sourcePaths": ["source"],
   "java.project.outputPath": "bin",
   "java.project.referencedLibraries": [
     "lib/Linux_amd64/**/*.jar"
