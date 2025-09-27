@@ -18,7 +18,7 @@ def solution(Str: str) -> str:
 
     countList.append(len(lists))
     counter = max(countList)
-    return f"The length of longest unique letter group is {counter} and shortest is {min(countList)}"
+    return f"The length of longest unique letter group is {counter}"
 
 
 while True:
