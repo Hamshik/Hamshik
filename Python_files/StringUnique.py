@@ -1,12 +1,9 @@
-def solution(rawStr: str) -> str:
-    k: int = 0
+def solution(Str: str) -> str:
     counter: int = 0
-    rawList: list[str] = [char for char in rawStr]
     lists: list[str] = []
     countList: list[int] = []
 
-    for d in rawList:
-        k += 1
+    for d in Str:
         if d not in lists:
             lists.append(d)
         else:
@@ -19,19 +16,9 @@ def solution(rawStr: str) -> str:
                 lists.append(d)
         print(lists)
 
-    if len(rawList) >= 2:
-        if rawList[-1] not in lists:
-            lists.append(rawList[-1])
-            print(lists)
-    else:
-        con = rawList[len(rawList) - 2] not in lists
-        if con:
-            lists.append(rawList[len(rawList) - 2])
-            print(lists)
-
     countList.append(len(lists))
     counter = max(countList)
-    return f"The length of longest unique letter group is {counter}"
+    return f"The length of longest unique letter group is {counter} and shortest is {min(countList)}"
 
 
 while True:
