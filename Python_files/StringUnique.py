@@ -1,42 +1,47 @@
-def solution(rawStr:str) -> str:
-    k:int = 0;
-    counter:int = 0
-    rawList: list[str] = []
+def solution(rawStr: str) -> str:
+    k: int = 0
+    counter: int = 0
+    rawList: list[str] = [char for char in rawStr]
     lists: list[str] = []
-    countList:list[int] = []
-    con:bool = False
-    rawList = [char for char in rawStr]
+    countList: list[int] = []
+
     for d in rawList:
-        k  += 1
-        if (d not in lists):
+        k += 1
+        if d not in lists:
             lists.append(d)
         else:
-            if(lists[0] == d):
+            if lists[0] == d:
                 lists.pop(0)
-                rawList.pop(0)
-                rawList.append(d)
+                lists.append(d)
             else:
                 countList.append(len(lists))
                 lists.clear()
                 lists.append(d)
         print(lists)
-    if(not(len(rawList) < 2)):
-        if (rawList[-1] not in lists):
+
+    if len(rawList) >= 2:
+        if rawList[-1] not in lists:
             lists.append(rawList[-1])
+            print(lists)
     else:
         con = rawList[len(rawList) - 2] not in lists
-        if (con):
+        if con:
             lists.append(rawList[len(rawList) - 2])
-    print(lists)
-    countList.append(len(lists))
+            print(lists)
+
     countList.append(len(lists))
     counter = max(countList)
-    return f"The longest unique letter  of group is {lists} and its length is {counter}"
+    return f"The length of longest unique letter group is {counter}"
+
 
 while True:
-    rawStr: str = input("Enter the letters: ")
-    if not(rawStr == "" or rawStr.isalpha()):
-        print("invaild input")
+    rawStr: str = input("Enter the letters: ").strip()
+    if rawStr == "":
+        break
+    elif not rawStr.isalpha():
+        print("Invalid input. Please enter only letters.")
     else:
         break
-print(solution(rawStr))
+
+if rawStr:
+    print(solution(rawStr))
