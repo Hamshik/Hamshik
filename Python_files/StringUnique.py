@@ -36,9 +36,9 @@ def solution(rawStr: str) -> str:
 
 while True:
     rawStr: str = input("Enter the letters: ").strip()
-    if rawStr == "":
+    if " " in rawStr and  rawStr.isalpha():
         break
-    elif not rawStr.isalpha():
+    elif not("" == rawStr or rawStr.isalpha()):
         print("Invalid input. Please enter only letters.")
     else:
         break
