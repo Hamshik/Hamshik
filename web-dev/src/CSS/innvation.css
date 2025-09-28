@@ -103,4 +103,8 @@ p, ul {
         font-size: large;
         display: block;
     }
+    .nav-links{
+    	font-size: 0.7em;
+    	display:inline-block;
+    }
 }
