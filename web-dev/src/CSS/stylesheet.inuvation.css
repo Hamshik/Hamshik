@@ -51,11 +51,24 @@ nav {
     padding: 0.01em;
     width: 25em;
 }
-@media(max-width: 600px){
-	img{
-		max-width: 100%;
-	}
-	p,url,header,a{
-		font-size: x-large;
-	}
+@media (max-width: 600px) {
+    img {
+        width: 100%;
+        display: block; /* avoids side-by-side float issues */
+    }
+
+    p, ul, a, .iform, .lform {
+        font-size: large;   /* slightly smaller for small screens */
+        display: block;     /* stack vertically for readability */
+        margin-bottom: 10px;
+    }
+
+    .iform {
+        width: 100%;        /* form spans screen */
+    }
+
+    .lform {
+        text-align: center; /* nav links center-aligned */
+    }
 }
+
