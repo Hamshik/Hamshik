@@ -96,7 +96,8 @@ p, ul {
         width: 100%;
     }
 
-    p, ul {
+    p, ul, .main-section {
         font-size: large;
+        display: block;
     }
 }
