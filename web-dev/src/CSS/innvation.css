@@ -18,8 +18,6 @@ header {
 nav {
     background-color: antiquewhite;
     display: flex;
-    flex-wrap: wrap; /* allows wrapping on small screens */
-    justify-content: center;
     padding: 10px;
 }
 
@@ -74,32 +72,23 @@ p, ul {
 /* Mobile responsiveness */
 @media (max-width: 600px) {
     header {
-        font-size: large;
-        padding: 10px;
+        font-family: 'Algerian', serif;
+        text-align: center;
+        font-size: xx-large;
+        color: #af1212;
+        padding: 20px; 
+        border-bottom: 1px solid black;
     }
 
     nav {
         background-color: antiquewhite;
 	    display: flex;
      	flex-wrap: wrap; /* allows wrapping on small screens */
-     	justify-content: center;
      	padding: 10px;
     }
 
-    .iform {
-        width: 90%;
-    }
 
-    .iform input {
-        width: 100%;
-        margin-bottom: 10px;
-    }
-
-    .iform button {
-        width: 100%;
-    }
-
-    p, ul, .main-section {
+    p, ul, .main-section, section {
         font-size: large;
         display: block;
     }
