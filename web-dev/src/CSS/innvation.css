@@ -79,8 +79,11 @@ p, ul {
     }
 
     nav {
-        flex-direction: column;
-        align-items: center;
+        background-color: antiquewhite;
+	    display: flex;
+     	flex-wrap: wrap; /* allows wrapping on small screens */
+     	justify-content: center;
+     	padding: 10px;
     }
 
     .iform {
