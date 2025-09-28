@@ -51,8 +51,12 @@ nav {
     padding: 0.01em;
     width: 25em;
 }
+.imgdiv{
+	width: 100px;
+	height: auto;
+}
 @media (max-width: 600px) {
-    img {
+    .imgdiv{
         width: 100%;
         display: block; /* avoids side-by-side float issues */
     }
