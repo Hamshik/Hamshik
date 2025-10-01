@@ -6,14 +6,20 @@ public class seriesOfNum {
         int ans;
 
         Scanner in = new Scanner(System.in);
+        System.out.print("Enter the #(# of queries): ");
         query = in.nextInt();
 
         ArrayList<ArrayList<Integer>> queries = new ArrayList<>();
 
         // Read queries
         for (int q = 0; q < query; q++) {
+        	System.out.print("Enter the value for a: ");
             a = in.nextInt();
+
+            System.out.print("Enter the value for b: ");
             b = in.nextInt();
+
+            System.out.print("Enter the value for n(where to end): ");
             n = in.nextInt();
 
             ArrayList<Integer> values = new ArrayList<>();

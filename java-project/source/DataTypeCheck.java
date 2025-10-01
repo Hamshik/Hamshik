@@ -8,6 +8,7 @@ public class DataTypeCheck{
 	for(int i = 0; i < query; i++){
 
 		try{
+				System.out.print("Enter the #(to check the # fits to primitive datatype): ");
 				long n = in.nextLong();
 				System.out.println(n + " can be fitted in: ");
 				if(n >= Byte.MIN_VALUE && n <= Byte.MAX_VALUE)System.out.println("* byte");
