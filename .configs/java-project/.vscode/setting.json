@@ -12,5 +12,9 @@
   "java.import.gradle.wrapper.enabled": true,
   "java.import.gradle.java.home": "/usr/lib/jvm/jdk-25-oracle-x64",
   "java.format.settings.url": ".vscode/eclipse-java-google-style.xml",
-  "java.format.settings.profile": "GoogleStyle"
+  "java.format.settings.profile": "GoogleStyle",
+  "java.project.referencedLibraries": [
+    "lib/**/*.jar"
+
+  ]
 }
