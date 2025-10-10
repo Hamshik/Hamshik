@@ -1,4 +1,0 @@
-#!/bin/bash
-echo "Setting up VS Code for Linux..."
-cp .vscode/settings.linux.json .vscode/settings.json
-echo "Done."
