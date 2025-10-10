@@ -1,4 +1,4 @@
-package com.javafx;
+package in.hamshik;
 
 import java.io.IOException;
 import javafx.fxml.FXML;

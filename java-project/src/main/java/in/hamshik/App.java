@@ -1,4 +1,4 @@
-package com.javafx;
+package in.hamshik;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

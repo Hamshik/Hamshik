@@ -1,3 +1,4 @@
+package in.hamshik;
 import java.util.Scanner;
 import java.io.*;
 public class DataTypeCheck{
