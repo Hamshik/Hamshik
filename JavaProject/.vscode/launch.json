@@ -1,0 +1,18 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "EOF",
+      "request": "launch",
+      "mainClass": "in.hamshik.EOF",
+      "projectName": "JavaProject_3a707ff1"
+    },
+    {
+      "type": "java",
+      "name": "Run",
+      "request": "launch",
+      "mainClass": "${file}"
+    }
+  ]
+}
