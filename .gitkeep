@@ -1,3 +1,4 @@
 python-projects/*
-web-dev/*
-JavaProject/*
+web-dev/js
+JavaProject/bin/in/hamshik/utils
+JavaProject/src/main/java/in/hamshik/utils
