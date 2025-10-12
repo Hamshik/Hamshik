@@ -6,6 +6,7 @@ public class EOF{
 		Scanner in  = new Scanner(System.in);
 		ArrayList<String> lines = new ArrayList<>();
 		int j = 0;
+		System.out.println("Wirte anything!!");
 		while(in.hasNext()){
 			String line = in.nextLine();
 			lines.add(line);

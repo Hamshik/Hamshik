@@ -12,6 +12,7 @@ public class GetDay{
 
 		while(true){
 			 try{
+				System.out.println("Enter the Date: ");
 			 	String datein = in.nextLine();
             	date = LocalDate.parse(datein, formatter);
               	break;
