@@ -13,7 +13,7 @@
       "name": "Run javafx",
       "request": "launch",
       "mainClass": "${file}",
-      "vmArgs": "--module-path lib/javafx-sdk-21 --add-modules javafx.controls,javafx.fxml",
+      "vmArgs": "--module-path JavaProject/lib/javafx-sdk-21 --add-modules javafx.controls,javafx.fxml",
       "projectName": "JavaProject_3a707ff1"
     }
   ]
