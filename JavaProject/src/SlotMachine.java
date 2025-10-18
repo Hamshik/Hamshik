@@ -1,4 +1,4 @@
-package in.hamshik;
+
 import java.util.Random;
 import java.util.Scanner;
 

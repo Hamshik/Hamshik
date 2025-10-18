@@ -1,4 +1,4 @@
-package in.hamshik;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -48,11 +48,10 @@ public class AlarmClock {
             }
         }
         
-        //Starting new Thread
-        // runTime run = new runTime(alarmDateTime, input);
-        // Thread thread = new Thread(run);
-        // thread.start();
-        input.close();
+        Starting new Thread
+        runTime run = new runTime(alarmDateTime, input);
+        Thread thread = new Thread(run);
+        thread.start();
 
         // we are not closing the Scanner resources since we pass input to the runTime class
     }

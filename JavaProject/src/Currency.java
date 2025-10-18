@@ -1,4 +1,4 @@
-package in.hamshik;
+
 import java.util.*;
 import java.text.*;
 public class Currency{
