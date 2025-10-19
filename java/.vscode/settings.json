@@ -1,0 +1,8 @@
+{
+  "java.format.settings.url": ".vscode/java-formatter.xml",
+  "java.project.sourcePaths": ["src/main/java"],
+  "java.project.outputPath": "bin",
+  "java.project.referencedLibraries": [
+        "lib/**/*.jar"
+    ]
+}

@@ -3,6 +3,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "CoffeEater",
+      "request": "launch",
+      "mainClass": "in/in.CoffeEater",
+      "projectName": "java_projects"
+    },
+    {
+      "type": "java",
       "name": "Main",
       "request": "launch",
       "mainClass": "in/in.Main",

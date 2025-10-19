@@ -1,0 +1,20 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Run Java",
+      "request": "launch",
+      "mainClass": "${file}",
+      "projectName": "JavaProject_3a707ff1"
+    },
+    {
+      "type": "java",
+      "name": "Run javafx",
+      "request": "launch",
+      "mainClass": "${file}",
+      "vmArgs": "--module-path lib/javafx-sdk-21 --add-modules javafx.controls,javafx.fxml",
+      "projectName": "JavaProject_3a707ff1"
+    }
+  ]
+}
