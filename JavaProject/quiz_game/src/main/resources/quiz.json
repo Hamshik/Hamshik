@@ -1,0 +1,102 @@
+[
+  {
+    "question": "Who is known as the father of the computer?",
+    "choices": ["1. Alan Turing", "2. Charles Babbage", "3. John von Neumann", "4. Bill Gates"],
+    "answer": "2"
+  },
+  {
+    "question": "Which component is considered the brain of the computer?",
+    "choices": ["1. RAM", "2. Hard Disk", "3. CPU", "4. GPU"],
+    "answer": "3"
+  },
+  {
+    "question": "Which type of software directly interacts with hardware?",
+    "choices": ["1. Application Software", "2. System Software", "3. Utility Software", "4. Firmware"],
+    "answer": "2"
+  },
+  {
+    "question": "Which symbol represents the home directory?",
+    "choices": ["1. /home", "2. ~", "3. /usr", "4. /root"],
+    "answer": "2"
+  },
+  {
+    "question": "What is a computer virus?",
+    "choices": ["1. A hardware malfunction", "2. A type of malware that replicates itself", "3. A network protocol", "4. A programming language"],
+    "answer": "2"
+  },
+  {
+    "question": "What is the kernel in an operating system?",
+    "choices": ["1. A user interface", "2. A hardware controller", "3. The core part that manages system resources", "4. A file manager"],
+    "answer": "3"
+  },
+  {
+    "question": "Which type of kernel runs all services in kernel space?",
+    "choices": ["1. Microkernel", "2. Hybrid kernel", "3. Monolithic kernel", "4. Modular kernel"],
+    "answer": "3"
+  },
+  {
+    "question": "Which operating system uses a monolithic kernel?",
+    "choices": ["1. Windows", "2. Linux", "3. macOS", "4. Android"],
+    "answer": "2"
+  },
+  {
+    "question": "Which planet is known as the Red Planet?",
+    "choices": ["1. Venus", "2. Mars", "3. Jupiter", "4. Saturn"],
+    "answer": "2"
+  },
+  {
+    "question": "Which country has the largest population in the world?",
+    "choices": ["1. India", "2. China", "3. USA", "4. Indonesia"],
+    "answer": "1"
+  },
+  {
+    "question": "Which organ purifies blood in the human body?",
+    "choices": ["1. Heart", "2. Liver", "3. Kidney", "4. Lungs"],
+    "answer": "3"
+  },
+  {
+    "question": "Who was the first Prime Minister of independent India?",
+    "choices": ["1. Mahatma Gandhi", "2. Jawaharlal Nehru", "3. Sardar Patel", "4. Subhas Chandra Bose"],
+    "answer": "2"
+  },
+  {
+    "question": "In which year did World War II end?",
+    "choices": ["1. 1942", "2. 1945", "3. 1948", "4. 1950"],
+    "answer": "2"
+  },
+  {
+    "question": "What is the chemical symbol for water?",
+    "choices": ["1. H2O", "2. CO2", "3. O2", "4. NaCl"],
+    "answer": "1"
+  },
+  {
+    "question": "Which gas do plants absorb during photosynthesis?",
+    "choices": ["1. Oxygen", "2. Nitrogen", "3. Carbon Dioxide", "4. Hydrogen"],
+    "answer": "3"
+  },
+  {
+    "question": "What is the unit of electrical resistance?",
+    "choices": ["1. Volt", "2. Ampere", "3. Ohm", "4. Watt"],
+    "answer": "3"
+  },
+  {
+    "question": "What is a thread in programming?",
+    "choices": ["1. A type of variable", "2. A lightweight process", "3. A memory block", "4. A compiler directive"],
+    "answer": "2"
+  },
+  {
+    "question": "Which keyword is used to prevent concurrent access to a method in Java?",
+    "choices": ["1. static", "2. volatile", "3. synchronized", "4. final"],
+    "answer": "3"
+  },
+  {
+    "question": "Which concept allows multiple threads to run independently?",
+    "choices": ["1. Serialization", "2. Concurrency", "3. Inheritance", "4. Polymorphism"],
+    "answer": "2"
+  },
+  {
+    "question": "Which language is commonly used for system-level programming?",
+    "choices": ["1. Python", "2. JavaScript", "3. C", "4. HTML"],
+    "answer": "3"
+  }
+]

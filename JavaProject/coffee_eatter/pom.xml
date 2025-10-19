@@ -1,0 +1,54 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>in.hamshik</groupId>
+    <artifactId>coffee_eatter</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>25</maven.compiler.source> <!-- Updated to Java 25 -->
+        <maven.compiler.target>25</maven.compiler.target> <!-- Updated to Java 25 -->
+    </properties>
+    <dependencies>
+        <!-- JavaFX Controls (updated to version 25) -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>25.0.0</version> <!-- JavaFX 25 -->
+        </dependency>
+        <!-- JavaFX FXML (updated to version 25) -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>25.0.0</version> <!-- JavaFX 25 -->
+        </dependency>
+        <!-- Add more JavaFX modules as needed (e.g., javafx-graphics, javafx-base) -->
+    </dependencies>
+    <build>
+        <plugins>
+            <!-- Maven Compiler Plugin (latest version) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version> <!-- Latest version -->
+                <configuration>
+                    <release>25</release> <!-- Updated to Java 25 -->
+                </configuration>
+            </plugin>
+            <!-- JavaFX Maven Plugin (latest version) -->
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.11</version> <!-- Latest version -->
+                <executions>
+                    <execution>
+                        <id>default-cli</id>
+                        <configuration>
+                            <mainClass>in.hamshik.App</mainClass>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
