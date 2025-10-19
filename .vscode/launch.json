@@ -3,6 +3,20 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Main",
+      "request": "launch",
+      "mainClass": "in/in.Main",
+      "projectName": "java_projects"
+    },
+    {
+      "type": "java",
+      "name": "App",
+      "request": "launch",
+      "mainClass": "in/in.App",
+      "projectName": "java_projects"
+    },
+    {
+      "type": "java",
       "name": "Run Java",
       "request": "launch",
       "mainClass": "${file}",
