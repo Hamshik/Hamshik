@@ -4,19 +4,35 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="rootPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="255.0" prefWidth="255.0" stylesheets="@App.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.hamshik.Controller">
+
+<AnchorPane id="rootPanel" focusTraversable = "true" prefHeight="650.0" prefWidth="500.0" stylesheets="@App.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.hamshik.Controller">
    <children>
       <!-- Hero Image -->
-      <ImageView fx:id="heroView" fitHeight="56.0" fitWidth="64.0" layoutX="94.0" layoutY="195.0" pickOnBounds="true">
+      <ImageView fx:id="heroView" fitHeight="200.0" fitWidth="205.0" layoutX="152.0" layoutY="456.0" pickOnBounds="true">
          <image>
             <Image url="@hero.png" />
          </image>
       </ImageView>
 
-      <!-- Villain Image -->
+                  <!-- Villain Image -->
       <ImageView fx:id="villainView" fitHeight="123.0" fitWidth="176.0" layoutX="58.0" layoutY="-8.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@villan.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="coffee1View" fitHeight="50.0" fitWidth="50.0" layoutX="264.0" layoutY="340.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@coffeeBean.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="coffee3View" fitHeight="50.0" fitWidth="50.0" layoutX="196.0" layoutY="352.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@coffeeBean.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="coffee2View" fitHeight="50.0" fitWidth="50.0" layoutX="221.0" layoutY="315.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@coffeeBean.png" />
          </image>
       </ImageView>
    </children>
