@@ -29,6 +29,7 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) throws  UnsupportedOperationException{
+        
     }
 
     public void keyHandler(KeyCode code) {
