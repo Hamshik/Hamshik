@@ -3,6 +3,6 @@
 "java.project.sourcePaths": [
         "JavaProject/source"
         ],
-        "java.configuration.updateBuildConfiguration": "interactive",
+        "java.configuration.updateBuildConfiguration": "automatic",
         "maven.view": "hierarchical"
 }
