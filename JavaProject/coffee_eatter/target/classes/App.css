@@ -8,5 +8,39 @@ AnchorPane {
 .button {
     -fx-background-radius: 10;
     -fx-padding: 5 10 5 10;
-    -fx-background-image: url("menu.png");
+    -fx-background-image: url("menu1.png");
+    -fx-background-repeat: no-repeat;
+    -fx-display: block;
 }
+.button:hover {
+    -fx-background-radius: 10;
+    -fx-padding: 5 10 5 10;
+    -fx-background-image: url("menu2.png");
+    -fx-background-repeat: no-repeat;
+    -fx-display: block;
+}
+.scoreLabel {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-color: black;
+    -fx-font-weight: bold;
+    -fx-border-color: white;
+}
+.rectangle {
+    -fx-fill: white;
+    -fx-opacity: 0.7;
+    -fx-background-radius: 15;
+}
+#circle1 {
+    -fx-fill: white;
+    -fx-opacity: 0.5;
+}
+#rectangle1 {
+    -fx-fill: white;
+    -fx-opacity: 0.7;
+    -fx-background-radius: 1000;
+}
+#gameOver{
+    -fx-display: none;
+}
+

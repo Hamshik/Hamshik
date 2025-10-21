@@ -1,13 +1,17 @@
 package in.hamshik;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
-import javafx.animation.TranslateTransition;
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 public class App extends Application{
     static public void main(String [] args){
@@ -15,46 +19,51 @@ public class App extends Application{
     }
 
     @Override
-    public void start(Stage stage) throws IOException{
-        try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Scene.fxml"));
-            Parent root = loader.load();
-            Scene scene = new Scene(root,500,650);
-            Image icon = new Image(getClass().getResourceAsStream("/coffee.png"));
-            stage.setResizable(false);
-            stage.getIcons().add(icon);
+    public void start(Stage stage) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Scene.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root, 500, 650);
+        Image icon = new Image(getClass().getResourceAsStream("/coffee.png"));
+        stage.setResizable(false);
+        stage.getIcons().add(icon);
 
-            Controller controller = loader.getController();
+        Controller controller = loader.getController();
+        ImageView hero = controller.getHeroView();
 
-            scene.setOnKeyPressed(event -> {
-                System.out.println("Key Pressed: " + event.getCode());
-                TranslateTransition transition = new TranslateTransition();
-                transition.setNode(controller.heroView);
-                transition.setDuration(javafx.util.Duration.millis(200));
-                switch (event.getCode()) {
-                    case LEFT, A:
-                        transition.setByX(-20);
-                        break;
-                    case RIGHT, D:
-                        transition.setByX(+20);
-                        break;
-                    default:
-                        return; // Ignore other keys.
-                
+        // Track pressed keys
+        Set<KeyCode> keysPressed = new HashSet<>();
+        scene.setOnKeyPressed(event -> keysPressed.add(event.getCode()));
+        scene.setOnKeyReleased(event -> keysPressed.remove(event.getCode()));
+
+        // AnimationTimer for smooth movement
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                double step = 5;
+                double maxX = 170;
+                double minX = -180;
+                double maxY = -25;
+                double minY = -480; // flip these correctly if needed
+
+                for (KeyCode code : keysPressed) {
+                    switch (code) {
+                        case LEFT, A -> hero.setTranslateX(Math.max(hero.getTranslateX() - step, minX));
+                        case RIGHT, D -> hero.setTranslateX(Math.min(hero.getTranslateX() + step, maxX));
+                        case UP, W -> hero.setTranslateY(Math.max(hero.getTranslateY() - step, minY));
+                        case DOWN, S -> hero.setTranslateY(Math.min(hero.getTranslateY() + step, maxY));
+                        default -> { }
+                    }
                 }
-                transition.play();
+            }
+        };
+        timer.start();
 
-            });
-
-            stage.setScene(scene);
-            stage.setTitle("Coffee Bean Eater Game");
-            stage.show();
-            scene.getRoot().requestFocus();
-            
-
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
+        stage.setScene(scene);
+        stage.setTitle("Coffee Bean Eater Game");
+        stage.show();
+        scene.getRoot().requestFocus();
     }
+
+
+
 }
