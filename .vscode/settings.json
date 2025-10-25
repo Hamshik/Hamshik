@@ -4,5 +4,12 @@
         "JavaProject/source"
         ],
         "java.configuration.updateBuildConfiguration": "automatic",
-        "maven.view": "hierarchical"
+        "maven.view": "hierarchical",
+        "python-envs.pythonProjects": [
+                {
+                        "path": "JavaProject/quiz_game",
+                        "envManager": "ms-python.python:venv",
+                        "packageManager": "ms-python.python:pip"
+                }
+        ]
 }

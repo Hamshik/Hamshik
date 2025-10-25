@@ -34,7 +34,7 @@ public class CoffeeFalling {
         new Thread(() -> {
             while (true) {
                 try {
-                    Thread.sleep((5*1000)); // spawn every 5 sec
+                    Thread.sleep((3*1000)); // spawn every 5 sec
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -44,25 +44,25 @@ public class CoffeeFalling {
         
 
         // Real-time collision & score checking
-        AnimationTimer collisionChecker = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                for (ImageView coffee : coffees) {
-                    if (coffee.getBoundsInParent().intersects(heroView.getBoundsInParent())) {
-                        int newScore = score.incrementAndGet();
+        // AnimationTimer collisionChecker = new AnimationTimer() {
+        //     @Override
+        //     public void handle(long now) {
+        //         for (ImageView coffee : coffees) {
+        //             if (coffee.getBoundsInParent().intersects(heroView.getBoundsInParent())) {
+        //                 int newScore = score.incrementAndGet();
 
-                        // Update scoreLabel on JavaFX thread
-                        scoreLabel.setText(Integer.toString(newScore));
+        //                 // Update scoreLabel on JavaFX thread
+        //                 scoreLabel.setText(Integer.toString(newScore));
 
-                        // Reset coffee to top
-                        coffee.setX(random.nextInt(-225, 225));
-                        coffee.setY(-200);
+        //                 // Reset coffee to top
+        //                 coffee.setX(random.nextInt(-225, 225));
+        //                 coffee.setY(-200);
 
-                    }
-                }
-            }
-        };
-        collisionChecker.start();
+        //             }
+        //         }
+        //     }
+        // };
+        // collisionChecker.start();
     }
 
     private void spawnCoffee() {
@@ -71,8 +71,8 @@ public class CoffeeFalling {
         coffee.setFitHeight(coffeeTemplate.getFitHeight());
         coffee.setPreserveRatio(true);
 
-        coffee.setLayoutX(random.nextDouble() * (rootPanel.getWidth() - coffee.getFitWidth()));
-        coffee.setLayoutY(-coffee.getFitHeight());
+        coffee.setX(random.nextInt(-225, 225));
+        coffee.setY(-50);
 
         rootPanel.getChildren().add(coffee);
         coffees.add(coffee);
