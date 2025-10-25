@@ -3,9 +3,9 @@ package in.hamshik;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
-
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -13,8 +13,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
-public class App extends Application{
-    static public void main(String [] args){
+import javafx.stage.WindowEvent;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+
+public class App extends Application {
+
+    static public void main(String[] args) {
         launch(args);
     }
 
@@ -39,11 +45,10 @@ public class App extends Application{
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
+                if (controller.isGameOver()) return;
+
                 double step = 5;
-                double maxX = 170;
-                double minX = -180;
-                double maxY = -25;
-                double minY = -480; // flip these correctly if needed
+                double maxX = 170, minX = -180, maxY = -25, minY = -480;
 
                 for (KeyCode code : keysPressed) {
                     switch (code) {
@@ -62,8 +67,18 @@ public class App extends Application{
         stage.setTitle("Coffee Bean Eater Game");
         stage.show();
         scene.getRoot().requestFocus();
+
+        // Handle window close
+        stage.setOnCloseRequest((WindowEvent e) -> {
+            e.consume(); // prevent immediate close
+            javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.CONFIRMATION, "Do you really want to exit?", ButtonType.YES, ButtonType.NO);
+            alert.showAndWait().ifPresent(type -> {
+                if (type == ButtonType.YES) {
+                    controller.stopThreads();
+                    Platform.exit();
+                    System.exit(0);
+                }
+            });
+        });
     }
-
-
-
 }

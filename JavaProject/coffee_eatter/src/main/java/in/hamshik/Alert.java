@@ -1,11 +1,14 @@
 package in.hamshik;
 
-
 public class Alert {
-    boolean isExit = false;
+    private boolean isExit = false;
 
-    public  boolean isExit() {
+    public boolean isExit() {
         return isExit;
     }
-    
+
+    public void setExit(boolean exit) {
+        this.isExit = exit;
+    }
 }
+

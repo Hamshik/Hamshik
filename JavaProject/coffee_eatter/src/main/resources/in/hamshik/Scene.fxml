@@ -16,22 +16,37 @@
             <Image url="@hero.png" />
          </image>
       </ImageView>
-      <Button fx:id="menuButton" layoutX="432.0" layoutY="14.0" minHeight="18.0" minWidth="52.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="54.0" />
-      <ImageView fx:id="coffView1" fitHeight="69.0" fitWidth="83.0" layoutX="232.0" layoutY="-69.0" pickOnBounds="true" preserveRatio="true">
+      <Button fx:id="menuButton" layoutX="432.0" layoutY="14.0" minHeight="18.0" minWidth="52.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" />
+      <ImageView fx:id="coffView1" fitHeight="69.0" fitWidth="83.0" layoutX="-375.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@coffeeBean.png" />
          </image>
       </ImageView>
+      <Rectangle fx:id="rectangle1" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="34.0" layoutX="56.0" layoutY="30.0" stroke="BLACK" strokeType="INSIDE" width="76.0" />
+      <Circle fill="DODGERBLUE" layoutX="-42.0" layoutY="127.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
       <ImageView fitHeight="50.0" fitWidth="33.0" layoutX="32.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@coffeeBean.png" />
          </image>
       </ImageView>
-      <Circle fill="DODGERBLUE" layoutX="-42.0" layoutY="127.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
       <Circle fx:id="circle1" fill="DODGERBLUE" layoutX="48.0" layoutY="47.0" radius="17.0" stroke="BLACK" strokeType="INSIDE" />
-      <Rectangle fx:id="rectangle1" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="34.0" layoutX="56.0" layoutY="30.0" stroke="BLACK" strokeType="INSIDE" width="76.0" />
       <Label fx:id="scoreLabel" layoutX="65.0" layoutY="30.0" prefHeight="34.0" prefWidth="70.0" text="0" />
-      <Label fx:id="gameOver" alignment="CENTER" contentDisplay="CENTER" layoutX="194.0" layoutY="212.0" prefHeight="58.0" prefWidth="113.0" text="Game Over" />
-      <Button contentDisplay="GRAPHIC_ONLY" defaultButton="true" disable="true" layoutX="223.0" layoutY="276.0" minWidth="34.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="54.0" />
+      <Label fx:id="gameOver" alignment="CENTER" contentDisplay="CENTER" layoutX="194.0" layoutY="212.0" prefHeight="58.0" prefWidth="113.0" text="Game Over" visible="false" />
+      <Button fx:id="resetBut" contentDisplay="GRAPHIC_ONLY" defaultButton="true" disable="true" layoutX="223.0" layoutY="279.0" minWidth="34.0" mnemonicParsing="false" onAction="#resetB" prefHeight="45.0" prefWidth="54.0" visible="false" />
+      <ImageView fx:id="block" fitHeight="150.0" fitWidth="200.0" layoutX="155.0" layoutY="-60.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@block.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="bat" fitHeight="45.0" fitWidth="131.0" layoutX="32.0" layoutY="-60.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@bat.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="bomb" fitHeight="85.0" fitWidth="113.0" layoutX="181.0" layoutY="-102.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@bomb.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
