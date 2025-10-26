@@ -1,6 +1,5 @@
 package in.hamshik;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -8,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -15,52 +15,44 @@ public class Controller implements Initializable {
 
     @FXML private ImageView bat, block, bomb, coffView1, heroView;
     @FXML private AnchorPane rootPanel;
-    @FXML private Label scoreLabel, gameOver;
-    @FXML private Button resetBut;
+    @FXML private Label scoreLabel, gameOverLabel;
+    @FXML private Button resetButton;
 
-    private CoffeeFalling coffeeFalling;
-    private GameOver gameOverObj;
-    private volatile boolean gameOverFlag = false;
+    public CoffeeFalling coffeeFalling;
+    public GameOver gameOver;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        setupGame();
+        resetButton.setOnAction(this::resetGame);
+    }
+
+    private void setupGame() {
         coffeeFalling = new CoffeeFalling(rootPanel, coffView1, heroView, scoreLabel);
         coffeeFalling.startFalling();
+        Thread coffeeThread = coffeeFalling.getCoffeeThread();
 
-        gameOverObj = new GameOver(rootPanel, bat, heroView, block, bomb, gameOver, resetBut);
-        gameOverObj.obstacle();
-
-        resetBut.setOnAction(this::resetGame);
+        gameOver = new GameOver(rootPanel, bat, heroView, block, bomb, gameOverLabel, resetButton, coffeeThread);
+        gameOver.start();
     }
 
     public ImageView getHeroView() { return heroView; }
-    public boolean isGameOver() { return gameOverObj.isGameOver(); }
+    public boolean isGameOver() { return gameOver.isGameOver(); }
 
-    private void resetGame(ActionEvent e) {
-        System.out.println("Reset Clicked");
-        gameOver.setVisible(false);
-        resetBut.setVisible(false);
+    @FXML private void resetGame(ActionEvent e) {
+        gameOverLabel.setVisible(false);
+        resetButton.setVisible(false);
 
-        gameOverObj.stopThreads();
-        coffeeFalling.stopThread();
+        endGame(); // stop all threads and hide all obstacles
+        scoreLabel.setText("0");
 
-        // Restart game
-        coffeeFalling = new CoffeeFalling(rootPanel, coffView1, heroView, scoreLabel);
-        coffeeFalling.startFalling();
-
-        gameOverObj = new GameOver(rootPanel, bat, heroView, block, bomb, gameOver, resetBut);
-        gameOverObj.obstacle();
+        setupGame(); // start everything fresh
     }
-
+    private void endGame() {gameOver.endGame();}
     public void stopThreads() {
-        coffeeFalling.stopThread();
-        gameOverObj.stopThreads();
+        if (gameOver.obstacleThread() != null) gameOver.obstacleThread().interrupt();
+        if (gameOver.coffeeThread() != null) gameOver.coffeeThread().interrupt();
     }
-    @FXML
-    public void resetB(javafx.event.ActionEvent e) {
-        System.out.println("Reset Clicked");
-        resetBut.setVisible(false);
-        gameOver.setVisible(false);
-    }
+    public CoffeeFalling getCoffeeClass() {return coffeeFalling;}
+    public GameOver getGameOverClass() {return gameOver;}
 }
-

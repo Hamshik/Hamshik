@@ -18,7 +18,7 @@
         <!-- For Windows use "win", for Linux use "linux", for Mac use "mac" or "mac-aarch64" -->
         <javafx.platform>win</javafx.platform>
 
-        <javafx.version>24.0.2</javafx.version>
+        <javafx.version>25.0.1</javafx.version>
     </properties>
 
     <repositories>

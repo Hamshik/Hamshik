@@ -32,7 +32,7 @@
       <Circle fx:id="circle1" fill="DODGERBLUE" layoutX="48.0" layoutY="47.0" radius="17.0" stroke="BLACK" strokeType="INSIDE" />
       <Label fx:id="scoreLabel" layoutX="65.0" layoutY="30.0" prefHeight="34.0" prefWidth="70.0" text="0" />
       <Label fx:id="gameOver" alignment="CENTER" contentDisplay="CENTER" layoutX="194.0" layoutY="212.0" prefHeight="58.0" prefWidth="113.0" text="Game Over" visible="false" />
-      <Button fx:id="resetBut" contentDisplay="GRAPHIC_ONLY" defaultButton="true" disable="true" layoutX="223.0" layoutY="279.0" minWidth="34.0" mnemonicParsing="false" onAction="#resetB" prefHeight="45.0" prefWidth="54.0" visible="false" />
+      <Button fx:id="resetButton" contentDisplay="GRAPHIC_ONLY" defaultButton="true" disable="true" layoutX="223.0" layoutY="279.0" minWidth="34.0" mnemonicParsing="false" onAction="#resetGame" prefHeight="45.0" prefWidth="54.0" visible="false" />
       <ImageView fx:id="block" fitHeight="150.0" fitWidth="200.0" layoutX="155.0" layoutY="-60.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@block.png" />
@@ -48,5 +48,6 @@
             <Image url="@bomb.png" />
          </image>
       </ImageView>
+      <Label fx:id="gameOverLabel" text="Game Over!" visible="false" layoutX="200" layoutY="100"></Label>
    </children>
 </AnchorPane>
