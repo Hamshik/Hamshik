@@ -35,7 +35,7 @@ public class App extends Application {
         AnimationTimer movementTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if (!controller.isGameOver()){
+                if (!controller.getGameOverClass().isGameOver()){
                     double step = 5;
                     double maxX = 170, minX = -180, maxY = -25, minY = -480;
 
@@ -45,6 +45,7 @@ public class App extends Application {
                             case RIGHT, D -> hero.setTranslateX(Math.min(hero.getTranslateX() + step, maxX));
                             case UP, W -> hero.setTranslateY(Math.max(hero.getTranslateY() - step, minY));
                             case DOWN, S -> hero.setTranslateY(Math.min(hero.getTranslateY() + step, maxY));
+                            default -> {return;}
                         }
                     }
                 }
@@ -57,7 +58,7 @@ public class App extends Application {
         stage.show();
         scene.getRoot().requestFocus();
 
-        stage.setOnCloseRequest((WindowEvent e) -> 
+        stage.setOnCloseRequest((WindowEvent e) ->
             AlertBox.showExitConfirmation(e, controller::stopThreads)
         );
     }

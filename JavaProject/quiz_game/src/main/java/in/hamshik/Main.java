@@ -1,7 +1,10 @@
 package in.hamshik;
 
-import java.util.*;
-import java.io.*;
+import java.io.File;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 import com.fasterxml.jackson.databind.*;
 
 public class Main {
@@ -61,23 +64,28 @@ public class Main {
 
     static void Readers() {
         try {
-            ObjectMapper mapper = new ObjectMapper();
-            File file = new File("quiz.json");
-            JsonNode quizArray = mapper.readTree(file);
+            InputStream is = Main.class.getResourceAsStream("/quiz.json");
+            if (is == null) {
+                System.out.println("quiz.json not found!");
+                return;
+            }
 
-            for (JsonNode value : quizArray) {
-                obj = value;
-                question = obj.get("question").asText();
-                choices = obj.get("choices");
-                answer = obj.get("answer").asText();
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode quizzes = mapper.readTree(is); // ✅ readTree for JsonNode
+
+            for (JsonNode q : quizzes) {
+                String question = q.get("question").asText();
+                String answer = q.get("answer").asText();
+                JsonNode choicesNode = q.get("choices");
 
                 ques.add(question);
                 ans.add(answer);
 
                 StringBuilder choiceBlock = new StringBuilder();
-                for (JsonNode choice : choices) {
-                    choiceBlock.append(choice.asText()).append("\n");
+                for (JsonNode choiceNode : choicesNode) {
+                    choiceBlock.append(choiceNode.asText()).append("\n");
                 }
+
                 choice.add(choiceBlock.toString());
             }
         } catch (Exception e) {
@@ -85,28 +93,29 @@ public class Main {
         }
     }
 
+
+
     static boolean isCorrect(String userAnswer, int i) {
-    	return userAnswer.trim().equals(ans.get(i).trim());
+        return userAnswer.trim().equals(ans.get(i).trim());
     }
 
     static String scoreCalculator(double score) {
         int lenQues = ques.size();
         double percentage = (score / lenQues) * 100;
 
-        if (percentage >= 90) {
+        if (percentage >= 90)
             return String.format("Excellent!! You scored %.1f\nYour percentage: %.2f%%\nGrade: A+", score, percentage);
-        } else if (percentage >= 80) {
+        else if (percentage >= 80) 
             return String.format("Excellent!! You scored %.1f\nYour percentage: %.2f%%\nGrade: A", score, percentage);
-        } else if (percentage >= 70) {
+        else if (percentage >= 70) 
             return String.format("Very Good!! You scored %.1f\nYour percentage: %.2f%%\nGrade: B+", score, percentage);
-        } else if (percentage >= 60) {
+        else if (percentage >= 60) 
             return String.format("Good!! You scored %.1f\nYour percentage: %.2f%%\nGrade: B", score, percentage);
-        } else if (percentage >= 50) {
+        else if (percentage >= 50) 
             return String.format("Average!! You scored %.1f\nYour percentage: %.2f%%\nGrade: C", score, percentage);
-        } else if (percentage >= 40) {
+        else if (percentage >= 40) 
             return String.format("Pass!! You scored %.1f\nYour percentage: %.2f%%\nGrade: D", score, percentage);
-        } else {
+        else 
             return String.format("Fail!! You scored %.1f\nYour percentage: %.2f%%\nGrade: F", score, percentage);
-        }
     }
 }
