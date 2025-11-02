@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>in.hamshik</groupId>
-    <artifactId>coffee_eatter</artifactId>
+    <artifactId>calculator</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
@@ -89,7 +89,10 @@
                 <resource>
                     <directory>src/main/resources/in/hamshik</directory>
                     <includes>
-                        <include>**/**</include>
+                        <include>*.fxml</include>
+                        <include>*.css</include>
+                        <include>*.png</include>
+                        <include>*.jpg</include>
                     </includes>
                 </resource>
             </resources>
