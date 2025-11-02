@@ -20,7 +20,7 @@
       </Text>
 
       <!-- Button grid -->
-      <GridPane fx:id="buttonGrid" hgap="8" layoutX="45.0" layoutY="104.0" prefHeight="362.0" prefWidth="351.0" vgap="8" AnchorPane.bottomAnchor="104.0" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="44.0" AnchorPane.topAnchor="104.0">
+      <GridPane fx:id="buttonGrid" hgap="8" layoutX="45.0" layoutY="104.0" prefHeight="318.0" prefWidth="351.0" vgap="8" AnchorPane.bottomAnchor="149.0" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="44.0" AnchorPane.topAnchor="104.0">
             <padding>
                   <Insets bottom="10" left="10" right="10" top="10" />
             </padding>
@@ -51,21 +51,14 @@
             <Button fx:id="but2" onAction="#ButHandler" text="2" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <Button fx:id="but3" onAction="#ButHandler" text="3" GridPane.columnIndex="2" GridPane.rowIndex="3" />
             <Button fx:id="butAdd" onAction="#ButHandler" text="+" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-            <Button fx:id="butLn" onAction="#ButHandler" text="ln" GridPane.columnIndex="4" GridPane.rowIndex="3" />
 
             <!-- Row 4 -->
             <Button fx:id="butSign" onAction="#ButHandler" text="+/−" GridPane.columnIndex="0" GridPane.rowIndex="4" />
             <Button fx:id="but0" onAction="#ButHandler" text="0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <Button fx:id="butDot" onAction="#ButHandler" text="." GridPane.columnIndex="2" GridPane.rowIndex="4" />
             <Button fx:id="butEqual" onAction="#ButHandler" text="=" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-            <Button fx:id="butLog" onAction="#ButHandler" text="log" GridPane.columnIndex="4" GridPane.rowIndex="4" />
-
-            <!-- Row 5 -->
-            <Button fx:id="butSin" onAction="#ButHandler" text="sin" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-            <Button fx:id="butCos" onAction="#ButHandler" text="cos" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <Button fx:id="butTan" onAction="#ButHandler" text="tan" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-            <Button fx:id="butPow" onAction="#ButHandler" text="xʸ" GridPane.columnIndex="3" GridPane.rowIndex="5" />
-            <Button fx:id="butModAlt" onAction="#ButHandler" text="mod" GridPane.columnIndex="4" GridPane.rowIndex="5" />
+            <Button fx:id="butPow" onAction="#ButHandler" text="xʸ" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+            <Button fx:id="butModAlt" onAction="#ButHandler" text="mod" GridPane.columnIndex="4" GridPane.rowIndex="3" />
       <columnConstraints>
          <ColumnConstraints />
          <ColumnConstraints />

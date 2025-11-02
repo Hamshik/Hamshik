@@ -17,10 +17,9 @@ public class Controller implements Initializable {
     @FXML private Text CalTextBox, errText;
     @FXML private Rectangle rect;
 
-    // All buttons (injected from FXML)
+    // Basic buttons only
     @FXML private Button but0, but1, but2, but3, but4, but5, but6, but7, but8, but9;
-    @FXML private Button butAdd, butSub, butMul, butDiv, butDot, butEqual, butClear, butDel, butMod, butSign;
-    @FXML private Button butSqrt, butPi, butE, butLn, butLog, butSin, butCos, butTan, butPow;
+    @FXML private Button butAdd, butSub, butMul, butDiv, butDot, butEqual, butClear, butDel, butMod, butSign, butPow;
 
     private final StringBuilder expression = new StringBuilder();
     private boolean justEvaluated = false;
@@ -78,15 +77,15 @@ public class Controller implements Initializable {
     private void handleInput(String text) {
         hideError();
 
-        // Reset after "=" if next input is number
-        if (justEvaluated && isNumericOrConstant(text)) {
+        // Reset if just evaluated
+        if (justEvaluated && isNumeric(text)) {
             expression.setLength(0);
             justEvaluated = false;
         }
 
-        // Handle power exponent entry
+        // Handle power exponent mode
         if (waitingForExponent) {
-            if (isOperator(text)) return; // don’t allow operators in exponent
+            if (isOperator(text)) return;
             expression.append(text);
             showText(baseValue + superscript(expression.toString()));
             return;
@@ -94,17 +93,15 @@ public class Controller implements Initializable {
 
         String current = expression.toString();
 
-        // Prevent starting with +, ×, ÷, %
+        // Block invalid starts
         if (current.isEmpty() && isOperator(text) && !text.equals("-")) return;
 
-        // Prevent consecutive operators (e.g. "++", "+-", "--", etc.)
-        if (current.length() > 0 && isOperatorEnding(current)) {
-            if (isOperator(text)) {
-                // Replace the last operator with the new one
-                expression.setCharAt(expression.length() - 1, text.charAt(0));
-            } else {
-                expression.append(text);
-            }
+        // Prevent multiple dots in a single number
+        if (text.equals(".") && getLastNumber().contains(".")) return;
+
+        // Prevent consecutive operators
+        if (current.length() > 0 && isOperatorEnding(current) && isOperator(text)) {
+            expression.setCharAt(expression.length() - 1, text.charAt(0));
         } else {
             expression.append(text);
         }
@@ -121,7 +118,7 @@ public class Controller implements Initializable {
             baseValue = base;
             waitingForExponent = true;
             expression.setLength(0);
-            showText(base + "ⁿ");
+            showText(base + " ");
         } catch (Exception e) {
             showError("Error");
         }
@@ -129,7 +126,7 @@ public class Controller implements Initializable {
 
     private void calculateResult() {
         try {
-            // Power mode (xʸ)
+            // Power mode
             if (waitingForExponent && baseValue != null) {
                 if (expression.isEmpty()) {
                     showError("Error");
@@ -143,7 +140,7 @@ public class Controller implements Initializable {
                 return;
             }
 
-            // Normal mode
+            // No expression
             if (expression.isEmpty()) {
                 showText(CalTextBox.getText());
                 return;
@@ -178,18 +175,10 @@ public class Controller implements Initializable {
     // ---------------------------------------------------------------------
 
     private double evaluateExpression(String expr) throws ScriptException {
-        // Normalize expression
+        // Normalize
         expr = expr.replaceAll("×", "*")
                    .replaceAll("÷", "/")
-                   .replaceAll("%", "/100")
-                   .replaceAll("π", String.valueOf(Math.PI))
-                   .replaceAll("e", String.valueOf(Math.E))
-                   .replaceAll("√", "Math.sqrt")
-                   .replaceAll("sin", "Math.sin")
-                   .replaceAll("cos", "Math.cos")
-                   .replaceAll("tan", "Math.tan")
-                   .replaceAll("log", "Math.log10")
-                   .replaceAll("ln", "Math.log");
+                   .replaceAll("%", "/100");
 
         // Handle power (^)
         expr = expr.replaceAll("(\\d+(?:\\.\\d+)?)\\^(\\d+(?:\\.\\d+)?)", "Math.pow($1,$2)");
@@ -213,21 +202,25 @@ public class Controller implements Initializable {
     private void toggleSign() {
         if (expression.isEmpty()) return;
 
-        // find the last number in the expression
-        int i = expression.length() - 1;
-        while (i >= 0 && (Character.isDigit(expression.charAt(i)) || expression.charAt(i) == '.')) i--;
+        String lastNumber = getLastNumber();
+        if (lastNumber.isEmpty()) return;
 
-        String before = expression.substring(0, i + 1);
-        String number = expression.substring(i + 1);
+        int start = expression.length() - lastNumber.length();
 
-        if (number.startsWith("-"))
-            number = number.substring(1);
-        else
-            number = "-" + number;
+        if (lastNumber.startsWith("-")) {
+            expression.replace(start, expression.length(), lastNumber.substring(1));
+        } else {
+            expression.replace(start, expression.length(), "-" + lastNumber);
+        }
 
-        expression.setLength(0);
-        expression.append(before).append(number);
         showText(expression.toString());
+    }
+
+    private String getLastNumber() {
+        String expr = expression.toString();
+        int i = expr.length() - 1;
+        while (i >= 0 && (Character.isDigit(expr.charAt(i)) || expr.charAt(i) == '.')) i--;
+        return expr.substring(i + 1);
     }
 
     private boolean isOperator(String s) {
@@ -240,8 +233,8 @@ public class Controller implements Initializable {
         return "+-*/×÷%".indexOf(last) != -1;
     }
 
-    private boolean isNumericOrConstant(String s) {
-        return s.matches("[0-9πe.]");
+    private boolean isNumeric(String s) {
+        return s.matches("[0-9.]");
     }
 
     // ---------------------------------------------------------------------
