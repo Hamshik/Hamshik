@@ -1,8 +1,8 @@
-#CalTextBox{
-    -fx-text-align: left;
+#calTextBox{
+    -fx-text-align: right;
     -fx-background-color: rgba(136, 206, 238, 0.8);
     -fx-text-fill: black;
-    -fx-font-family: "Consolas";
+    -fx-font-family: "System";
 }
 .button {
     -fx-pref-width: 60px;
@@ -22,4 +22,7 @@
 .button:hover {
     -fx-background-color: rgba(0, 183, 255, 0.932);
     -fx-text-fill: white;
+}
+.text{
+    -fx-padding: 2px;
 }

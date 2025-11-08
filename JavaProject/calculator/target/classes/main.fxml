@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -10,56 +11,55 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="571.0" prefWidth="403.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.hamshik.Controller">
-
-      <!-- Display -->
-      <Text fx:id="CalTextBox" layoutX="45.0" layoutY="70.1923828125" style="-fx-fill: white;" text="0" textAlignment="RIGHT" wrappingWidth="351.0" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="44.0" AnchorPane.topAnchor="39.0">
-            <font>
-                  <Font size="42.0" />
-            </font>
-      </Text>
+<AnchorPane prefHeight="418.0" prefWidth="406.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.hamshik.Controller">
 
       <!-- Button grid -->
-      <GridPane fx:id="buttonGrid" hgap="8" layoutX="45.0" layoutY="104.0" prefHeight="318.0" prefWidth="351.0" vgap="8" AnchorPane.bottomAnchor="149.0" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="44.0" AnchorPane.topAnchor="104.0">
+      <GridPane fx:id="buttonGrid" hgap="8" layoutX="5.0" layoutY="71.0" prefHeight="316.0" prefWidth="393.0" vgap="8" AnchorPane.bottomAnchor="33.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="71.0">
             <padding>
                   <Insets bottom="10" left="10" right="10" top="10" />
             </padding>
 
             <!-- Row 0 -->
-            <Button fx:id="butClear" onAction="#ButHandler" text="C" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-            <Button fx:id="butDel" onAction="#ButHandler" text="Del" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-            <Button fx:id="butMod" onAction="#ButHandler" text="%%" GridPane.columnIndex="2" GridPane.rowIndex="0" />
-            <Button fx:id="butDiv" onAction="#ButHandler" text="÷" GridPane.columnIndex="3" GridPane.rowIndex="0" />
-            <Button fx:id="butSqrt" onAction="#ButHandler" text="√" GridPane.columnIndex="4" GridPane.rowIndex="0" />
+            <Button fx:id="butClear" alignment="CENTER" contentDisplay="CENTER" onAction="#ButHandler" text="C" GridPane.columnIndex="5" />
+            <Button fx:id="butDel" alignment="CENTER" contentDisplay="CENTER" onAction="#ButHandler" text="Del" GridPane.columnIndex="4" />
+            <Button fx:id="butMod" alignment="CENTER" contentDisplay="CENTER" onAction="#ButHandler" text="%%" GridPane.columnIndex="3" />
+            <Button fx:id="butDiv" alignment="CENTER" contentDisplay="CENTER" onAction="#ButHandler" text="÷" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+            <Button fx:id="butSqrt" alignment="CENTER" contentDisplay="CENTER" onAction="#ButHandler" text="√" GridPane.columnIndex="5" GridPane.rowIndex="3" />
 
             <!-- Row 1 -->
-            <Button fx:id="but7" onAction="#ButHandler" text="7" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-            <Button fx:id="but8" onAction="#ButHandler" text="8" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Button fx:id="but9" onAction="#ButHandler" text="9" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <Button fx:id="butMul" onAction="#ButHandler" text="×" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-            <Button fx:id="butPi" onAction="#ButHandler" text="π" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+            <Button fx:id="but7" alignment="CENTER" contentDisplay="CENTER" onAction="#ButHandler" text="7" GridPane.rowIndex="1" />
+            <Button fx:id="but8" alignment="CENTER" contentDisplay="CENTER" onAction="#ButHandler" text="8" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Button fx:id="but9" alignment="CENTER" contentDisplay="CENTER" onAction="#ButHandler" text="9" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Button fx:id="butMul" alignment="CENTER" contentDisplay="CENTER" onAction="#ButHandler" text="×" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+            <Button fx:id="butPi" alignment="CENTER" contentDisplay="CENTER" onAction="#ButHandler" text="π" GridPane.columnIndex="4" GridPane.rowIndex="3" />
 
             <!-- Row 2 -->
-            <Button fx:id="but4" onAction="#ButHandler" text="4" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-            <Button fx:id="but5" onAction="#ButHandler" text="5" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Button fx:id="but6" onAction="#ButHandler" text="6" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-            <Button fx:id="butSub" onAction="#ButHandler" text="−" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-            <Button fx:id="butE" onAction="#ButHandler" text="e" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+            <Button fx:id="but4" alignment="CENTER" contentDisplay="CENTER" onAction="#ButHandler" text="4" GridPane.rowIndex="2" />
+            <Button fx:id="but5" alignment="CENTER" contentDisplay="CENTER" onAction="#ButHandler" text="5" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Button fx:id="but6" alignment="CENTER" contentDisplay="CENTER" onAction="#ButHandler" text="6" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <Button fx:id="butSub" alignment="CENTER" contentDisplay="CENTER" onAction="#ButHandler" text="−" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <Button fx:id="butE" alignment="CENTER" contentDisplay="CENTER" onAction="#ButHandler" text="e" GridPane.columnIndex="4" GridPane.rowIndex="4" />
 
             <!-- Row 3 -->
-            <Button fx:id="but1" onAction="#ButHandler" text="1" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-            <Button fx:id="but2" onAction="#ButHandler" text="2" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <Button fx:id="but3" onAction="#ButHandler" text="3" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-            <Button fx:id="butAdd" onAction="#ButHandler" text="+" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+            <Button fx:id="but1" alignment="CENTER" contentDisplay="CENTER" onAction="#ButHandler" text="1" GridPane.rowIndex="3" />
+            <Button fx:id="but2" alignment="CENTER" contentDisplay="CENTER" onAction="#ButHandler" text="2" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Button fx:id="but3" alignment="CENTER" contentDisplay="CENTER" onAction="#ButHandler" text="3" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <Button fx:id="butAdd" alignment="CENTER" contentDisplay="CENTER" onAction="#ButHandler" text="+" GridPane.columnIndex="3" GridPane.rowIndex="2" />
 
             <!-- Row 4 -->
-            <Button fx:id="butSign" onAction="#ButHandler" text="+/−" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-            <Button fx:id="but0" onAction="#ButHandler" text="0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <Button fx:id="butDot" onAction="#ButHandler" text="." GridPane.columnIndex="2" GridPane.rowIndex="4" />
-            <Button fx:id="butEqual" onAction="#ButHandler" text="=" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-            <Button fx:id="butPow" onAction="#ButHandler" text="xʸ" GridPane.columnIndex="4" GridPane.rowIndex="4" />
-            <Button fx:id="butModAlt" onAction="#ButHandler" text="mod" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+            <Button fx:id="butSign" alignment="CENTER" contentDisplay="CENTER" onAction="#ButHandler" text="+/−" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+            <Button fx:id="but0" alignment="CENTER" contentDisplay="CENTER" onAction="#ButHandler" text="0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Button fx:id="butDot" alignment="CENTER" contentDisplay="CENTER" onAction="#ButHandler" text="." GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <Button fx:id="butEqual" alignment="CENTER" contentDisplay="CENTER" onAction="#ButHandler" prefHeight="106.0" prefWidth="58.0" text="=" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+            <Button fx:id="butPowSq" alignment="CENTER" contentDisplay="CENTER" onAction="#ButHandler" text="x²" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+      <Button fx:id="butPowCube" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#ButHandler" text="x³" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+      <Button fx:id="butCubeRoot" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="56.0" prefWidth="59.0" text="3√" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+      <Button fx:id="but01" alignment="CENTER" contentDisplay="CENTER" onAction="#ButHandler" text="00" GridPane.rowIndex="4" />
+      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" />
+      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" GridPane.columnIndex="1" />
+      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" GridPane.columnIndex="2" />
       <columnConstraints>
+         <ColumnConstraints />
          <ColumnConstraints />
          <ColumnConstraints />
          <ColumnConstraints />
@@ -75,10 +75,18 @@
          <RowConstraints />
       </rowConstraints>
       </GridPane>
-   <Rectangle fx:id="rect" arcHeight="5.0" arcWidth="5.0" height="33.0" layoutX="109.0" layoutY="493.0" opacity="0.46" stroke="BLACK" strokeType="INSIDE" width="245.0" />
-   <Text fx:id="errText" fill="WHITE" layoutX="116.0" layoutY="519.0" stroke="#ae3737" strokeType="OUTSIDE" strokeWidth="0.0" text="Max Limit is reached" wrappingWidth="245.0">
+   <Rectangle fx:id="rect" arcHeight="5.0" arcWidth="5.0" height="33.0" layoutX="87.0" layoutY="386.0" opacity="0.46" stroke="BLACK" strokeType="INSIDE" width="245.0" />
+   <Text fx:id="errText" fill="WHITE" layoutX="88.0" layoutY="411.0" stroke="#ae3737" strokeType="OUTSIDE" strokeWidth="0.0" text="Max Limit is reached" wrappingWidth="245.0">
       <font>
          <Font size="23.0" />
       </font>
+   </Text>
+   <Text fx:id="calTextBox" layoutX="25.0" layoutY="44.0" nodeOrientation="RIGHT_TO_LEFT" strokeType="INSIDE" strokeWidth="0.0" text="0" textOrigin="CENTER" wrappingWidth="355.13671875">
+      <font>
+         <Font size="31.0" />
+      </font>
+      <cursor>
+         <Cursor fx:constant="NONE" />
+      </cursor>
    </Text>
 </AnchorPane>

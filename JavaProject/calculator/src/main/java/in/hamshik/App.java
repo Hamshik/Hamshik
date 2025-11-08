@@ -17,18 +17,23 @@ public class App extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
-        try{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/main.fxml"));
-        Parent root = loader.load();
-        Scene scene = new Scene(root, 400, 500);
-        stage.setScene(scene);
-        stage.setTitle("Simple Calculator");
-        stage.getIcons().add(new Image(getClass().getResourceAsStream("/calculator.png")));
-        stage.show();
-        }catch(Exception e){
+    public void start(Stage stage) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/main.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root, 400, 450);
+
+            Controller controller = loader.getController();
+            scene.setOnKeyTyped(e -> controller.handleKeyPress(e));
+
+            stage.setScene(scene);
+            stage.setTitle("Simple Calculator");
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("/calculator.png")));
+            stage.setResizable(false);
+            stage.show();
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 }
