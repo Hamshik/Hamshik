@@ -4,7 +4,7 @@
 import java.util.*;
 
 public class SeriesOfNum {
-    public static void main(String[] args) {
+    public static void main(StringOperations[] args) {
         int a, b, n, query;
 
         Scanner in = new Scanner(System.in);

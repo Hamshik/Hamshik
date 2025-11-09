@@ -3,7 +3,7 @@
 
 import java.util.Scanner;
 public class DataTypeCheck{
-	public static void main(String[] args){
+	public static void main(StringOperations[] args){
 	Scanner in = new Scanner(System.in);
 	int query = in.nextInt();
 

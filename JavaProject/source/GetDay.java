@@ -13,11 +13,11 @@ public class GetDay{
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
 
 		while(true){
-			 try{
+			try{
 				System.out.println("Enter the Date: ");
-			 	String datein = in.nextLine();
-            	date = LocalDate.parse(datein, formatter);
-              	break;
+				String datein = in.nextLine();
+        		date = LocalDate.parse(datein, formatter);
+            	break;
         	}
         	catch(Exception e){
            		System.out.println("Bad format");

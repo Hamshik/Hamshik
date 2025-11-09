@@ -7,7 +7,7 @@ public class EOF{
 		Scanner in  = new Scanner(System.in);
 		ArrayList<String> lines = new ArrayList<>();
 		int j = 0;
-		System.out.println("Wirte anything!!");
+		System.out.println("Write anything!!");
 		while(in.hasNext()){
 			String line = in.nextLine();
 			lines.add(line);

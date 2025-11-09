@@ -6,7 +6,7 @@ public class UnitConverter {
     String choice;
     boolean isEntered = true;
     static Scanner input = new Scanner(System.in);
-    static public void main(String[]args){
+    static public void main(StringOperations[]args){
 
         String choice;
         boolean isEntered = true;

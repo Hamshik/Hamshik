@@ -5,7 +5,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class SlotMachine {
-    static public void main(String[]args) {
+    static public void main(StringOperations[]args) {
         String[] symbol = {"🍔","🍕","🍟","🍎","🍏"};
         String[] symbol_out = new String[3];
         Random random = new Random();
