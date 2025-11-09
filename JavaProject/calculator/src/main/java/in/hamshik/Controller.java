@@ -225,7 +225,7 @@ public class Controller implements Initializable {
             return;
         }
 
-        if (key.matches("[0-9.#πe]")) { // ✅ Added π and e
+        if (key.matches("[0-9.πe]")) { // ✅ Added π and e
             handleInput(key);
             return;
         }
