@@ -1,29 +1,11 @@
-def get_key(lists_of_student_grades, TARGET):
-    KEYS = []
-    for i in range(len(lists_of_student_grades) - 1):
-        VALUE = lists_of_student_grades[i][1]
-        KEY = lists_of_student_grades[i][0]
-        if TARGET == VALUE:     KEYS.append(KEY)
-        else:   continue
-    return KEYS
-
-if __name__ == '__main__':
-    lists_of_student_grades:list[str,float] = list();
-    last_2_min_grades:list[float] = []
-    grades:list[float] = []
-    for _ in range(int(input())):
-        name = input()
-        score = float(input())
-        lists_of_student_grades.append([name,score])
-    for i in range(len(lists_of_student_grades) - 1):
-        grades.append(lists_of_student_grades[i][1])
-    MIN = min(grades)
-    for i in grades:
-        if i != MIN:    last_2_min_grades.append(i)
-        else:    continue
-    TARGET = min(last_2_min_grades)
-
-    KEY = get_key(lists_of_student_grades, TARGET)
-
-    for i in sorted(KEY):
-        print(i,end="\n")
+def main():
+    student_marks:dict[str, list[int]] = {}
+    n: int = int(input())
+    for _ in range(n):
+        name, *line = input().split()
+        scores = list(map(float, line))
+        student_marks[name] = scores
+    query_name: str = input()
+    print(f"{sum(student_marks[query_name]) / len(student_marks[query_name]):.2f}")
+if __name__ == "__main__":
+    main()
