@@ -1,4 +1,7 @@
+import java.io.EOFException;
+import java.lang.instrument.IllegalClassFormatException;
 import java.util.Arrays;
+import java.util.IllegalFormatCodePointException;
 import java.util.Scanner;
 
 public class StringSorting {
@@ -19,7 +22,7 @@ public class StringSorting {
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IllegalClassFormatException {
         Scanner scan = new Scanner(System.in);
         System.out.print("Enter the Str: ");
         String s = scan.nextLine();
@@ -28,6 +31,6 @@ public class StringSorting {
         scan.close();
         
         if(s.length() >= k) System.out.println(getSmallestAndLargest(s, k));
-        else System.err.println("The # is too large");
+        else throw new IllegalArgumentException("# is too large", null);
     }
 }
