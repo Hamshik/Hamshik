@@ -1,6 +1,3 @@
-
-
-
 import java.util.*;
 import java.text.*;
 public class Currency{
@@ -11,8 +8,7 @@ public class Currency{
 			in.close();
 			String us = NumberFormat.getCurrencyInstance(Locale.US).format(pay);
 			String china = NumberFormat.getCurrencyInstance(Locale.CHINA).format(pay);
-			String india = NumberFormat.getCurrencyInstance(Locale.forLanguageTag("en-IN"))
-							.format(pay);
+			String india = NumberFormat.getCurrencyInstance(Locale.forLanguageTag("hi-IN")).format(pay);
 			String France = NumberFormat.getCurrencyInstance(Locale.FRANCE).format(pay);
 
 			System.out.println("US: " + us);

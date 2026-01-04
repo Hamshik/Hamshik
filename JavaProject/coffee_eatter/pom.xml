@@ -14,9 +14,9 @@
         <maven.compiler.source>25</maven.compiler.source>
         <maven.compiler.target>25</maven.compiler.target>
 
-        <!-- 🔽 Force the OS here manually -->
+        <!--  Force the OS here manually -->
         <!-- For Windows use "win", for Linux use "linux", for Mac use "mac" or "mac-aarch64" -->
-        <javafx.platform>win</javafx.platform>
+        <javafx.platform>linux</javafx.platform>
 
         <javafx.version>25.0.1</javafx.version>
     </properties>

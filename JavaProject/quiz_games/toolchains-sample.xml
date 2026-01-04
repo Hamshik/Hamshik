@@ -1,0 +1,22 @@
+<!-- Sample Maven toolchains file (DO NOT commit this to personal repos with absolute paths) -->
+<!-- Save this as %USERPROFILE%\\.m2\\toolchains.xml to let Maven pick a specific JDK for builds -->
+
+<toolchains>
+  <toolchain>
+    <type>jdk</type>
+    <provides>
+      <version>21</version>
+      <vendor>oracle</vendor>
+    </provides>
+    <configuration>
+      <!-- Change this to the path where you installed JDK 21 -->
+      <jdkHome>${JAVA_HOME}</jdkHome>
+    </configuration>
+  </toolchain>
+</toolchains>
+
+<!-- Usage notes:
+ - This file is just a sample placed in the project for convenience. To enable toolchains for Maven, copy the content into your user toolchains at %USERPROFILE%\\.m2\\toolchains.xml
+ - The project pom includes an Enforcer rule that requires Java >= 21; keeping JDK 25 locally is fine — the Enforcer checks a minimum, not an exact match.
+ - If you want the build to always use JDK 21, set the toolchain version to 21 and put the real path in your user toolchains.xml.
+ -->

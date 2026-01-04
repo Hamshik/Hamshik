@@ -5,7 +5,6 @@ import javafx.scene.text.Text;
 
 public class EvaluateExpression {
 
-    private String expression;
     private static final double MAX_VALUE = 1E100;
     private Text text, errText;
     private double rawResult = 0;
@@ -13,7 +12,6 @@ public class EvaluateExpression {
     private Rectangle rect;
 
     public EvaluateExpression(String expression, Text text, Text errText, Rectangle rect) {
-        this.expression = expression;
         this.text = text;
         this.errText = errText;
         this.rect = rect;

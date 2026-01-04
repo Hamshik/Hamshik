@@ -1,0 +1,18 @@
+
+.button:active {
+    -fx-background-color: rgba(0, 150, 255, 0.932);
+}
+.button:hover {
+    -fx-background-color: rgba(0, 183, 255, 0.932);
+    -fx-text-fill: white;
+}
+#ques_text{
+    -fx-padding: 2px;
+    fx-text-align: right;
+    -fx-background-color: rgba(136, 206, 238, 0.8);
+    -fx-text-fill: black;
+    -fx-font-family: "System";
+}
+.button{
+    -fx-background-color: rgba(0, 153, 255, 0.308);
+}

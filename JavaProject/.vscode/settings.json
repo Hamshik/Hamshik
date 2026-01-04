@@ -1,6 +1,7 @@
 {
 "java.format.settings.url": "JavaProject/.vscode/java-formatter.xml",
 "java.project.sourcePaths": [
-        "JavaProject/source"
-        ]
+        "source"
+        ],
+        "java.configuration.updateBuildConfiguration": "interactive"
 }

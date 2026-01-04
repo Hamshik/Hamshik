@@ -1,10 +1,37 @@
 {
   "configurations": [
-  {
-    "type": "java",
-    "name": "Launch Java Program",
-    "request": "launch",
-    "mainClass": "${file}"
-  }
+    {
+      "type": "java",
+      "name": "App",
+      "request": "launch",
+      "mainClass": "in.hamshik/in.hamshik.App",
+      "projectName": "quiz_games"
+    },
+    {
+      "type": "java",
+      "name": "App",
+      "request": "launch",
+      "mainClass": "in.hamshik.App"
+    },
+    {
+      "type": "java",
+      "name": "Currency",
+      "request": "launch",
+      "mainClass": "Currency",
+      "projectName": ""
+    },
+    {
+      "type": "java",
+      "name": "Area",
+      "request": "launch",
+      "mainClass": "Area",
+      "projectName": ""
+    },
+    {
+      "type": "java",
+      "name": "Launch Java Program",
+      "request": "launch",
+      "mainClass": "${file}"
+    }
   ]
 }
