@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="418.0" prefWidth="406.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.hamshik.Controller">
+<AnchorPane fx:id="root" prefHeight="418.0" prefWidth="406.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.hamshik.Controller">
 
       <!-- Button grid -->
       <GridPane fx:id="buttonGrid" hgap="8" layoutX="5.0" layoutY="71.0" prefHeight="316.0" prefWidth="393.0" vgap="8" AnchorPane.bottomAnchor="33.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="71.0">

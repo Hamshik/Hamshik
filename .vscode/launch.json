@@ -1,10 +1,24 @@
 {
   "configurations": [
-  {
-    "type": "java",
-    "name": "Launch Java Program",
-    "request": "launch",
-    "mainClass": "${file}"
-  }
+    {
+      "type": "java",
+      "name": "App",
+      "request": "launch",
+      "mainClass": "in.hamshik/in.hamshik.quiz_game.App",
+      "projectName": "java_quiz"
+    },
+    {
+      "type": "java",
+      "name": "App",
+      "request": "launch",
+      "mainClass": "in.hamshik/in.hamshik.App",
+      "projectName": "calculator"
+    },
+    {
+      "type": "java",
+      "name": "Launch Java Program",
+      "request": "launch",
+      "mainClass": "${file}"
+    }
   ]
 }

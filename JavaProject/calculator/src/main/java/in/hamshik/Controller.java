@@ -9,12 +9,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 public class Controller implements Initializable {
+
+    @FXML static AnchorPane root; // Main container
 
     // ✅ FXML UI elements (connected via Scene Builder)
     @FXML private Text calTextBox;   // Main display area (where numbers/operators appear)

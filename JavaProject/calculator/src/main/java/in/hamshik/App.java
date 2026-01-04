@@ -21,7 +21,11 @@ public class App extends Application {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/main.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root, 400, 450);
+            Scene scene;
+            if(root == null)
+                scene = new Scene(root, Controller.root.getWidth(), Controller.root.getHeight());
+            else
+                scene = new Scene(root, 400,450);
 
             Controller controller = loader.getController();
             scene.setOnKeyTyped(e -> controller.handleKeyPress(e));
