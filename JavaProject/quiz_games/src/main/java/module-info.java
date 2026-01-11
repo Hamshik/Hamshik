@@ -6,6 +6,7 @@ module in.hamshik {
     requires javafx.base;
     requires java.scripting;
     requires com.fasterxml.jackson.databind;
+    requires java.net.http;
 
     opens in.hamshik to javafx.fxml;
     exports in.hamshik;
