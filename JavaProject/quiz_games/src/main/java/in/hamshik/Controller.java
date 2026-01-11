@@ -1,92 +1,180 @@
 package in.hamshik;
 
-import java.io.InputStream;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.ResourceBundle;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+import javafx.animation.FadeTransition;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.text.Text;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 
-public class Controller implements Initializable{
+import javafx.scene.text.Text;
+import javafx.util.Duration;
+
+import java.util.List;
+
+public class Controller {
 
     @FXML private Button choice1, choice2, choice3, choice4, nextBut;
-    @FXML private Text ques_text;
+    @FXML private Text ques_text, correctOrIncorrect_text;
+    @FXML private ImageView resultImage;
+    @FXML private ProgressIndicator processIndicator;
+    @FXML private StackPane progressPane;
+    @FXML private Label tagLabel;
+    @FXML private Label scorLabel;
 
-    private ArrayList<String> ans_array = new ArrayList<>();
-    private ArrayList<String> ques_array = new ArrayList<>();
-    LinkedList<ArrayList<String>> choices_array = new LinkedList<>();
-    private int currentIndex = 0;
-    boolean isOver = false;
+    private final Image correctImg = new Image(App.class.getResource("/correct.png").toExternalForm());
+    private final Image wrongImg = new Image(App.class.getResource("/incorrect.png").toExternalForm());
 
-    @Override
-    public void initialize(URL arg0, ResourceBundle arg1){ Platform.runLater(() -> startInit()); }
+    private QuizManager quizManager;
+    private boolean shouldGONext = false;
+    private boolean isCorrect = false;
 
-    private void startInit()
-    {
-        Thread readerThread = new Thread(() -> reader());
-        try{readerThread.start();}
-        catch(Exception e){}
-        if(isOver) readerThread.interrupt();
-        if(currentIndex < ques_array.size()) showQuestion();
-    }
-
-    private void reader()
-    {
-        InputStream reasourcStream;
-        ObjectMapper mapper  = new ObjectMapper();
-        JsonNode quizzes;
-        String question;
-        String answer;
-        JsonNode choicesNode;
-        ArrayList<String> choiceList = new ArrayList<>();
-
-        try {
-            reasourcStream = App.class.getResourceAsStream("/quiz.json");
-            if (reasourcStream == null) 
-                new Exception("Json file is not found");
-
-            quizzes = mapper.readTree(reasourcStream); // ✅ readTree for JsonNode
-
-            for (JsonNode uni_Node : quizzes) {
-                question = uni_Node.get("question").asText();
-                answer = uni_Node.get("answer").asText();
-                choicesNode = uni_Node.get("choices");
-                choiceList = mapper.convertValue(choicesNode, new TypeReference<ArrayList<String>>() {});
-
-                choices_array.add(choiceList);
-                ques_array.add(question);
-                ans_array.add(answer);
-                
-            }
-        } catch (Exception e) {
-            System.out.println("Error reading quiz.json: " + e.getMessage());
-        }
-        isOver = true;
+    public void initialize() {
+        progressPane.setVisible(false);
+        progressPane.setManaged(false);
+        scorLabel.setManaged(false);
+        tagLabel.setManaged(false);
+        processIndicator.setScaleX(7.5);
+        processIndicator.setScaleY(7.5);
+        List<QuizQuestion> quizzes = QuizRepository.loadQuizzes("/quiz.json");
+        quizManager = new QuizManager(quizzes);
+        showQuestion();
     }
 
     private void showQuestion() {
+        QuizQuestion q = quizManager.getCurrentQuestion();
+        ques_text.setText((quizManager.getCurrentIndex() + 1) + ". " + q.getQuestion());
 
-        ques_text.setText(currentIndex +". "+ ques_array.get(currentIndex));
+        choice1.setText(q.getChoices().get(0));
+        choice2.setText(q.getChoices().get(1));
+        choice3.setText(q.getChoices().get(2));
+        choice4.setText(q.getChoices().get(3));
 
-        choice1.setText(choices_array.get(currentIndex).get(0));
-        choice2.setText(choices_array.get(currentIndex).get(1));
-        choice3.setText(choices_array.get(currentIndex).get(2));
-        choice4.setText(choices_array.get(currentIndex).get(3));
+        resetChoiceButtons();
+        resultImage.setVisible(false);
+        correctOrIncorrect_text.setVisible(false);
+        shouldGONext = false;
+    }
+
+    @FXML private void handleAns(ActionEvent e) {
+        List<Button> groupBut = List.of(choice1, choice2, choice3, choice4);
+
+        for (Button b : groupBut) {
+            b.getStyleClass().removeAll("activeBut", "inactiveBut");
+            b.getStyleClass().add("inactiveBut");
+            b.setDisable(false);
+        }
+
+        Button btn = (Button) e.getSource();
+        int selectedIndex = Integer.parseInt(btn.getUserData().toString());
+
+        isCorrect = quizManager.checkAnswer(selectedIndex);
+        shouldGONext = true;
+
+        btn.getStyleClass().remove("inactiveBut");
+        btn.getStyleClass().add("activeBut");
+
+        showResult(isCorrect);
+        crossFade(isCorrect ? correctImg : wrongImg);
     }
 
     @FXML private void handleNext() {
-        if (currentIndex < ques_array.size() - 1) {
-            currentIndex++;
+        List<Button> groupBut = List.of(choice1, choice2, choice3, choice4, nextBut);
+        List<Text> groupText = List.of(correctOrIncorrect_text, ques_text);
+        List<Label> groupLabel = List.of(scorLabel, tagLabel);
+        if (!shouldGONext) return;
+
+        if (quizManager.hasNext()) {
+            quizManager.nextQuestion();
             showQuestion();
+        } else {
+            progressPane.setVisible(true);
+            progressPane.setManaged(true);
+
+            for (Button b : groupBut) {
+                b.setVisible(false);
+                b.setManaged(false);
+            }
+            for (Text t : groupText) {
+                t.setVisible(false);
+                t.setManaged(false);
+            }
+            for (Label l : groupLabel) {
+                l.setManaged(true);
+                l.setVisible(true);
+            }
+            resultImage.setVisible(false);
+            resultImage.setManaged(false);
+            showFinalResult();
         }
     }
-} 
+
+    private void showResult(boolean isCorrect) {
+        resultImage.setImage(isCorrect ? correctImg : wrongImg);
+        resultImage.setVisible(true);
+        correctOrIncorrect_text.setText(isCorrect ? "Correct" : "Incorrect");
+        correctOrIncorrect_text.getStyleClass().removeAll("correct", "incorrect");
+        correctOrIncorrect_text.getStyleClass().add(isCorrect ? "correct" : "incorrect");
+        correctOrIncorrect_text.setVisible(true);
+    }
+
+    private void crossFade(Image newImage) {
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(150), resultImage);
+        fadeOut.setToValue(0);
+        fadeOut.setOnFinished(e -> {
+            resultImage.setImage(newImage);
+            FadeTransition fadeIn = new FadeTransition(Duration.millis(150), resultImage);
+            fadeIn.setToValue(1);
+            fadeIn.play();
+        });
+        fadeOut.play();
+    }
+
+    private void resetChoiceButtons() {
+        List<Button> groupBut = List.of(choice1, choice2, choice3, choice4);
+        for (Button b : groupBut) {
+            b.getStyleClass().removeAll("activeBut", "inactiveBut");
+            b.getStyleClass().add("inactiveBut");
+            b.setDisable(false);
+        }
+    }
+
+    private void showFinalResult() {
+        int percent = (int) (quizManager.getScore() * 100.0 / quizManager.getTotalQuestions());
+        setProgress(0);
+        scorLabel.setText(quizManager.getScore() + " / " + quizManager.getTotalQuestions());
+
+        String setTag = percent < 25 ? "Poor" : 
+            percent < 50 ? "Average" : 
+            percent < 75 ? "Good" : "Excellent"
+        ;
+        
+        tagLabel.setText(setTag);
+
+        Thread progressThread = new Thread(() -> {
+            for (int i = 0; i <= percent; i++) {
+                int p = i;
+                Platform.runLater(() -> setProgress(p));
+                try { Thread.sleep(20); }
+                catch (InterruptedException ex) { Thread.currentThread().interrupt(); }
+            }
+        });
+        progressThread.start();
+    }
+
+    public void setProgress(int percent) {
+        double progress = percent / 100.0;
+        processIndicator.setProgress(progress);
+        if (percent < 25)
+            processIndicator.setStyle("-fx-accent: red;");
+        else if (percent < 50) 
+            processIndicator.setStyle("-fx-accent: yellow;");
+        else 
+            processIndicator.setStyle("-fx-accent: green;");
+    
+    }
+}
