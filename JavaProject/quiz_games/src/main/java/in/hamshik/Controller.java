@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -22,10 +23,12 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Collections;
 import java.util.List;
+import java.util.ResourceBundle;
 
-public class Controller {
+public class Controller implements Initializable{
 
     @FXML private Button choice1, choice2, choice3, choice4, nextBut, startBut, exitBut, leaderboard;
     @FXML private Text ques_text, correctOrIncorrect_text;
@@ -51,7 +54,7 @@ public class Controller {
     private List<QuizEntry> quizzes;
     private boolean transitionRunning = false;
 
-    public void initialize() {
+    public void initialize(URL arg0, ResourceBundle arg1) {
         quizzes = QuizRepository.loadQuizzes("/quiz.json");
         Collections.shuffle(quizzes);
         quizManager = new QuizManager(quizzes);
