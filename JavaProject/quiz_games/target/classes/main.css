@@ -14,8 +14,8 @@
    BUTTON HOVER
    ===================================================== */
 .button:hover {
-    -fx-background-color: #4fc3f7;      /* soft blue */
-    -fx-text-fill: white;
+   -fx-background-color: #4fc3f7;      /* soft blue */
+    -fx-text-fill: white; 
 }
 
 
@@ -36,12 +36,15 @@
    INACTIVE BUTTON
    ===================================================== */
 .button.inactiveBut,
-.button.inactiveBut:hover,
 .button.inactiveBut:pressed,
 .button.inactiveBut:focused {
     -fx-background-color: #e0e0e0;      /* light gray */
     -fx-text-fill: #777777;
     -fx-cursor: default;
+}
+.button.inactiveBut:hover{
+    -fx-background-color: #4fc3f7;      /* soft blue */
+    -fx-text-fill: white;
 }
 
 
@@ -72,17 +75,59 @@
 }
 
 /* =====================================================
-   PROGRESS INDICATOR
+   PROCESS INDICATOR
    ===================================================== */
+
 #processIndicator {
-    -fx-width: 150px;
-    -fx-height: 150px;
-    -fx-background-color: rgb(238, 233, 233);
+    -fx-progress-color: #4f8cff;
+    -fx-background-color: #e6e8eb; /* optional track background */
+    -fx-scale-x: 500%;
+    -fx-scale-y: 500%;
 }
 
+#processIndicator .track {
+    -fx-background-color: rgba(230, 230, 230, 0.6);
+}
+
+#processIndicator .bar {
+    -fx-background-radius: 100%;
+}
+
+#processIndicator .percentage {
+    -fx-fill: #333;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+#processIndicator .text {
+    -fx-fill: #555;
+    -fx-font-size: 14px;
+}
+
+#processIndicator .indeterminate-bar {
+    -fx-background-color: linear-gradient(to right, #6a85ff, #a16eff);
+}
+
+
+/* =====================================================
+   LABEL STYLES
+   ===================================================== */
 .label {
     -fx-font-size: 24px;
     -fx-font-weight: bold;
     -fx-text-fill: #0d47a1;
     -fx-text-alignment: center;
+}
+
+#welcomText{
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0d47a1;
+}
+
+#leaderboard{
+    -fx-background-image: url('leaderBoard.png');
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
 }

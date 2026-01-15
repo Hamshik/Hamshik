@@ -5,21 +5,21 @@ import java.util.List;
 
 public class QuizManager {
 
-    private final List<QuizQuestion> questions;
+    private final List<QuizEntry> questions;
     private int currentIndex = 0;
     private int score;
 
-    public QuizManager(List<QuizQuestion> questions) {
+    public QuizManager(List<QuizEntry> questions) {
         this.questions = questions;
         this.score = questions.size();
     }
 
-    public QuizQuestion getCurrentQuestion() {
+    public QuizEntry getCurrentQuestion() {
         return questions.get(currentIndex);
     }
 
-    public boolean checkAnswer(int selectedIndex) {
-        boolean isCorrect = selectedIndex == getCurrentQuestion().getAnswerIndex();
+    public boolean checkAnswer(String userAns) {
+        boolean isCorrect = (userAns.equals(getCurrentQuestion().answer()));
         if (!isCorrect) score--;
         return isCorrect;
     }
@@ -33,6 +33,6 @@ public class QuizManager {
     }
 
     public int getScore() { return score; }
-    public int getCurrentIndex() { return currentIndex; }
+    public int getCurrentIndex() { return currentIndex + 1; }
     public int getTotalQuestions() { return questions.size(); }
 }
