@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.TextArea?>
+
+<AnchorPane prefHeight="512.0" prefWidth="416.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.hamshik.Controller">
+   <children>
+        <Button fx:id="startBut" layoutX="13.0" layoutY="377.0" mnemonicParsing="false" onAction="#startQuiz" prefHeight="65.0" prefWidth="191.0" text="Start" />
+        <Button fx:id="exitBut" layoutX="208.0" layoutY="377.0" mnemonicParsing="false" onAction="#exitQuiz" prefHeight="65.0" prefWidth="191.0" text="Exit" />
+        <Button fx:id="quizPerformBut" layoutX="14.0" layoutY="18.0" mnemonicParsing="false" onAction="#performQuiz" prefHeight="36.0" prefWidth="40.0" />
+        <TextArea fx:id="welcomText" layoutX="54.0" layoutY="129.0" prefHeight="43.0" prefWidth="303.0" text="Welcome to Quiz Game" />
+        <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="110.0" layoutY="203.0" pickOnBounds="true" preserveRatio="true" />
+        <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="130.0" layoutY="203.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@java_quiz_img.png" />
+            </image>
+        </ImageView>
+    </children>
+</AnchorPane>

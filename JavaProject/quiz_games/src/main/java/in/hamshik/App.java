@@ -27,7 +27,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        loader = new FXMLLoader(getClass().getResource("/main.fxml"));
+        loader = new FXMLLoader(getClass().getResource("/start.fxml"));
         root = loader.load();
         height = 512;
         len = 416;
