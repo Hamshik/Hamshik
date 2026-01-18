@@ -4,6 +4,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
@@ -12,6 +15,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.Collections;
@@ -20,7 +24,7 @@ import java.util.ResourceBundle;
 
 public class MainController implements Initializable{
 
-    @FXML private Button choice1, choice2, choice3, choice4, nextBut, startBut, exitBut, leaderboard;
+    @FXML private Button choice1, choice2, choice3, choice4, nextBut, goBack;
     @FXML private Text ques_text, correctOrIncorrect_text;
     @FXML private ImageView resultImage;
     @FXML private ProgressIndicator processIndicator;
@@ -28,10 +32,6 @@ public class MainController implements Initializable{
     @FXML private Label tagLabel;
     @FXML private Label scorLabel;
     @FXML private TextArea welcomText;
-    List<Button> buttons;
-    List<Text> groupText;
-    List<Label> groupLabel;
-    private boolean isOver = false;
 
     private final Image correctImg =
             new Image(App.class.getResource("/correct.png").toExternalForm());
@@ -39,74 +39,98 @@ public class MainController implements Initializable{
             new Image(App.class.getResource("/incorrect.png").toExternalForm());
 
     private QuizManager quizManager;
-    private volatile boolean shouldGONext = false;
-    private volatile boolean isCorrect = false;
-    private String userAnswer;
     private List<QuizEntry> quizzes;
-    private boolean transitionRunning = false;
+    private List<Button> buttons;
+    private MControllerVar mControllerVar;
 
-    Controller controller = (new FXMLLoader(getClass().getResource("/start.fxml"))).getController();
-
+    @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         quizzes = Reader.loadQuiz("/quiz.json");
         Collections.shuffle(quizzes);
-
         buttons = List.of(choice1, choice2, choice3, choice4, nextBut);
-        groupText = List.of(correctOrIncorrect_text, ques_text);
-        groupLabel = List.of(scorLabel, tagLabel);
-
         quizManager = new QuizManager(quizzes);
+        mControllerVar = new MControllerVar();
+        mControllerVar.buttons = buttons;
         showQuestion();
     }
 
     private void showQuestion() {
-        QuizEntry q = quizManager.getCurrentQuestion();
+        int currentIndex = quizManager.getCurrentIndex();
+        QuizEntry q = quizManager.getCurrentQuestion(currentIndex);
 
         ques_text.setText(
-                quizManager.getCurrentIndex() + ". " + q.question()
+            (currentIndex + 1) + ". " + q.question()
         );
 
-        for (int i = 0; i < buttons.size() - 1; i++) {
+        for (int i = 0; i < 4; i++) {
             buttons.get(i).setText((i + 1) + ". " + q.choices().get(i));
+            buttons.get(i).setDisable(false);
         }
 
         UIManger.resetChoiceButtons(buttons);
         resultImage.setVisible(false);
         correctOrIncorrect_text.setVisible(false);
-        shouldGONext = false;
+        mControllerVar.shouldGONext = false;
     }
 
-    @FXML private void handleAns(ActionEvent e) {
-        for (Button btn : buttons) {
-            btn.getStyleClass().removeAll("activeBut", "inactiveBut");
-            btn.getStyleClass().add("inactiveBut");
-            btn.setDisable(false);
+
+    @FXML private void handleAns(ActionEvent e) {quizManager.handleAns(e, mControllerVar.userAnswer, mControllerVar, quizManager.getCurrentIndex());}
+
+    @FXML private void handleNext(ActionEvent e) throws Exception {
+        if (!mControllerVar.shouldGONext) return;
+        if (!quizManager.hasNext()){
+            nextBut.setText("Submit Quiz Game");
+            if(((Button)e.getSource()) == nextBut)
+                UIManger.crossFade(mControllerVar.isCorrect ? correctImg : wrongImg, quizManager, resultImage, buttons, () -> {
+                    try {showFinalScore(e);}
+                    catch (Exception e1) {e1.printStackTrace();}}, 
+                mControllerVar);
         }
-
-        Button btn = (Button) e.getSource();
-        userAnswer = btn.getText().substring(3);
-        isCorrect = (quizManager.checkAnswer(userAnswer));
-        shouldGONext = (true);
-
-        btn.getStyleClass().remove("inactiveBut");
-        btn.getStyleClass().add("activeBut");
-    }
-
-    @FXML private void handleNext() {
-        if (!shouldGONext) return;
-        if (!quizManager.hasNext()) isOver = true;
-        else goToNextQues();
+        else {
+            nextBut.setText("Next");
+            goToNextQues();
+        }
+        
     }
     
     private void goToNextQues() {
-        if (transitionRunning) return;
-        transitionRunning = true;
+        if (isTransitionRunning()) return;
+        setTransitionRunning(true);
         for (Button btn : buttons) btn.setDisable(true);
-        quizManager.showResult(isCorrect, correctImg, wrongImg, resultImage, correctOrIncorrect_text);
-        UIManger.crossFade(isCorrect ? correctImg : wrongImg, quizManager, resultImage, buttons, this::showQuestion);
+        quizManager.showResult(mControllerVar.isCorrect, correctImg, wrongImg, resultImage, correctOrIncorrect_text);
+        UIManger.crossFade(mControllerVar.isCorrect ? correctImg : wrongImg, quizManager, resultImage, buttons, this::showQuestion, mControllerVar);
     }
-    public QuizManager getQuizManager() {return quizManager;}
 
-    public void setIsCorrect(boolean isCorrect) {this.isCorrect = isCorrect;}
-    public void setShouldGONext(boolean shouldGONext) {this.shouldGONext = shouldGONext;}
+    public QuizManager getQuizManager() {return quizManager;}
+    public void setTransitionRunning(boolean transitionRunning) {mControllerVar.transitionRunning = transitionRunning;}
+    public boolean isTransitionRunning() {return mControllerVar.transitionRunning;}
+    public MControllerVar getMControllerVar() {return mControllerVar;}
+
+    public void showFinalScore(ActionEvent event) throws Exception {
+         FXMLLoader loader = new FXMLLoader(
+            App.class.getResource("/percentHandler.fxml")
+        );
+
+        Parent root = loader.load();
+
+        PercentHandler percentHandler = loader.getController();
+        percentHandler.setData(mControllerVar, quizManager);
+
+        // Get current stage from button click
+        Stage stage = (Stage) ((Node) event.getSource())
+                .getScene()
+                .getWindow();
+
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    @FXML public void goBack(ActionEvent e) {
+        if (quizManager.getCurrentIndex() > 0) {
+            quizManager.setIndex(quizManager.getCurrentIndex() - 1);
+            showQuestion();
+        }
+    }
+
 }

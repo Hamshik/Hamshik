@@ -11,14 +11,11 @@ import javafx.util.Duration;
 
 public class UIManger {
 
-    public static boolean transitionRunning = false;
-
-    public UIManger(boolean transitionRunning) {UIManger.transitionRunning = transitionRunning;}
     
     public static void crossFade(Image newImage, QuizManager quizManager, 
-        ImageView resultImage, List<Button> buttons, Runnable showQuestion) {
+        ImageView resultImage, List<Button> buttons, Runnable showQuestion, MControllerVar mControllerVar) {
 
-        transitionRunning = true;
+        mControllerVar.transitionRunning = true;
 
         FadeTransition fadeOut =
                 new FadeTransition(Duration.millis(150), resultImage);
@@ -45,7 +42,7 @@ public class UIManger {
                         btn.setDisable(false);
                     }
 
-                    transitionRunning = false;
+                    mControllerVar.transitionRunning = false;
                 });
 
                 pause.play();

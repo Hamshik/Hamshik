@@ -1,31 +1,37 @@
 package in.hamshik;
 
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
-import java.util.List;
+import java.io.IOException;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ProgressIndicator;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
+import javafx.stage.Stage;
+
 
 public class PercentHandler {
 
     @FXML private Label tagLabel, scorLabel;
     @FXML private ProgressIndicator processIndicator;
-    @FXML private StackPane progressPane;
+    @FXML private Button tryAgainBtn, goToMainPage;
 
+    private MControllerVar mControllerVar;
+    private QuizManager quizManager;
 
-    MainController controller = (new FXMLLoader(getClass().getResource("/main.fxml"))).getController();
-
-    private QuizManager quizManager = controller.getQuizManager();
-
-
-    public void showFinalResult() {
+     public void setData( MControllerVar mControllerVar, QuizManager quizManager) throws Exception {
+        this.mControllerVar = mControllerVar;
+        this.quizManager = quizManager;
+        showFinalResult();
+    }
+    
+    public void showFinalResult() throws Exception{
         int percent =
                 (int) (quizManager.getScore() * 100.0
                         / quizManager.getTotalQuestions());
@@ -70,31 +76,46 @@ public class PercentHandler {
             processIndicator.setStyle("-fx-accent: green;");
     }
 
-    public void endGame(List<Button> buttons,
-                         List<Text> groupText,
-                         List<Label> groupLabel,
-                         ImageView resultImage) {
-        progressPane.setVisible(true);
-        progressPane.setManaged(true);
 
-        buttons.forEach(b -> {
-            b.setVisible(false);
-            b.setManaged(false);
-        });
 
-        groupText.forEach(t -> {
-            t.setVisible(false);
-            t.setManaged(false);
-        });
 
-        groupLabel.forEach(l -> {
-            l.setManaged(true);
-            l.setVisible(true);
-        });
+    @FXML public void tryAgian(ActionEvent e) throws IOException{
+        mControllerVar.numberOfUserAttempts++;
 
-        resultImage.setVisible(false);
-        resultImage.setManaged(false);
+        System.out.println("try again clicked");
+        
+        FXMLLoader loader = new FXMLLoader(
+            App.class.getResource("/main.fxml")
+        );
 
-        showFinalResult();
+        Parent root = loader.load();
+
+        // Get current stage from button click
+        Stage stage = (Stage) ((Node) e.getSource())
+                .getScene()
+                .getWindow();
+
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    @FXML public void goToMainPage(ActionEvent e) throws IOException{
+        System.out.println("go to main page clicked");
+        
+        FXMLLoader loader = new FXMLLoader(
+            App.class.getResource("/start.fxml")
+        );
+
+        Parent root = loader.load();
+
+        
+        Stage stage = (Stage) ((Node) e.getSource())
+                .getScene()
+                .getWindow();
+
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 }

@@ -37,8 +37,8 @@ public class Reader {
         return quizzes;
     }
 
-    public static List<PerformEntry> loadUserStatus(String path) {
-        List<PerformEntry> performs = new ArrayList<>();
+    public static List<LeaderBoardEntry> loadPlayers(String path) {
+        List<LeaderBoardEntry> performs = new ArrayList<>();
         ObjectMapper mapper = new ObjectMapper();
 
         try (InputStream stream = App.class.getResourceAsStream(path)) {
@@ -47,13 +47,10 @@ public class Reader {
             JsonNode nodes = mapper.readTree(stream);
             for (JsonNode node : nodes) {
                 // Scoring
-                int totalScore = node.get("totalScore").asInt();
-                int bestScore = node.get("bestScore").asInt();
-                double averageScore = node.get("averageScore").asDouble();
-                double accuracy = node.get("accuracy").asDouble();
+                int score = node.get("score").asInt();
+                String name = node.get("name").asText();
 
-
-                performs.add(new PerformEntry(totalScore, bestScore, averageScore, accuracy));
+                performs.add(new LeaderBoardEntry(name, score));
             }
         } catch (Exception e) {
             e.printStackTrace();
