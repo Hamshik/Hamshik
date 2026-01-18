@@ -2,7 +2,7 @@
    BASE BUTTON STYLE
    ===================================================== */
 .button {
-    -fx-background-color: #b5b5b5;      /* neutral gray */
+    -fx-background-color: #cacaca;
     -fx-text-fill: #222222;
     -fx-font-size: 14px;
     -fx-background-radius: 6px;
@@ -31,6 +31,10 @@
     -fx-font-weight: bold;
 }
 
+.button.activeBut:hover {
+    -fx-background-color: #0277bd;      /* darker blue */
+}
+
 
 /* =====================================================
    INACTIVE BUTTON
@@ -42,6 +46,7 @@
     -fx-text-fill: #777777;
     -fx-cursor: default;
 }
+
 .button.inactiveBut:hover{
     -fx-background-color: #4fc3f7;      /* soft blue */
     -fx-text-fill: white;
@@ -72,40 +77,6 @@
 .incorrect {
     -fx-text-fill: #c62828;             /* red */
     -fx-font-weight: bold;
-}
-
-/* =====================================================
-   PROCESS INDICATOR
-   ===================================================== */
-
-#processIndicator {
-    -fx-progress-color: #4f8cff;
-    -fx-background-color: #e6e8eb; /* optional track background */
-    -fx-scale-x: 500%;
-    -fx-scale-y: 500%;
-}
-
-#processIndicator .track {
-    -fx-background-color: rgba(230, 230, 230, 0.6);
-}
-
-#processIndicator .bar {
-    -fx-background-radius: 100%;
-}
-
-#processIndicator .percentage {
-    -fx-fill: #333;
-    -fx-font-size: 24px;
-    -fx-font-weight: bold;
-}
-
-#processIndicator .text {
-    -fx-fill: #555;
-    -fx-font-size: 14px;
-}
-
-#processIndicator .indeterminate-bar {
-    -fx-background-color: linear-gradient(to right, #6a85ff, #a16eff);
 }
 
 

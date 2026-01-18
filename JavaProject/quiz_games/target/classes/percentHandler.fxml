@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="512.0" prefWidth="416.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.hamshik.PercentHandler">
+<AnchorPane prefHeight="512.0" prefWidth="416.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.hamshik.PercentHandler">
    <children>
-        <ProgressIndicator fx:id="processIndicator" layoutX="97.0" layoutY="233.0" prefHeight="56.0" prefWidth="37.0" progress="0.0" />
-        <Label fx:id="scorLabel" layoutX="226.0" layoutY="179.0" prefHeight="77.0" prefWidth="171.0" />
-        <Label fx:id="tagLabel" layoutX="226.0" layoutY="289.0" prefHeight="66.0" prefWidth="171.0" />
+        <ProgressIndicator fx:id="processIndicator" layoutX="104.0" layoutY="195.0" prefHeight="46.0" prefWidth="30.0" progress="0.0" />
+        <Label fx:id="scorLabel" layoutX="232.0" layoutY="109.0" prefHeight="77.0" prefWidth="171.0" />
+        <Label fx:id="tagLabel" layoutX="232.0" layoutY="256.0" prefHeight="66.0" prefWidth="171.0" />
       <Button fx:id="tryAgainBtn" layoutX="14.0" layoutY="414.0" mnemonicParsing="false" onAction="#tryAgian" prefHeight="66.0" prefWidth="159.0" text="Try Again" />
       <Button fx:id="goToMainPage" layoutX="232.0" layoutY="414.0" mnemonicParsing="false" onAction="#goToMainPage" prefHeight="66.0" prefWidth="159.0" text="Go to Main page" />
     </children>
+   <stylesheets>
+      <URL value="@main.css" />
+      <URL value="@processIndicator.css" />
+   </stylesheets>
 </AnchorPane>

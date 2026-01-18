@@ -11,4 +11,9 @@ public class MControllerVar {
     public  String userAnswer;
     public  List<Button> buttons;
     public  int numberOfUserAttempts;
+
+    public static boolean shouldStart = false;
+    public static boolean isThereErr = false;
+
+    public static String causedBy = null;
 }

@@ -1,0 +1,30 @@
+
+#processIndicator {
+    -fx-progress-color: #4f8cff;
+    -fx-background-color: None; /* optional track background */
+    -fx-scale-x: 700%;
+    -fx-scale-y: 700%;
+}
+
+#processIndicator .track {
+    -fx-background-color: rgba(230, 230, 230, 0.6);
+}
+
+#processIndicator .bar {
+    -fx-background-radius: 100%;
+}
+
+#processIndicator .percentage {
+    -fx-fill: #333;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+#processIndicator .text {
+    -fx-fill: #555;
+    -fx-font-size: 14px;
+}
+
+#processIndicator .indeterminate-bar {
+    -fx-background-color: linear-gradient(to right, #6a85ff, #a16eff);
+}

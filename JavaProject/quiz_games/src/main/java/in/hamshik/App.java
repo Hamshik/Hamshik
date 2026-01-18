@@ -3,6 +3,8 @@ package in.hamshik;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -20,8 +22,9 @@ public class App extends Application {
     double height;
     double len;
     Scene scene;
-    public static FileReader getFile() throws FileNotFoundException{ return new FileReader("ques_choice.txt");}
     public static void main(String[] args) {
+        Thread pyThread = new Thread(App::writeJson);
+        pyThread.start();
         launch(args);
     }
 
@@ -40,4 +43,32 @@ public class App extends Application {
         stage.setResizable(false);
         stage.show();      
     }
+
+    public static void writeJson(){
+        
+        final Path HOME = Paths.get(System.getProperty("user.home"));
+
+        final Path PROJECT_PATH = HOME.resolve(
+                Paths.get("Documents", "hamshik", "quiz_games",
+                        "src", "main", "java", "resource", "in", "hamshik")
+        );
+
+        // ✅ Python executable (NOT activate)
+        final Path PY_PATH = HOME.resolve(
+                Paths.get(".venv", "bin", "python")
+        );
+
+        // ✅ Script inside project directory
+        final Path SCRIPT_PATH = PROJECT_PATH.resolve("script.py");
+
+        final Path WORKING_DIR = PROJECT_PATH;
+
+        try {
+            Reader.writeJson(
+                    PY_PATH.toString(),
+                    SCRIPT_PATH.toString(),
+                    WORKING_DIR.toString()
+            );
+        } catch (Exception e) {e.getStackTrace();}
+    } 
 }

@@ -12,9 +12,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class Controller {
 
@@ -69,6 +73,38 @@ public class Controller {
         popupStage.initModality(Modality.WINDOW_MODAL);
         popupStage.setScene(new Scene(root));
         popupStage.showAndWait();
+    }
+
+    
+    public Alert showLoadingDialog() {
+        ProgressIndicator progressIndicator = new ProgressIndicator();
+        Label label = new Label("Loading, please wait...");
+
+        VBox box = new VBox(10, progressIndicator, label);
+        box.setStyle("-fx-padding: 20; -fx-alignment: center;");
+
+        Alert alert = new Alert(Alert.AlertType.NONE);
+        alert.setTitle("Loading");
+        alert.setHeaderText(null);
+        alert.getDialogPane().setContent(box);
+
+        alert.initModality(Modality.APPLICATION_MODAL);
+        alert.initStyle(StageStyle.UNDECORATED);
+
+        alert.show();
+        return alert;
+    }
+
+    public void loadingPopUp(ActionEvent e){
+        Alert loadingAlert = showLoadingDialog();
+
+        new Thread(() -> {
+                try {
+                    javafx.application.Platform.runLater(loadingAlert::close);
+                } catch (Exception ex) {
+                    
+                }
+        }).start();
     }
 
 }

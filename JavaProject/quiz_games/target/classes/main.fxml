@@ -13,8 +13,8 @@
       <Button fx:id="choice4" layoutX="208.0" layoutY="290.0" mnemonicParsing="false" onAction="#handleAns" prefHeight="93.0" prefWidth="187.0" userData="3" />
       <Button fx:id="nextBut" layoutX="289.0" layoutY="442.0" mnemonicParsing="false" onAction="#handleNext" prefHeight="43.0" prefWidth="93.0" text="Next" />
       <Text fx:id="ques_text" layoutX="9.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="397.13000106811523" />
-      <ImageView fx:id="resultImage" fitHeight="36.0" fitWidth="40.0" layoutX="14.0" layoutY="446.0" managed="false" visible="false" />
-      <Text fx:id="correctOrIncorrect_text" layoutX="57.0" layoutY="469.0" managed="false" strokeType="OUTSIDE" strokeWidth="0.0" visible="false" wrappingWidth="77.0" />
+      <ImageView fx:id="resultImage" fitHeight="36.0" fitWidth="40.0" layoutX="14.0" layoutY="67.0" managed="false" />
+      <Text fx:id="correctOrIncorrect_text" layoutX="54.0" layoutY="90.0" managed="false" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="77.0" />
       <Button fx:id="goBack" layoutX="34.0" layoutY="442.0" mnemonicParsing="false" onAction="#goBack" prefHeight="43.0" prefWidth="93.0" text="Go Back" />
    </children>
 </AnchorPane>
