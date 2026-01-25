@@ -1,7 +1,5 @@
 package in.hamshik;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -64,7 +62,7 @@ public class App extends Application {
         final Path WORKING_DIR = PROJECT_PATH;
 
         try {
-            Reader.writeJson(
+            StaticUtilities.runPy(
                     PY_PATH.toString(),
                     SCRIPT_PATH.toString(),
                     WORKING_DIR.toString()

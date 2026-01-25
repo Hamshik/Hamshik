@@ -13,13 +13,34 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>25</maven.compiler.source>
         <maven.compiler.target>25</maven.compiler.target>
-
-        <!-- Force the OS here manually -->
-        <!-- For Windows use "win", for Linux use "linux", for Mac use "mac" or "mac-aarch64" -->
-        <javafx.platform>linux</javafx.platform>
-
         <javafx.version>25.0.1</javafx.version>
     </properties>
+
+    <profiles>
+        <profile>
+            <id>windows</id>
+                <activation>
+                    <os>
+                        <family>Windows</family>
+                    </os>
+                </activation>
+                <properties>
+                    <javafx.platform>win</javafx.platform>
+                </properties>
+            </profile>
+
+            <profile>
+                <id>linux</id>
+                <activation>
+                    <os>
+                        <family>unix</family>
+                    </os>
+                </activation>
+                <properties>
+                    <javafx.platform>linux</javafx.platform>
+                </properties>
+            </profile>
+    </profiles>
 
     <repositories>
         <repository>
@@ -106,6 +127,12 @@
             <artifactId>javafx-web</artifactId>
             <version>${javafx.version}</version>
             <classifier>${javafx.platform}</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.10.1</version> <!-- or latest -->
         </dependency>
     </dependencies>
 

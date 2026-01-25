@@ -50,7 +50,7 @@ public class QuizManager {
         correctOrIncorrect_text.setVisible(true);
     }
 
-    public void handleAns(ActionEvent e, String userAnswer, MControllerVar mControllerVar, int currentIndex) {
+    public void handleAns(ActionEvent e, String userAnswer, MControllerVar mControllerVar, int currentIndex, List<UserAnsEntry> userAnsEntry) {
         for (Button btn : mControllerVar.buttons) {
             btn.getStyleClass().removeAll("activeBut", "inactiveBut");
             btn.getStyleClass().add("inactiveBut");
@@ -59,7 +59,7 @@ public class QuizManager {
 
         Button btn = (Button) e.getSource();
         mControllerVar.userAnswer = btn.getText().substring(3);
-        mControllerVar.isCorrect = checkAnswer(mControllerVar.userAnswer, currentIndex);
+        userAnsEntry.add(new UserAnsEntry(currentIndex, userAnswer));
         mControllerVar.shouldGONext = true;
 
         btn.getStyleClass().remove("inactiveBut");

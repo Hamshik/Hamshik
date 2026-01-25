@@ -16,4 +16,5 @@ public class MControllerVar {
     public static boolean isThereErr = false;
 
     public static String causedBy = null;
+
 }
