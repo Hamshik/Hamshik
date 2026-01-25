@@ -16,7 +16,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.ArrayList;
@@ -79,7 +78,7 @@ public class MainController implements Initializable{
     }
 
 
-    @FXML private void handleAns(ActionEvent e) {quizManager.handleAns(e, mControllerVar.userAnswer, mControllerVar, quizManager.getCurrentIndex(), userAnsLs);}
+    @FXML private void handleAns(ActionEvent e) {quizManager.handleAns(e, mControllerVar.userAnswer, mControllerVar, userAnsLs);}
 
     @FXML private void handleNext(ActionEvent e) throws Exception {
         if (!mControllerVar.shouldGONext) return;

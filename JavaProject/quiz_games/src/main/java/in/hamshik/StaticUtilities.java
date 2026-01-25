@@ -59,13 +59,12 @@ public class StaticUtilities {
         
     }
 
-    public static String convertToJson(Type type, String path) throws IOException {
+    public static void writeJson(Type type, String path) throws IOException {
         gson = new GsonBuilder()
                 .setPrettyPrinting()
                 .create();
         Writer writer = Files.newBufferedWriter(Path.of(path));
         gson.toJson(type, writer);
-
-        return gson.toJson(type);
+        writer.close();
     }
 }

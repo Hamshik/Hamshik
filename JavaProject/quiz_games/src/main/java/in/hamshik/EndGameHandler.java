@@ -16,7 +16,7 @@ import javafx.scene.control.ProgressIndicator;
 import javafx.stage.Stage;
 
 
-public class PercentHandler {
+public class EndGameHandler {
 
     @FXML private Label tagLabel, scorLabel;
     @FXML private ProgressIndicator processIndicator;
@@ -25,7 +25,7 @@ public class PercentHandler {
     private MControllerVar mControllerVar;
     private QuizManager quizManager;
 
-     public void setData( MControllerVar mControllerVar, QuizManager quizManager) throws Exception {
+    public void setData( MControllerVar mControllerVar, QuizManager quizManager) throws Exception {
         this.mControllerVar = mControllerVar;
         this.quizManager = quizManager;
         showFinalResult();
