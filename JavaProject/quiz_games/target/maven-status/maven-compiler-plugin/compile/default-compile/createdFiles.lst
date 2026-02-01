@@ -7,7 +7,7 @@ module-info.class
 in/hamshik/UIManger.class
 in/hamshik/MainController.class
 in/hamshik/StaticUtilities.class
-in/hamshik/PercentHandler.class
+in/hamshik/EndGameHandler.class
 in/hamshik/PlayerEntry.class
 in/hamshik/UserAnsEntry.class
 in/hamshik/MainController$1.class

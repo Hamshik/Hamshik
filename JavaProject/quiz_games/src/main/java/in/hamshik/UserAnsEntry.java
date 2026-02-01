@@ -1,3 +1,3 @@
 package in.hamshik;
 
-public record UserAnsEntry(String ques, String userAns) {}
+public record UserAnsEntry(String ques, String userAns, boolean isflage) {}

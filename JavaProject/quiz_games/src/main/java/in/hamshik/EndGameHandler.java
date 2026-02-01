@@ -38,8 +38,7 @@ public class EndGameHandler {
 
         setProgress(0);
         scorLabel.setText(
-                quizManager.getScore() + " / "
-                        + quizManager.getTotalQuestions()
+                (quizManager.getScore() / quizManager.getTotalQuestions()) + ""
         );
 
         String setTag =
