@@ -5,6 +5,7 @@ module in.hamshik {
     requires transitive com.fasterxml.jackson.databind;
     requires transitive com.google.gson;
     requires java.desktop;
+    requires javafx.base;
 
     opens in.hamshik to javafx.fxml;
     exports in.hamshik;

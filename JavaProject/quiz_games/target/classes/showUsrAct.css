@@ -9,11 +9,11 @@
 
 .button:hover{
     -fx-cursor: hand;
-    -fx-background-color: #0da7f5;
+    -fx-background-color: #0878b0;
 }
 
 .button{
-    -fx-background-color: #0da7f5;
+    -fx-background-color: #69c7f7;
     -fx-text-fill: black;
     -fx-text-alignment: center;
 }
@@ -24,3 +24,4 @@
     -fx-text-fill: #0d47a1;
     -fx-text-alignment: center;
 }
+

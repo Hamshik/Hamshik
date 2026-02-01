@@ -1,5 +1,7 @@
 package in.hamshik;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,6 +17,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.lang.reflect.Type;
 import java.net.URL;
@@ -46,13 +49,15 @@ public class MainController implements Initializable{
     private int timer;
     private boolean isTimmerOver = false;
 
-    private Thread timmeThread = new Thread(() -> {
-        try {
-            for (timer = 60; timer >= 0; timer--)Thread.sleep(1000);
-            
-            isTimmerOver = true;
-        } catch (InterruptedException _) {}
-    });
+
+    private Timeline timeline = new Timeline(
+        new KeyFrame(Duration.seconds(1), e -> {
+            timer--;
+            if (timer < 0) {
+                isTimmerOver = true;
+            }
+        })
+    );
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
@@ -72,8 +77,14 @@ public class MainController implements Initializable{
         mControllerVar.buttons = buttons;
 
         showQuestion();
-        timmeThread.setDaemon(true);
-        timmeThread.start();
+        timer = isBackButPressed ? timer :quizzes.size() * 20; // 15 seconds per question
+        timeline.setCycleCount(timer);
+        timeline.play();
+    }
+
+    public void setTimerAndIsBackButIsPressed(int timer, boolean isBackButPressed) {
+        this.timer = timer;
+        if(isBackButPressed) quizManager.setIndex(quizzes.size() - 1);
     }
 
     private void showQuestion() {
@@ -120,16 +131,7 @@ public class MainController implements Initializable{
                         mControllerVar,
                         "Showing the final result when time is over"
                     );
-                } else {
-
-                    Thread t = new Thread(() -> {
-                        
-
-                    });
-
-                    t.setDaemon(true);
-                    t.start();
-                }
+                } else  loadCurrUsrState(e);
             }
         } else {
             nextBut.setText("Next");
@@ -172,4 +174,33 @@ public class MainController implements Initializable{
             showQuestion();
         }
     }
+
+    public void loadCurrUsrState(ActionEvent e) {
+        try {
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("/showCurrentUsrActivity.fxml"));
+            Parent root = loader.load();
+
+            ShowCurrentUsrActivity controller = loader.getController();
+
+            controller.setData(
+                timer,
+                quizManager,
+                buttons,
+                mControllerVar,
+                this
+            );
+
+            Stage stage = (Stage) ((Node) e.getSource())
+                    .getScene()
+                    .getWindow();
+
+            stage.setScene(new Scene(root));
+            stage.show();
+            controller.showPartialResult(e);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    
 }

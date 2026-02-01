@@ -2,7 +2,8 @@ package in.hamshik;
 
 import java.util.List;
 
-
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class ShowCurrentUsrActivity {
     boolean isTimmerOver;
@@ -26,16 +28,16 @@ public class ShowCurrentUsrActivity {
     @FXML Button goBckBut, submitBut, unansweredBut;
     @FXML Text timerTextLabel;
     @FXML ProgressIndicator processIndicator;
+    boolean isTimeOver;
+
 
     public void setData(
-        boolean isTimmerOver,
         int timer,
         QuizManager quizManager,
         List<Button> buttons,
         MControllerVar mControllerVar,
         MainController mainController
     ) {
-        this.isTimmerOver = isTimmerOver;
         this.timer = timer;
         this.quizManager = quizManager;
         this.buttons = buttons;
@@ -45,15 +47,10 @@ public class ShowCurrentUsrActivity {
 
     @FXML public void showPartialResult(ActionEvent e){
         Thread workerThread = new Thread(() ->{
-            while (!isTimmerOver) {
-                Platform.runLater(() ->
-                    timerTextLabel.setText(timer + " This much Time is left for you")
-                );
-
-            }
-            for (int i = 0; i <= timer; i++) {
+            for (int i = timer; i >= 0; i--) {
                 int p = i;
                 Platform.runLater(() -> {
+                    timerTextLabel.setText("Time Elapsed: " + p + "s");
                     double progress = (int)((p / (double) timer) * 100);
                     processIndicator.setProgress(progress);
                     if (progress < 25)
@@ -64,13 +61,14 @@ public class ShowCurrentUsrActivity {
                         processIndicator.setStyle("-fx-accent: green;");
                 });
                 try {
-                    Thread.sleep(20);
+                    Thread.sleep(1000);
+                    if((Button)e.getSource() == submitBut) break;
+
                 } catch (InterruptedException ex) {
                     Thread.currentThread().interrupt();
                 }
             }
-
-            Platform.runLater(() -> mainController.showFinalScore(e));
+            mainController.showFinalScore(e);
         });
         workerThread.setDaemon(true);
         workerThread.start();
@@ -91,4 +89,34 @@ public class ShowCurrentUsrActivity {
             e.printStackTrace();
         }
     }
+
+    public void startTimer() {
+    int totalTime = mainController.getQuizManager().getTotalQuestions() * 20;
+
+    Timeline timeline = new Timeline(
+        new KeyFrame(Duration.seconds(1), e -> {
+            timerTextLabel.setText(
+                "Time Remaining: " + timer + "s"
+            );
+
+            double progress = timer / (double) totalTime;
+            processIndicator.setProgress(progress);
+
+            if (progress > 0.5)
+                processIndicator.setStyle("-fx-accent: green;");
+            else if (progress > 0.25)
+                processIndicator.setStyle("-fx-accent: yellow;");
+            else
+                processIndicator.setStyle("-fx-accent: red;");
+
+            timer--;
+            isTimeOver = (timer < 0);
+        })
+    );
+
+    timeline.setCycleCount(totalTime - timer);
+    timeline.play();
+    if(isTimeOver) timeline.stop(); 
+}
+
 }
