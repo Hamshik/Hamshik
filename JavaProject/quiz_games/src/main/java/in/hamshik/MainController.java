@@ -1,6 +1,5 @@
 package in.hamshik;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -49,13 +48,10 @@ public class MainController implements Initializable{
 
     private Thread timmeThread = new Thread(() -> {
         try {
-            for (timer = 60; timer >= 0; timer--) {
-                Thread.sleep(1000);
-            }
+            for (timer = 60; timer >= 0; timer--)Thread.sleep(1000);
+            
             isTimmerOver = true;
-        } catch (InterruptedException e) {
-            // ignored
-        }
+        } catch (InterruptedException _) {}
     });
 
     @Override
@@ -117,29 +113,17 @@ public class MainController implements Initializable{
             if (((Button) e.getSource()) == nextBut) {
 
                 if (isTimmerOver) {
-                    UIManger.runNextQues(
+                    UIManger.runAct(
                         quizManager,
                         buttons,
                         () -> showFinalScore(e),
-                        mControllerVar
+                        mControllerVar,
+                        "Showing the final result when time is over"
                     );
                 } else {
 
                     Thread t = new Thread(() -> {
-                        while (!isTimmerOver) {
-                            Platform.runLater(() ->
-                                ques_text.setText(timer + " This much Time is left for you")
-                            );
-                        }
-
-                        Platform.runLater(() ->
-                            UIManger.runNextQues(
-                                quizManager,
-                                buttons,
-                                () -> showFinalScore(e),
-                                mControllerVar
-                            )
-                        );
+                        
 
                     });
 
@@ -157,7 +141,7 @@ public class MainController implements Initializable{
         if (isTransitionRunning()) return;
         setTransitionRunning(true);
         for (Button btn : buttons) btn.setDisable(true);
-        UIManger.runNextQues(quizManager, buttons, this::showQuestion, mControllerVar);
+        UIManger.runAct(quizManager, buttons, this::showQuestion, mControllerVar, "Next Question");
     }
 
     public QuizManager getQuizManager() { return quizManager; }

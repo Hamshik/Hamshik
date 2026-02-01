@@ -8,8 +8,8 @@ import javafx.scene.control.Button;
 public class UIManger {
 
     
-    public static void runNextQues(QuizManager quizManager, 
-        List<Button> buttons, Runnable showQuestion, MControllerVar mControllerVar) {
+    public static void runAct(QuizManager quizManager, 
+        List<Button> buttons, Runnable showQuestion, MControllerVar mControllerVar, String placeholder) {
         mControllerVar.transitionRunning = true;
         quizManager.nextQuestion();
         showQuestion.run();
@@ -27,4 +27,5 @@ public class UIManger {
             btn.setDisable(false);
         }
     }
+
 }

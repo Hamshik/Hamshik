@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="512.0" prefWidth="416.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.hamshik.MainController">
+<AnchorPane prefHeight="600.0" prefWidth="500.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.hamshik.MainController">
    <children>
       <Button fx:id="choice1" layoutX="14.0" layoutY="178.0" mnemonicParsing="false" onAction="#handleAns" prefHeight="93.0" prefWidth="187.0" userData="0" />
       <Button fx:id="choice2" layoutX="210.0" layoutY="178.0" mnemonicParsing="false" onAction="#handleAns" prefHeight="93.0" prefWidth="187.0" userData="1" />

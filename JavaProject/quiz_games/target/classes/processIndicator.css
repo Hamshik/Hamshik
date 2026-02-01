@@ -1,7 +1,7 @@
 
 #processIndicator {
     -fx-progress-color: #4f8cff;
-    -fx-background-color: None; /* optional track background */
+    -fx-background-color: transparent; /* optional track background */
     -fx-scale-x: 700%;
     -fx-scale-y: 700%;
 }

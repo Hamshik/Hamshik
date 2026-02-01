@@ -1,0 +1,26 @@
+.unansweredBut:hover {
+    -fx-background-color: #6d0088;
+}
+.nounansweredBut {
+    -fx-background-color: #ede9ef;
+    -fx-border-color: #0da7f5;
+    -fx-border: 10px 10px 10px 10px;
+}
+
+.button:hover{
+    -fx-cursor: hand;
+    -fx-background-color: #0da7f5;
+}
+
+.button{
+    -fx-background-color: #0da7f5;
+    -fx-text-fill: black;
+    -fx-text-alignment: center;
+}
+
+#timerTextLabel {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0d47a1;
+    -fx-text-alignment: center;
+}
