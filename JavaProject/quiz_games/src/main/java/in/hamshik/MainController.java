@@ -1,27 +1,21 @@
 package in.hamshik;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 import java.lang.reflect.Type;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -38,54 +32,63 @@ public class MainController implements Initializable{
     @FXML private Label tagLabel;
     @FXML private Label scorLabel;
     @FXML private TextArea welcomText;
+    private Image wrongImg = new Image(getClass().getResourceAsStream("/incorrect.png"));
+    private Image correctImg = new Image(getClass().getResourceAsStream("/correct.png"));
 
 
     private QuizManager quizManager;
     private List<QuizEntry> quizzes;
     private List<Button> buttons;
     private MControllerVar mControllerVar;
-    private List<UserAnsEntry> userAnsLs = new ArrayList<>();
-
-    private int timer;
-    private boolean isTimmerOver = false;
-
-
-    private Timeline timeline = new Timeline(
-        new KeyFrame(Duration.seconds(1), e -> {
-            timer--;
-            if (timer < 0) {
-                isTimmerOver = true;
-            }
-        })
-    );
+    private UIManger uiManger;
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-        Type quizListType = new TypeToken<List<QuizEntry>>() {}.getType();
 
-        try {
-            quizzes = StaticUtilities.load("/quiz.json", quizListType);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Stage loadingStage = UIManger.createLoadingStage();
+        loadingStage.show();
 
-        Collections.shuffle(quizzes);
+        Task<Void> loadTask = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
 
-        buttons = List.of(choice1, choice2, choice3, choice4, nextBut);
-        quizManager = new QuizManager(quizzes);
-        mControllerVar = new MControllerVar();
-        mControllerVar.buttons = buttons;
+                // Background work (NOT UI)
+                Thread pyThread = new Thread(UIManger::writeJson);
+                pyThread.setDaemon(true);
+                pyThread.start();
 
-        showQuestion();
-        timer = isBackButPressed ? timer :quizzes.size() * 20; // 15 seconds per question
-        timeline.setCycleCount(timer);
-        timeline.play();
+                if (!MControllerVar.isRunning) {
+                    Type quizListType = new TypeToken<List<QuizEntry>>() {}.getType();
+                    quizzes = StaticUtilities.load("/quiz.json", quizListType);
+                    Collections.shuffle(quizzes);
+                }
+
+                return null;
+            }
+        };
+
+        loadTask.setOnSucceeded(e -> {
+            // UI work after loading
+            loadingStage.close();
+
+            buttons = List.of(choice1, choice2, choice3, choice4, nextBut);
+            quizManager = new QuizManager(quizzes);
+            mControllerVar = new MControllerVar();
+            mControllerVar.buttons = buttons;
+
+            uiManger = new UIManger(quizManager, mControllerVar);
+            showQuestion();
+        });
+
+        loadTask.setOnFailed(e -> {
+            loadingStage.close();
+            loadTask.getException().printStackTrace();
+        });
+
+        new Thread(loadTask).start();
     }
 
-    public void setTimerAndIsBackButIsPressed(int timer, boolean isBackButPressed) {
-        this.timer = timer;
-        if(isBackButPressed) quizManager.setIndex(quizzes.size() - 1);
-    }
+
 
     private void showQuestion() {
         int currentIndex = quizManager.getCurrentIndex();
@@ -99,13 +102,13 @@ public class MainController implements Initializable{
             buttons.get(i).setDisable(false);
         }
 
-        UIManger.resetChoiceButtons(buttons);
+        uiManger.resetChoiceButtons(buttons);
         mControllerVar.shouldGONext = false;
     }
 
     @FXML
     private void handleAns(ActionEvent e) {
-        quizManager.handleAns(e, mControllerVar.userAnswer, mControllerVar, userAnsLs, true);
+        quizManager.handleAns(e, mControllerVar,resultImage, correctOrIncorrect_text);
     }
 
     @FXML
@@ -113,28 +116,19 @@ public class MainController implements Initializable{
 
         if (!mControllerVar.shouldGONext) return;
 
-        if (isTimmerOver) {
-            showFinalScore(e);
-            return;
-        }
-
         if (!quizManager.hasNext()) {
+
             nextBut.setText("Submit");
-
-            if (((Button) e.getSource()) == nextBut) {
-
-                if (isTimmerOver) {
-                    UIManger.runAct(
-                        quizManager,
-                        buttons,
-                        () -> showFinalScore(e),
-                        mControllerVar,
-                        "Showing the final result when time is over"
-                    );
-                } else  loadCurrUsrState(e);
-            }
+            if (((Button) e.getSource()) == nextBut)uiManger.runAct(() ->  uiManger.showFinalScore(e));
         } else {
             nextBut.setText("Next");
+            quizManager.showResult(
+                mControllerVar.isCorrect, 
+                correctImg, wrongImg, resultImage, 
+                correctOrIncorrect_text
+            );
+            resultImage.setVisible(false);
+            correctOrIncorrect_text.setVisible(false);
             goToNextQues();
         }
     }
@@ -143,29 +137,13 @@ public class MainController implements Initializable{
         if (isTransitionRunning()) return;
         setTransitionRunning(true);
         for (Button btn : buttons) btn.setDisable(true);
-        UIManger.runAct(quizManager, buttons, this::showQuestion, mControllerVar, "Next Question");
+        uiManger.runAct(this::showQuestion);
     }
 
     public QuizManager getQuizManager() { return quizManager; }
     public void setTransitionRunning(boolean transitionRunning) { mControllerVar.transitionRunning = transitionRunning; }
     public boolean isTransitionRunning() { return mControllerVar.transitionRunning; }
     public MControllerVar getMControllerVar() { return mControllerVar; }
-
-    public void showFinalScore(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(App.class.getResource("/percentHandler.fxml"));
-            Parent root = loader.load();
-
-            Stage stage = (Stage) ((Node) event.getSource())
-                    .getScene()
-                    .getWindow();
-
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     @FXML
     public void goBack(ActionEvent e) {
@@ -174,33 +152,5 @@ public class MainController implements Initializable{
             showQuestion();
         }
     }
-
-    public void loadCurrUsrState(ActionEvent e) {
-        try {
-            FXMLLoader loader = new FXMLLoader(App.class.getResource("/showCurrentUsrActivity.fxml"));
-            Parent root = loader.load();
-
-            ShowCurrentUsrActivity controller = loader.getController();
-
-            controller.setData(
-                timer,
-                quizManager,
-                buttons,
-                mControllerVar,
-                this
-            );
-
-            Stage stage = (Stage) ((Node) e.getSource())
-                    .getScene()
-                    .getWindow();
-
-            stage.setScene(new Scene(root));
-            stage.show();
-            controller.showPartialResult(e);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
     
 }

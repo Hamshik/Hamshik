@@ -5,16 +5,16 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="600.0" prefWidth="500.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.hamshik.MainController">
+<AnchorPane prefHeight="600.0" prefWidth="500.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.hamshik.MainController">
    <children>
-      <Button fx:id="choice1" layoutX="14.0" layoutY="178.0" mnemonicParsing="false" onAction="#handleAns" prefHeight="93.0" prefWidth="187.0" userData="0" />
-      <Button fx:id="choice2" layoutX="210.0" layoutY="178.0" mnemonicParsing="false" onAction="#handleAns" prefHeight="93.0" prefWidth="187.0" userData="1" />
-      <Button fx:id="choice3" layoutX="14.0" layoutY="290.0" mnemonicParsing="false" onAction="#handleAns" prefHeight="93.0" prefWidth="187.0" userData="2" />
-      <Button fx:id="choice4" layoutX="208.0" layoutY="290.0" mnemonicParsing="false" onAction="#handleAns" prefHeight="93.0" prefWidth="187.0" userData="3" />
-      <Button fx:id="nextBut" layoutX="289.0" layoutY="442.0" mnemonicParsing="false" onAction="#handleNext" prefHeight="43.0" prefWidth="93.0" text="Next" />
-      <Text fx:id="ques_text" layoutX="9.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="397.13000106811523" />
-      <ImageView fx:id="resultImage" fitHeight="36.0" fitWidth="40.0" layoutX="14.0" layoutY="67.0" managed="false" />
-      <Text fx:id="correctOrIncorrect_text" layoutX="54.0" layoutY="90.0" managed="false" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="77.0" />
-      <Button fx:id="goBack" layoutX="34.0" layoutY="442.0" mnemonicParsing="false" onAction="#goBack" prefHeight="43.0" prefWidth="93.0" text="Go Back" />
+      <Button fx:id="choice1" layoutX="14.0" layoutY="176.0" mnemonicParsing="false" onAction="#handleAns" prefHeight="124.0" prefWidth="235.0" userData="0" />
+      <Button fx:id="choice2" layoutX="252.0" layoutY="176.0" mnemonicParsing="false" onAction="#handleAns" prefHeight="124.0" prefWidth="235.0" userData="1" />
+      <Button fx:id="choice3" layoutX="14.0" layoutY="352.0" mnemonicParsing="false" onAction="#handleAns" prefHeight="124.0" prefWidth="235.0" userData="2" />
+      <Button fx:id="choice4" layoutX="252.0" layoutY="352.0" mnemonicParsing="false" onAction="#handleAns" prefHeight="124.0" prefWidth="235.0" userData="3" />
+      <Button fx:id="nextBut" layoutX="393.0" layoutY="543.0" mnemonicParsing="false" onAction="#handleNext" prefHeight="43.0" prefWidth="93.0" text="Next" />
+      <Text fx:id="ques_text" layoutX="7.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="489.13000106811523" />
+      <ImageView fx:id="resultImage" fitHeight="36.0" fitWidth="40.0" layoutX="14.0" layoutY="119.0" managed="false" />
+      <Text fx:id="correctOrIncorrect_text" layoutX="54.0" layoutY="141.0" managed="false" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="77.0" />
+      <Button fx:id="goBack" layoutX="14.0" layoutY="543.0" mnemonicParsing="false" onAction="#goBack" prefHeight="43.0" prefWidth="93.0" text="Go Back" />
    </children>
 </AnchorPane>

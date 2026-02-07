@@ -22,11 +22,9 @@ public class EndGameHandler {
     @FXML private ProgressIndicator processIndicator;
     @FXML private Button tryAgainBtn, goToMainPage;
 
-    private MControllerVar mControllerVar;
     private QuizManager quizManager;
 
-    public void setData( MControllerVar mControllerVar, QuizManager quizManager) throws Exception {
-        this.mControllerVar = mControllerVar;
+    public void setData(QuizManager quizManager) throws Exception {
         this.quizManager = quizManager;
         showFinalResult();
     }
@@ -79,7 +77,7 @@ public class EndGameHandler {
 
 
     @FXML public void tryAgian(ActionEvent e) throws IOException{
-        mControllerVar.numberOfUserAttempts++;
+        MControllerVar.numberOfUserAttempts++;
 
         System.out.println("try again clicked");
         

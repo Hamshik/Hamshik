@@ -54,6 +54,7 @@ public class StaticUtilities {
         // Wait for Python to finish
         int exitCode = process.waitFor();
         System.out.println("Python process finished with exit code: " + exitCode);
+        MControllerVar.isRunning = false;
 
         if (exitCode != 0) throw new Exception("Python failed to execute.");
         

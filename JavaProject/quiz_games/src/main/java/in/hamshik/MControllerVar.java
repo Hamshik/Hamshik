@@ -10,11 +10,12 @@ public class MControllerVar {
     public  boolean isCorrect;
     public  String userAnswer;
     public  List<Button> buttons;
-    public  int numberOfUserAttempts;
+    public  static int numberOfUserAttempts = 0;
 
     public static boolean shouldStart = false;
     public static boolean isThereErr = false;
 
     public static String causedBy = null;
+    public static boolean isRunning;
 
 }
