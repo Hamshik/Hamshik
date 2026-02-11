@@ -1,3 +1,14 @@
 {
-"C_Cpp.default.compilerArgs": ["-o", "${workspaceFolder}/bin/${fileBasenameNoExtension}"]
+"C_Cpp.default.compilerArgs": ["-o", "${workspaceFolder}/bin/${fileBasenameNoExtension}"],
+"C_Cpp.default.includePath": [
+    "${workspaceFolder}/**"
+],
+"C_Cpp.default.defines": [
+    "DEBUG",
+    "UNICODE",
+    "_UNICODE"
+],
+"C_Cpp.default.intelliSenseMode": "gcc-x64",
+"C_Cpp.default.cStandard": "c99",
+"C_Cpp.errorSquiggles": "disabled"
 }
