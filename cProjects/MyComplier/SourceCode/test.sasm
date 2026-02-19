@@ -1,24 +1,11 @@
-func main() -> void{
-	int x = 5;
-	String name = "Hamshik";
+enum Color {
+   RED,
+   GREEN,
+   BLUE
+};
 
-	result = x ** x * 2 * 3 + 10 / 2 - 4 % 3;
-	/*
-		multi line comment
-	*/
-	//single line comment
-	if(10 == 2){
-		print("This will never print");
-	}
-	else{
-		print("This will always print");
-	}
-
-	for(i = 0; i < 5; i = i + 1){
-		print("Loop iteration: " + i);
-	}
-
-	while(0){
-		print("This will never print");
-	}
+for (x in arr) {
+   print(x > 10 ? x : 0);
 }
+
+sum(10, arr[2]);

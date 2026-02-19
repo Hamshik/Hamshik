@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <stdbool.h>
+#include <limits.h>
+#include <unistd.h>
+#include <linux/limits.h>
+
+Lexer lexer;
+extern YY_BUFFER_STATE yy_scan_bytes(const char *bytes, int len);
+yyparse();
+yy_delete_buffer(buf);
+
+char* resolve_path(const char* input) {
+    return realpath(input, NULL); // returns malloc'd absolute path
+}
+
+char* load_file(char* PATH){
+    FILE *f = fopen(PATH, "rb");
+    if (!f) { perror("file open failed"); exit(1); }
+    fseek(f, 0, SEEK_END);
+    size_t size = ftell(f);
+    char* sourceCode = calloc(sizeof(char *), size);
+    fread(sourceCode,1, size,f);
+    rewind(f);
+    fclose(f);
+    return sourceCode;
+}
+
+extern YY_BUFFER_STATE yy_scan_bytes(const char *bytes, int len);
+
+int main(int argc, char **argv) {
+    // lexer.filename = argv[1];
+    // lexer.source   = load_file(resolve_path(argv[1]));
+    // if(!lexer.source) fprintf(stderr, "Error: file coundnt be resloved");
+    // lexer.length   = strlen(lexer.source);
+    // lexer.position = 0;
+    // lexer.line     = 1;
+    // lexer.column   = 1;
+
+    // YY_BUFFER_STATE buf = yy_scan_bytes(lexer.source, lexer.length);
+    yyparse();
+    // yy_delete_buffer(buf);
+
+    // free(lexer.source);
+}

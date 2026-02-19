@@ -5,11 +5,33 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch MyCompiler",
+            "name": "Launch MyComplier",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/MyComplier",
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                
+                {
+                        "description": "Enable pretty-printing for gdb",
+                        "text": "-enable-pretty-printing",
+                        "ignoreFailures": true
+                    }
+            ],
+            "preLaunchTask": "build MyComplier (build.sh)",
+            "internalConsoleOptions": "neverOpen"
+        },
+        {
+            "name": "Launch MyCompiler(gcc)",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/bin/MyComplier",
-            "args": ["${workspaceFolder}/SourceCode/test.sasm"],
+            "args": [
+                "SourceCode/test.sasm"
+            ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
@@ -22,11 +44,30 @@
                     "ignoreFailures": true
                 }
             ],
-
-            "preLaunchTask":"build MyComplier"
+            "preLaunchTask": "build MyComplier(gcc)"
+        },
+        {
+            "name": "Launch MyCompiler(clang)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/bin/MyComplier",
+            "args": [
+                "SourceCode/test.sasm"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": false
+                }
+            ],
+            "preLaunchTask": "build MyComplier(clang)"
         }
-
-
     ]
 
 }
