@@ -47,12 +47,11 @@ extern int yydebug;
 /* "%code requires" blocks.  */
 #line 1 "src/parser/parser.y"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include "ASTNode.h"
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include "ASTNode.h"
 
-#line 56 "src/parser/parser.h"
+#line 55 "src/parser/parser.h"
 
 /* Token kinds.  */
 #ifndef YYTOKENTYPE
@@ -64,14 +63,50 @@ extern int yydebug;
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
     NUMBER = 258,                  /* NUMBER  */
-    PLUS = 259,                    /* PLUS  */
-    MINUS = 260,                   /* MINUS  */
-    STAR = 261,                    /* STAR  */
-    SLASH = 262,                   /* SLASH  */
-    MOD = 263,                     /* MOD  */
-    POWER = 264,                   /* POWER  */
-    LPAREN = 265,                  /* LPAREN  */
-    RPAREN = 266                   /* RPAREN  */
+    IDENTIFIER = 259,              /* IDENTIFIER  */
+    PLUS = 260,                    /* PLUS  */
+    MINUS = 261,                   /* MINUS  */
+    STAR = 262,                    /* STAR  */
+    SLASH = 263,                   /* SLASH  */
+    MOD = 264,                     /* MOD  */
+    POWER = 265,                   /* POWER  */
+    INC = 266,                     /* INC  */
+    DEC = 267,                     /* DEC  */
+    LSHIFT = 268,                  /* LSHIFT  */
+    RSHIFT = 269,                  /* RSHIFT  */
+    BITAND = 270,                  /* BITAND  */
+    BITOR = 271,                   /* BITOR  */
+    BITXOR = 272,                  /* BITXOR  */
+    BITNOT = 273,                  /* BITNOT  */
+    LPAREN = 274,                  /* LPAREN  */
+    RPAREN = 275,                  /* RPAREN  */
+    LBRACE = 276,                  /* LBRACE  */
+    RBRACE = 277,                  /* RBRACE  */
+    SEMICOLON = 278,               /* SEMICOLON  */
+    ASSIGN = 279,                  /* ASSIGN  */
+    PLUS_ASSIGN = 280,             /* PLUS_ASSIGN  */
+    MINUS_ASSIGN = 281,            /* MINUS_ASSIGN  */
+    STAR_ASSIGN = 282,             /* STAR_ASSIGN  */
+    SLASH_ASSIGN = 283,            /* SLASH_ASSIGN  */
+    MOD_ASSIGN = 284,              /* MOD_ASSIGN  */
+    POWER_ASSIGN = 285,            /* POWER_ASSIGN  */
+    LSHIFT_ASSIGN = 286,           /* LSHIFT_ASSIGN  */
+    RSHIFT_ASSIGN = 287,           /* RSHIFT_ASSIGN  */
+    AND = 288,                     /* AND  */
+    OR = 289,                      /* OR  */
+    NOT = 290,                     /* NOT  */
+    EQ = 291,                      /* EQ  */
+    NEQ = 292,                     /* NEQ  */
+    LT = 293,                      /* LT  */
+    LE = 294,                      /* LE  */
+    GT = 295,                      /* GT  */
+    GE = 296,                      /* GE  */
+    IF = 297,                      /* IF  */
+    ELSE = 298,                    /* ELSE  */
+    UPLUS = 299,                   /* UPLUS  */
+    UMINUS = 300,                  /* UMINUS  */
+    POSTFIX = 301,                 /* POSTFIX  */
+    LOWER_THAN_ELSE = 302          /* LOWER_THAN_ELSE  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -80,12 +115,12 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 12 "src/parser/parser.y"
+#line 11 "src/parser/parser.y"
 
     double nval;
     ASTNode_t *node;
 
-#line 89 "src/parser/parser.h"
+#line 124 "src/parser/parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
