@@ -81,7 +81,6 @@ if_stmt
 
 expr
     : NUMBER                    { $$ = new_num($1, @1.first_line, @1.first_column); }
-    | IDENTIFIER                { $$ = new_var($1->var, @1.first_line, @1.first_column); }
 
     | expr PLUS expr            { $$ = new_binop($1, $3, @$.first_line, @$.first_column, OP_ADD); }
     | expr MINUS expr           { $$ = new_binop($1, $3, @$.first_line, @$.first_column, OP_SUB); }

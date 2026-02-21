@@ -102,26 +102,26 @@ void ast_free(ASTNode_t *n) {
 
 VarEntry *env = NULL;
 
-void set_var(const char *name, double val) {
+void set_var(const char *name, ASTNode_t node) {
     VarEntry *v;
     HASH_FIND_STR(env, name, v);
     if (v) v->value = val;
     else {
         v = malloc(sizeof(*v));
         v->name = strdup(name);
-        v->value = val;
+        v->node = node;
         HASH_ADD_KEYPTR(hh, env, v->name, strlen(v->name), v);
     }
 }
 
-VarEntry* getvar(const char *name, int line, int col) {
- git@github.com   VarEntry *v;
+ASTNode_t *getvar(const char *name, int line, int col) {
+	VarEntry *v;
     HASH_FIND_STR(env, name, v);
     if (!v) {
         printf("Error [%d:%d]: variable '%s' not defined\n", line, col, name);
         return 0;
     }
-    return v;
+    return v->node;
 }
 
 /* ================= ASSIGN ================= */

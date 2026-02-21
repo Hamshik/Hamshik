@@ -64,7 +64,7 @@ typedef struct ASTNode {
 
 typedef struct {
     char *name;
-    double value;
+    ASTNode_t node;
     UT_hash_handle hh;
 } VarEntry;
 
@@ -76,13 +76,13 @@ ASTNode_t *new_unop(ASTNode_t *e, int line, int col, OP_kind_t op);
 ASTNode_t *new_assign(ASTNode_t *lhs, ASTNode_t *rhs, int line, int col, OP_kind_t op);
 ASTNode_t *new_seq(ASTNode_t *a, ASTNode_t *b);
 ASTNode_t *new_if(ASTNode_t *cond, ASTNode_t *thenB, ASTNode_t *elseB, int line, int col);
+ASTNode_t *getvar(const char *name, int line, int col);
 
 /* Eval + memory */
 double ast_eval(ASTNode_t *n);
 void ast_free(ASTNode_t *n);
 
 /* Env */
-void set_var(const char *name, double val);
-VarEntry  *getvar(const char *name, int line, int col);
+void set_var(const char *name, ASTNode_t val);
 
 #endif
