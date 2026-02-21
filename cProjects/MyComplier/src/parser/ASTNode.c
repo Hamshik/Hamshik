@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
+#include <ctype.h>
 #include "ASTNode.h"
 
 static ASTNode_t *ast_alloc(void) {
@@ -19,7 +20,7 @@ ASTNode_t* new_num(double val, int line, int col) {
     return node;
 }
 
-ASTNode_t* new_var(char *name, int line, int col) {
+ASTNode_t* new_var(const char *name, int line, int col) {
     ASTNode_t *node = ast_alloc();
     node->kind = AST_VAR;
     node->var = strdup(name);
@@ -102,7 +103,7 @@ void ast_free(ASTNode_t *n) {
 
 VarEntry *env = NULL;
 
-void set_var(const char *name, ASTNode_t node) {
+void set_var(const char *name, ASTNode_t *node) {
     VarEntry *v;
     HASH_FIND_STR(env, name, v);
     if (v) v->node = node;
@@ -115,11 +116,12 @@ void set_var(const char *name, ASTNode_t node) {
 }
 
 ASTNode_t *getvar(const char *name, int line, int col) {
+	if(strcmp(name,"")) return NULL;
 	VarEntry *v;
     HASH_FIND_STR(env, name, v);
     if (!v) {
         printf("Error [%d:%d]: variable '%s' not defined\n", line, col, name);
-        return 0;
+        return NULL;
     }
     return v->node;
 }
@@ -129,11 +131,11 @@ ASTNode_t *getvar(const char *name, int line, int col) {
 static double eval_assign(ASTNode_t *lhs, ASTNode_t *rhs, OP_kind_t op, int line, int col) {
     if (!lhs || lhs->kind != AST_VAR) {
         printf("Error [%d:%d]: assignment target must be a variable\n", line, col);
-        return 0;
+        return -1;
     }
 
     double r = ast_eval(rhs);
-    double cur = getvar(lhs->var, line, col)->val;
+    double cur = getvar(lhs->var, line, col)->num;
     double v = 0;
 
     if ((op == OP_DIV_ASSIGN || op == OP_MOD_ASSIGN) && fabs(r) < 1e-12) {
@@ -167,7 +169,9 @@ double ast_eval(ASTNode_t *node) {
 
     switch (node->kind) {
         case AST_NUM: return node->num;
-        case AST_VAR: return getvar(node->var, node->line, node->col)->num;
+        case AST_VAR:
+        	 ASTNode_t *node = getvar(node->var, node->line, node->col);
+        	 return node ? -1 : node->num;
 
         case AST_BINOP: {
             double l = ast_eval(node->bin.left);
@@ -216,7 +220,7 @@ double ast_eval(ASTNode_t *node) {
                                        OP_MINUS_ASSIGN, node->line, node->col);
                 default:
                     printf("unknown unary op\n");
-                    return 0;
+                    return -1;
             }
         }
 
@@ -229,7 +233,7 @@ double ast_eval(ASTNode_t *node) {
 
             if (!lhs || lhs->kind != AST_VAR) {
                 fprintf(stderr, "Error [%d:%d]: invalid assignment target\n", node->line, node->col);
-                return 0;
+                return -1;
             }
 
             if (node->assign.op != OP_ASSIGN) {
@@ -246,16 +250,16 @@ double ast_eval(ASTNode_t *node) {
                 case OP_DIV_ASSIGN:
                     if (fabs(r) < 1e-12) {
                         fprintf(stderr, "Error [%d:%d]: division by zero\n", node->line, node->col);
-                        return 0;
+                        return -1;
                     }
                     result = current / r;
                     break;
                 default:
                     fprintf(stderr, "Error: unsupported assignment op\n");
-                    return 0;
+                    return -1;
             }
 
-            set_var(lhs->var, result);
+            set_var(lhs->var, new_num(result, lhs->line, lhs->col));
             return result;
         }
 
@@ -272,6 +276,6 @@ double ast_eval(ASTNode_t *node) {
 
         default:
             printf("Unknown AST node\n");
-            return 0;
+            return -1;
     }
 }
