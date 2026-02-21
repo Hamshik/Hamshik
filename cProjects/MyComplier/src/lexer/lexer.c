@@ -1,6 +1,6 @@
-#line 2 "src/lexer/lexer.c"
+#line 1 "src/lexer/lexer.c"
 
-#line 4 "src/lexer/lexer.c"
+#line 3 "src/lexer/lexer.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -511,8 +511,8 @@ char *yytext;
 #include "../parser/parser.h"
 #include "../parser/ASTNode.h"
 #include <stdlib.h>
+#line 514 "src/lexer/lexer.c"
 #line 515 "src/lexer/lexer.c"
-#line 516 "src/lexer/lexer.c"
 
 #define INITIAL 0
 
@@ -749,7 +749,7 @@ YY_DECL
 	{
 #line 10 "src/lexer/lexer.l"
 
-#line 753 "src/lexer/lexer.c"
+#line 752 "src/lexer/lexer.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -1042,7 +1042,7 @@ YY_RULE_SETUP
 #line 58 "src/lexer/lexer.l"
 ECHO;
 	YY_BREAK
-#line 1046 "src/lexer/lexer.c"
+#line 1045 "src/lexer/lexer.c"
 
 	case YY_END_OF_BUFFER:
 		{

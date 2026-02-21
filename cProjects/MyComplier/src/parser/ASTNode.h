@@ -83,6 +83,6 @@ void ast_free(ASTNode_t *n);
 
 /* Env */
 void set_var(const char *name, double val);
-double get_var_value(const char *name, int line, int col);
+VarEntry  *getvar(const char *name, int line, int col);
 
 #endif

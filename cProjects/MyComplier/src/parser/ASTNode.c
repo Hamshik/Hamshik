@@ -19,7 +19,7 @@ ASTNode_t* new_num(double val, int line, int col) {
     return node;
 }
 
-new_var(char *name, int line, int col) {
+ASTNode_t* new_var(char *name, int line, int col) {
     ASTNode_t *node = ast_alloc();
     node->kind = AST_VAR;
     node->var = strdup(name);
@@ -52,7 +52,7 @@ ASTNode_t* new_binop(ASTNode_t *left, ASTNode_t *right, int line, int col, OP_ki
 ASTNode_t* new_assign(ASTNode_t *lhs, ASTNode_t *rhs, int line, int col, OP_kind_t op) {
     ASTNode_t *node = ast_alloc();
     node->kind = AST_ASSIGN;
-    node->assign.lhs = lhs;
+1    node->assign.lhs = lhs;
     node->assign.rhs = rhs;
     node->assign.op = op;
     node->line = line;
@@ -67,7 +67,7 @@ ASTNode_t* new_seq(ASTNode_t *a, ASTNode_t *b) {
     node->seq.b = b;
     return node;
 }
-
+2
 ASTNode_t* new_if(ASTNode_t *cond, ASTNode_t *thenB, ASTNode_t *elseB, int line, int col) {
     ASTNode_t *node = ast_alloc();
     node->kind = NODE_IF;
@@ -114,8 +114,8 @@ void set_var(const char *name, double val) {
     }
 }
 
-ASTNode_t* getvar(const char *name, int line, int col) {
-    VarEntry *v;
+VarEntry* getvar(const char *name, int line, int col) {
+ git@github.com   VarEntry *v;
     HASH_FIND_STR(env, name, v);
     if (!v) {
         printf("Error [%d:%d]: variable '%s' not defined\n", line, col, name);
@@ -133,7 +133,7 @@ static double eval_assign(ASTNode_t *lhs, ASTNode_t *rhs, OP_kind_t op, int line
     }
 
     double r = ast_eval(rhs);
-    double cur = get_var_value(lhs->var, line, col);
+    double cur = getvar(lhs->var, line, col)->val;
     double v = 0;
 
     if ((op == OP_DIV_ASSIGN || op == OP_MOD_ASSIGN) && fabs(r) < 1e-12) {
