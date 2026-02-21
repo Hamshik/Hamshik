@@ -52,7 +52,7 @@ ASTNode_t* new_binop(ASTNode_t *left, ASTNode_t *right, int line, int col, OP_ki
 ASTNode_t* new_assign(ASTNode_t *lhs, ASTNode_t *rhs, int line, int col, OP_kind_t op) {
     ASTNode_t *node = ast_alloc();
     node->kind = AST_ASSIGN;
-1    node->assign.lhs = lhs;
+    node->assign.lhs = lhs;
     node->assign.rhs = rhs;
     node->assign.op = op;
     node->line = line;
@@ -67,7 +67,7 @@ ASTNode_t* new_seq(ASTNode_t *a, ASTNode_t *b) {
     node->seq.b = b;
     return node;
 }
-2
+
 ASTNode_t* new_if(ASTNode_t *cond, ASTNode_t *thenB, ASTNode_t *elseB, int line, int col) {
     ASTNode_t *node = ast_alloc();
     node->kind = NODE_IF;
@@ -105,7 +105,7 @@ VarEntry *env = NULL;
 void set_var(const char *name, ASTNode_t node) {
     VarEntry *v;
     HASH_FIND_STR(env, name, v);
-    if (v) v->value = val;
+    if (v) v->node = node;
     else {
         v = malloc(sizeof(*v));
         v->name = strdup(name);
@@ -138,7 +138,7 @@ static double eval_assign(ASTNode_t *lhs, ASTNode_t *rhs, OP_kind_t op, int line
 
     if ((op == OP_DIV_ASSIGN || op == OP_MOD_ASSIGN) && fabs(r) < 1e-12) {
         printf("Error [%d:%d]: division by zero\n", line, col);
-        return 0;
+        return -1;
     }
 
     switch (op) {
@@ -153,10 +153,10 @@ static double eval_assign(ASTNode_t *lhs, ASTNode_t *rhs, OP_kind_t op, int line
         case OP_RSHIFT_ASSIGN: v = (int)cur >> (int)r; break;
         default:
             printf("Error: unknown assignment operator\n");
-            return 0;
+            return -1;
     }
 
-    set_var(lhs->var, v);
+    set_var(lhs->var, new_num(v, lhs->line, lhs->col));
     return v;
 }
 
