@@ -119,8 +119,9 @@ ASTNode_t *getvar(const char *name, int line, int col) {
 	if(strcmp(name,"")) return NULL;
 	VarEntry *v;
     HASH_FIND_STR(env, name, v);
-    if (!v) {
+    if (v == NULL) {
         printf("Error [%d:%d]: variable '%s' not defined\n", line, col, name);
+		exit(-1);
         return NULL;
     }
     return v->node;
@@ -131,7 +132,7 @@ ASTNode_t *getvar(const char *name, int line, int col) {
 static double eval_assign(ASTNode_t *lhs, ASTNode_t *rhs, OP_kind_t op, int line, int col) {
     if (!lhs || lhs->kind != AST_VAR) {
         printf("Error [%d:%d]: assignment target must be a variable\n", line, col);
-        return -1;
+		exit(-1);
     }
 
     double r = ast_eval(rhs);
@@ -140,7 +141,7 @@ static double eval_assign(ASTNode_t *lhs, ASTNode_t *rhs, OP_kind_t op, int line
 
     if ((op == OP_DIV_ASSIGN || op == OP_MOD_ASSIGN) && fabs(r) < 1e-12) {
         printf("Error [%d:%d]: division by zero\n", line, col);
-        return -1;
+		exit(-1);
     }
 
     switch (op) {
@@ -155,7 +156,7 @@ static double eval_assign(ASTNode_t *lhs, ASTNode_t *rhs, OP_kind_t op, int line
         case OP_RSHIFT_ASSIGN: v = (int)cur >> (int)r; break;
         default:
             printf("Error: unknown assignment operator\n");
-            return -1;
+			exit(-1);
     }
 
     set_var(lhs->var, new_num(v, lhs->line, lhs->col));
@@ -168,13 +169,9 @@ double ast_eval(ASTNode_t *node) {
 
     switch (node->kind) {
 
-    case AST_NUM:
-        return node->num;
+    case AST_NUM: return node->num;
 
-    case AST_VAR: {
-        ASTNode_t *v = getvar(node->var, node->line, node->col);
-        return v != NULL ? v->num : -1;   /* error already reported */
-    }
+    case AST_VAR: return getvar(node->var, node->line, node->col)->num;
 
     case AST_BINOP: {
         /* short-circuit handled only for logical ops */
@@ -202,7 +199,7 @@ double ast_eval(ASTNode_t *node) {
             if (fabs(r) < 1e-12) {
                 fprintf(stderr, "Error [%d:%d]: division by zero\n",
                         node->line, node->col);
-                return -1;
+                exit(-1);
             }
             return l / r;
 
@@ -210,6 +207,7 @@ double ast_eval(ASTNode_t *node) {
        		if (fabs(r) < 1e-12) {
        			fprintf(stderr, "Error [%d:%d]: division",
        				node->line, node->col);
+       			exit(-1);
        			return -1;
         	}
             return fmod(l, r);
@@ -274,7 +272,7 @@ double ast_eval(ASTNode_t *node) {
 
         default:
             fprintf(stderr, "Error: unknown unary operator\n");
-            return 0;
+            exit(-1);
         }
     }
 
