@@ -163,119 +163,173 @@ static double eval_assign(ASTNode_t *lhs, ASTNode_t *rhs, OP_kind_t op, int line
 }
 
 /* ================= EVAL ================= */
-
 double ast_eval(ASTNode_t *node) {
     if (!node) return 0;
 
     switch (node->kind) {
-        case AST_NUM: return node->num;
-        case AST_VAR:
-        	 ASTNode_t *node = getvar(node->var, node->line, node->col);
-        	 return node ? -1 : node->num;
 
-        case AST_BINOP: {
+    case AST_NUM:
+        return node->num;
+
+    case AST_VAR: {
+        ASTNode_t *v = getvar(node->var, node->line, node->col);
+        return v ? v->num : 0;   /* error already reported */
+    }
+
+    case AST_BINOP: {
+        /* short-circuit handled only for logical ops */
+        if (node->bin.op == OP_AND) {
             double l = ast_eval(node->bin.left);
-            double r = ast_eval(node->bin.right);
-
-            switch (node->bin.op) {
-                case OP_ADD: return l + r;
-                case OP_SUB: return l - r;
-                case OP_MUL: return l * r;
-                case OP_DIV:
-                    if (fabs(r) < 1e-12) { printf("division by zero\n"); return 0; }
-                    return l / r;
-                case OP_MOD: return fmod(l, r);
-                case OP_POW: return pow(l, r);
-                case OP_LSHIFT: return (int)l << (int)r;
-                case OP_RSHIFT: return (int)l >> (int)r;
-                case OP_BITAND: return (int)l & (int)r;
-                case OP_BITOR: return (int)l | (int)r;
-                case OP_BITXOR: return (int)l ^ (int)r;
-                case OP_AND: return l && r;
-                case OP_OR: return l || r;
-                case OP_EQ: return l == r;
-                case OP_NEQ: return l != r;
-                case OP_LT: return l < r;
-                case OP_LE: return l <= r;
-                case OP_GT: return l > r;
-                case OP_GE: return l >= r;
-                default:
-                    return eval_assign(node->bin.left, node->bin.right,
-                                       node->bin.op, node->line, node->col);
-            }
+            if (!l) return 0;
+            return ast_eval(node->bin.right) != 0;
         }
 
-        case AST_UNOP: {
-            double v = ast_eval(node->unop.operand);
-            switch (node->unop.op) {
-                case OP_NEG: return -v;
-                case OP_POS: return v;
-                case OP_NOT: return !v;
-                case OP_BITNOT: return ~(int)v;
-                case OP_INC:
-                    return eval_assign(node->unop.operand, new_num(1,0,0),
-                                       OP_PLUS_ASSIGN, node->line, node->col);
-                case OP_DEC:
-                    return eval_assign(node->unop.operand, new_num(1,0,0),
-                                       OP_MINUS_ASSIGN, node->line, node->col);
-                default:
-                    printf("unknown unary op\n");
-                    return -1;
-            }
+        if (node->bin.op == OP_OR) {
+            double l = ast_eval(node->bin.left);
+            if (l) return 1;
+            return ast_eval(node->bin.right) != 0;
         }
 
-        case AST_ASSIGN: {
-            ASTNode_t *lhs = node->assign.lhs;
-            ASTNode_t *rhs = node->assign.rhs;
+        double l = ast_eval(node->bin.left);
+        double r = ast_eval(node->bin.right);
 
-            double r = ast_eval(rhs);
-            double current = 0;
+        switch (node->bin.op) {
+        case OP_ADD: return l + r;
+        case OP_SUB: return l - r;
+        case OP_MUL: return l * r;
 
-            if (!lhs || lhs->kind != AST_VAR) {
-                fprintf(stderr, "Error [%d:%d]: invalid assignment target\n", node->line, node->col);
-                return -1;
+        case OP_DIV:
+            if (fabs(r) < 1e-12) {
+                fprintf(stderr, "Error [%d:%d]: division by zero\n",
+                        node->line, node->col);
+                return 0;
             }
+            return l / r;
 
-            if (node->assign.op != OP_ASSIGN) {
-                ASTNode_t *v = getvar(lhs->var, node->line, node->col);
-                current = v ? v->num : 0;
-            }
+        case OP_MOD:
+            return fmod(l, r);
 
-            double result;
-            switch (node->assign.op) {
-                case OP_ASSIGN:        result = r; break;
-                case OP_PLUS_ASSIGN:  result = current + r; break;
-                case OP_MINUS_ASSIGN: result = current - r; break;
-                case OP_MUL_ASSIGN:   result = current * r; break;
-                case OP_DIV_ASSIGN:
-                    if (fabs(r) < 1e-12) {
-                        fprintf(stderr, "Error [%d:%d]: division by zero\n", node->line, node->col);
-                        return -1;
-                    }
-                    result = current / r;
-                    break;
-                default:
-                    fprintf(stderr, "Error: unsupported assignment op\n");
-                    return -1;
-            }
+        case OP_POW:
+            return pow(l, r);
 
-            set_var(lhs->var, new_num(result, lhs->line, lhs->col));
-            return result;
-        }
+        case OP_LSHIFT:
+            return (int)l << (int)r;
 
-        case AST_SEQ:
-            ast_eval(node->seq.a);
-            return ast_eval(node->seq.b);
+        case OP_RSHIFT:
+            return (int)l >> (int)r;
 
-        case NODE_IF:
-            if (ast_eval(node->ifnode.cond))
-                return ast_eval(node->ifnode.then_branch);
-            else if (node->ifnode.else_branch)
-                return ast_eval(node->ifnode.else_branch);
-            return 0;
+        case OP_BITAND:
+            return (int)l & (int)r;
+
+        case OP_BITOR:
+            return (int)l | (int)r;
+
+        case OP_BITXOR:
+            return (int)l ^ (int)r;
+
+        case OP_EQ:  return l == r;
+        case OP_NEQ: return l != r;
+        case OP_LT:  return l < r;
+        case OP_LE:  return l <= r;
+        case OP_GT:  return l > r;
+        case OP_GE:  return l >= r;
 
         default:
-            printf("Unknown AST node\n");
-            return -1;
+            /* assignment-like ops routed here */
+            return eval_assign(node->bin.left,
+                               node->bin.right,
+                               node->bin.op,
+                               node->line,
+                               node->col);
+        }
+    }
+
+    case AST_UNOP: {
+        double v = ast_eval(node->unop.operand);
+
+        switch (node->unop.op) {
+        case OP_NEG:    return -v;
+        case OP_POS:    return v;
+        case OP_NOT:    return !v;
+        case OP_BITNOT: return ~(int)v;
+
+        case OP_INC:
+            return eval_assign(node->unop.operand,
+                               new_num(1, 0, 0),
+                               OP_PLUS_ASSIGN,
+                               node->line,
+                               node->col);
+
+        case OP_DEC:
+            return eval_assign(node->unop.operand,
+                               new_num(1, 0, 0),
+                               OP_MINUS_ASSIGN,
+                               node->line,
+                               node->col);
+
+        default:
+            fprintf(stderr, "Error: unknown unary operator\n");
+            return 0;
+        }
+    }
+
+    case AST_ASSIGN: {
+        ASTNode_t *lhs = node->assign.lhs;
+        ASTNode_t *rhs = node->assign.rhs;
+
+        if (!lhs || lhs->kind != AST_VAR) {
+            fprintf(stderr, "Error [%d:%d]: invalid assignment target\n",
+                    node->line, node->col);
+            return 0;
+        }
+
+        double r = ast_eval(rhs);
+        double cur = 0;
+
+        if (node->assign.op != OP_ASSIGN) {
+            ASTNode_t *v = getvar(lhs->var, node->line, node->col);
+            if (!v) return 0;
+            cur = v->num;
+        }
+
+        double result;
+        switch (node->assign.op) {
+        case OP_ASSIGN:        result = r; break;
+        case OP_PLUS_ASSIGN:  result = cur + r; break;
+        case OP_MINUS_ASSIGN: result = cur - r; break;
+        case OP_MUL_ASSIGN:   result = cur * r; break;
+
+        case OP_DIV_ASSIGN:
+            if (fabs(r) < 1e-12) {
+                fprintf(stderr, "Error [%d:%d]: division by zero\n",
+                        node->line, node->col);
+                return 0;
+            }
+            result = cur / r;
+            break;
+
+        default:
+            fprintf(stderr, "Error: unsupported assignment operator\n");
+            return 0;
+        }
+
+        set_var(lhs->var, new_num(result, lhs->line, lhs->col));
+        return result;
+    }
+
+    case AST_SEQ:
+        ast_eval(node->seq.a);
+        return ast_eval(node->seq.b);
+
+    case NODE_IF:
+        if (ast_eval(node->ifnode.cond))
+            return ast_eval(node->ifnode.then_branch);
+        if (node->ifnode.else_branch)
+            return ast_eval(node->ifnode.else_branch);
+        return 0;
+
+    default:
+        fprintf(stderr, "Error: unknown AST node\n");
+        return 0;
     }
 }

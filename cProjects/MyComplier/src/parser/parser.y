@@ -81,7 +81,8 @@ if_stmt
 
 expr
     : NUMBER                    { $$ = new_num($1, @1.first_line, @1.first_column); }
-
+	| IDENTIFIER				{$$ = $1;}
+	
     | expr PLUS expr            { $$ = new_binop($1, $3, @$.first_line, @$.first_column, OP_ADD); }
     | expr MINUS expr           { $$ = new_binop($1, $3, @$.first_line, @$.first_column, OP_SUB); }
     | expr STAR expr            { $$ = new_binop($1, $3, @$.first_line, @$.first_column, OP_MUL); }
