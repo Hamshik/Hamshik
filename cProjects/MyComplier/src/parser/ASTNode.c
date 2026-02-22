@@ -173,7 +173,7 @@ double ast_eval(ASTNode_t *node) {
 
     case AST_VAR: {
         ASTNode_t *v = getvar(node->var, node->line, node->col);
-        return v ? v->num : 0;   /* error already reported */
+        return v != NULL ? v->num : -1;   /* error already reported */
     }
 
     case AST_BINOP: {
@@ -202,11 +202,16 @@ double ast_eval(ASTNode_t *node) {
             if (fabs(r) < 1e-12) {
                 fprintf(stderr, "Error [%d:%d]: division by zero\n",
                         node->line, node->col);
-                return 0;
+                return -1;
             }
             return l / r;
 
         case OP_MOD:
+       		if (fabs(r) < 1e-12) {
+       			fprintf(stderr, "Error [%d:%d]: division",
+       				node->line, node->col);
+       			return -1;
+        	}
             return fmod(l, r);
 
         case OP_POW:
@@ -288,7 +293,7 @@ double ast_eval(ASTNode_t *node) {
 
         if (node->assign.op != OP_ASSIGN) {
             ASTNode_t *v = getvar(lhs->var, node->line, node->col);
-            if (!v) return 0;
+            if (!v) return -1;
             cur = v->num;
         }
 
