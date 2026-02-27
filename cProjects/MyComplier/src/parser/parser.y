@@ -10,6 +10,8 @@
 
 %union {
     double nval;
+    char* sval;
+    char character;
     ASTNode_t *node;
 }
 
@@ -21,6 +23,8 @@
 
 %token <nval> NUMBER
 %token <node> IDENTIFIER
+%token <sval> STRING
+%token <character> CHAR
 
 %token PLUS MINUS STAR SLASH MOD POWER
 %token INC DEC
@@ -32,7 +36,7 @@
 %token AND OR NOT EQ NEQ LT LE GT GE
 %token IF ELSE
 
-%type <node> program stmt_list stmt block if_stmt expr
+%type <node> program stmt_list stmt block if_stmt expr datatypes
 
 %right ASSIGN PLUS_ASSIGN MINUS_ASSIGN STAR_ASSIGN SLASH_ASSIGN MOD_ASSIGN POWER_ASSIGN LSHIFT_ASSIGN RSHIFT_ASSIGN
 %left OR
@@ -128,6 +132,10 @@ expr
     | LPAREN expr RPAREN        { $$ = $2; }
     ;
 
+datatypes
+    : STRING                    { $$ = $1;}
+    | NUMBER                    { $$ = $1;}
+    | CHAR                      { $$ = $1;}
 %%
 
 int main(void) {

@@ -64,49 +64,51 @@ extern int yydebug;
     YYUNDEF = 257,                 /* "invalid token"  */
     NUMBER = 258,                  /* NUMBER  */
     IDENTIFIER = 259,              /* IDENTIFIER  */
-    PLUS = 260,                    /* PLUS  */
-    MINUS = 261,                   /* MINUS  */
-    STAR = 262,                    /* STAR  */
-    SLASH = 263,                   /* SLASH  */
-    MOD = 264,                     /* MOD  */
-    POWER = 265,                   /* POWER  */
-    INC = 266,                     /* INC  */
-    DEC = 267,                     /* DEC  */
-    LSHIFT = 268,                  /* LSHIFT  */
-    RSHIFT = 269,                  /* RSHIFT  */
-    BITAND = 270,                  /* BITAND  */
-    BITOR = 271,                   /* BITOR  */
-    BITXOR = 272,                  /* BITXOR  */
-    BITNOT = 273,                  /* BITNOT  */
-    LPAREN = 274,                  /* LPAREN  */
-    RPAREN = 275,                  /* RPAREN  */
-    LBRACE = 276,                  /* LBRACE  */
-    RBRACE = 277,                  /* RBRACE  */
-    SEMICOLON = 278,               /* SEMICOLON  */
-    ASSIGN = 279,                  /* ASSIGN  */
-    PLUS_ASSIGN = 280,             /* PLUS_ASSIGN  */
-    MINUS_ASSIGN = 281,            /* MINUS_ASSIGN  */
-    STAR_ASSIGN = 282,             /* STAR_ASSIGN  */
-    SLASH_ASSIGN = 283,            /* SLASH_ASSIGN  */
-    MOD_ASSIGN = 284,              /* MOD_ASSIGN  */
-    POWER_ASSIGN = 285,            /* POWER_ASSIGN  */
-    LSHIFT_ASSIGN = 286,           /* LSHIFT_ASSIGN  */
-    RSHIFT_ASSIGN = 287,           /* RSHIFT_ASSIGN  */
-    AND = 288,                     /* AND  */
-    OR = 289,                      /* OR  */
-    NOT = 290,                     /* NOT  */
-    EQ = 291,                      /* EQ  */
-    NEQ = 292,                     /* NEQ  */
-    LT = 293,                      /* LT  */
-    LE = 294,                      /* LE  */
-    GT = 295,                      /* GT  */
-    GE = 296,                      /* GE  */
-    IF = 297,                      /* IF  */
-    ELSE = 298,                    /* ELSE  */
-    UPLUS = 299,                   /* UPLUS  */
-    UMINUS = 300,                  /* UMINUS  */
-    POSTFIX = 301,                 /* POSTFIX  */
-    LOWER_THAN_ELSE = 302          /* LOWER_THAN_ELSE  */
+    STRING = 260,                  /* STRING  */
+    CHAR = 261,                    /* CHAR  */
+    PLUS = 262,                    /* PLUS  */
+    MINUS = 263,                   /* MINUS  */
+    STAR = 264,                    /* STAR  */
+    SLASH = 265,                   /* SLASH  */
+    MOD = 266,                     /* MOD  */
+    POWER = 267,                   /* POWER  */
+    INC = 268,                     /* INC  */
+    DEC = 269,                     /* DEC  */
+    LSHIFT = 270,                  /* LSHIFT  */
+    RSHIFT = 271,                  /* RSHIFT  */
+    BITAND = 272,                  /* BITAND  */
+    BITOR = 273,                   /* BITOR  */
+    BITXOR = 274,                  /* BITXOR  */
+    BITNOT = 275,                  /* BITNOT  */
+    LPAREN = 276,                  /* LPAREN  */
+    RPAREN = 277,                  /* RPAREN  */
+    LBRACE = 278,                  /* LBRACE  */
+    RBRACE = 279,                  /* RBRACE  */
+    SEMICOLON = 280,               /* SEMICOLON  */
+    ASSIGN = 281,                  /* ASSIGN  */
+    PLUS_ASSIGN = 282,             /* PLUS_ASSIGN  */
+    MINUS_ASSIGN = 283,            /* MINUS_ASSIGN  */
+    STAR_ASSIGN = 284,             /* STAR_ASSIGN  */
+    SLASH_ASSIGN = 285,            /* SLASH_ASSIGN  */
+    MOD_ASSIGN = 286,              /* MOD_ASSIGN  */
+    POWER_ASSIGN = 287,            /* POWER_ASSIGN  */
+    LSHIFT_ASSIGN = 288,           /* LSHIFT_ASSIGN  */
+    RSHIFT_ASSIGN = 289,           /* RSHIFT_ASSIGN  */
+    AND = 290,                     /* AND  */
+    OR = 291,                      /* OR  */
+    NOT = 292,                     /* NOT  */
+    EQ = 293,                      /* EQ  */
+    NEQ = 294,                     /* NEQ  */
+    LT = 295,                      /* LT  */
+    LE = 296,                      /* LE  */
+    GT = 297,                      /* GT  */
+    GE = 298,                      /* GE  */
+    IF = 299,                      /* IF  */
+    ELSE = 300,                    /* ELSE  */
+    UPLUS = 301,                   /* UPLUS  */
+    UMINUS = 302,                  /* UMINUS  */
+    POSTFIX = 303,                 /* POSTFIX  */
+    LOWER_THAN_ELSE = 304          /* LOWER_THAN_ELSE  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -118,9 +120,11 @@ union YYSTYPE
 #line 11 "src/parser/parser.y"
 
     double nval;
+    char* sval;
+    char character;
     ASTNode_t *node;
 
-#line 124 "src/parser/parser.h"
+#line 128 "src/parser/parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
