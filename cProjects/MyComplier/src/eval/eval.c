@@ -186,7 +186,7 @@ Value ast_eval(ASTNode_t *node) {
         /* literal value is parsed according to the datatype determined
            by the semantic analyser; if the node still has UNKNOWN we
            have a bug earlier in the pipeline. */
-        return literal_to_value(node->literal.raw, node->datatype);
+        return ;
 
     case AST_VAR: return getvar(node->var, node->datatype, node->line, node->col);
 

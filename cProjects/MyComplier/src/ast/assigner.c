@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "ASTNode.h"
+#include "../eval/eval.h"
 
 void assign_value(DataTypes_t dt, Value *dst, Value src) {
     switch (dt) {

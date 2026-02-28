@@ -111,7 +111,6 @@ ASTNode_t *new_if(ASTNode_t *cond, ASTNode_t *thenB, ASTNode_t *elseB, int line,
 ASTNode_t *new_seq(ASTNode_t *a, ASTNode_t *b);
 
 /* Eval + memory */
-Value ast_eval(ASTNode_t *n);
 void ast_free(ASTNode_t *n);
 ASTNode_t *ast_alloc(void);
 
@@ -119,20 +118,7 @@ ASTNode_t *ast_alloc(void);
 void set_var(const char *name, Value *val, DataTypes_t datatype);
 Value getvar(const char *name, DataTypes_t datatype, int line, int col);
 void assign_value(DataTypes_t datatype, Value *dest, Value src);
-OP_kind_t get_assign_op(OP_kind_t op);
 Value eval_assign(ASTNode_t *lhs, ASTNode_t *rhs, OP_kind_t op, DataTypes_t datatypes , int line, int col);
 
-/* semantic analysis */
-void sema_check(ASTNode_t *root);
-DataTypes_t infer_literal_type(const char *raw);
-Value literal_to_value(const char *raw, DataTypes_t dtype);
-
-/*InLinner*/
-Value eval_binop_int(OP_kind_t op, bool isShort, int a, int b);
-Value eval_binop_float(OP_kind_t op, float a, float b);
-Value eval_binop_double(OP_kind_t op, double a, double b);
-void do_unop_operation(Value *result, Value* operand,DataTypes_t datatype,OP_kind_t op);
-Value eval_bool(OP_kind_t op, bool a, bool b);
-void do_operation_str(char **result, const char* a, const char* b, OP_kind_t op);
 
 #endif
