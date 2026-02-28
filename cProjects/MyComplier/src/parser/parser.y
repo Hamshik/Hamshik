@@ -86,7 +86,7 @@ if_stmt
     ;
 
 expr
-    : NUMBER                    { $$ = $1; }
+    : NUMBER                    {$$ = $1;}
 	| IDENTIFIER				{$$ = $1;}
 
     | expr PLUS expr            { $$ = new_binop($1, $3, @$.first_line, @$.first_column, OP_ADD); }
@@ -122,35 +122,36 @@ expr
     | expr DEC %prec POSTFIX    { $$ = new_unop($1, @$.first_line, @$.first_column, OP_DEC); }
 
     | LPAREN expr RPAREN        { $$ = $2; }
+    | assignment                 {$$ = $1;}
     ;
  
 assignment
     : DATATYPES IDENTIFIER ASSIGN expr
-        { $$ = new_assign($2, $4, datatype, @$.first_line, @$.first_column, OP_ASSIGN); }
+        { $$ = new_assign($2, $4, $1.datatype, @$.first_line, @$.first_column, OP_ASSIGN); }
 
     | IDENTIFIER PLUS_ASSIGN expr
-        { $$ = new_assign($1, $3, @$.first_line, @$.first_column, OP_PLUS_ASSIGN); }
+        { $$ = new_assign($1, $3,UNKNOWN, @$.first_line, @$.first_column, OP_PLUS_ASSIGN); }
 
     | IDENTIFIER MINUS_ASSIGN expr
-        { $$ = new_assign($1, $3, @$.first_line, @$.first_column, OP_MINUS_ASSIGN); }
+        { $$ = new_assign($1, $3,UNKNOWN, @$.first_line, @$.first_column, OP_MINUS_ASSIGN); }
 
     | IDENTIFIER STAR_ASSIGN expr
-        { $$ = new_assign($1, $3, @$.first_line, @$.first_column, OP_MUL_ASSIGN); }
+        { $$ = new_assign($1, $3,UNKNOWN, @$.first_line, @$.first_column, OP_MUL_ASSIGN); }
 
     | IDENTIFIER SLASH_ASSIGN expr
-        { $$ = new_assign($1, $3, @$.first_line, @$.first_column, OP_DIV_ASSIGN); }
+        { $$ = new_assign($1, $3,UNKNOWN, @$.first_line, @$.first_column, OP_DIV_ASSIGN); }
 
     | IDENTIFIER MOD_ASSIGN expr
-        { $$ = new_assign($1, $3, @$.first_line, @$.first_column, OP_MOD_ASSIGN); }
+        { $$ = new_assign($1, $3,UNKNOWN, @$.first_line, @$.first_column, OP_MOD_ASSIGN); }
 
     | IDENTIFIER LSHIFT_ASSIGN expr
-        { $$ = new_assign($1, $3, @$.first_line, @$.first_column, OP_LSHIFT_ASSIGN); }
+        { $$ = new_assign($1, $3,UNKNOWN, @$.first_line, @$.first_column, OP_LSHIFT_ASSIGN); }
 
     | IDENTIFIER RSHIFT_ASSIGN expr
-        { $$ = new_assign($1, $3, @$.first_line, @$.first_column, OP_RSHIFT_ASSIGN); }
+        { $$ = new_assign($1, $3,UNKNOWN, @$.first_line, @$.first_column, OP_RSHIFT_ASSIGN); }
     
     | IDENTIFIER POWER_ASSIGN expr
-        { $$ = new_assign($1, $3, @$.first_line, @$.first_column, OP_POW_ASSIGN); }
+        { $$ = new_assign($1, $3,UNKNOWN , @$.first_line, @$.first_column, OP_POW_ASSIGN); }
     ;
 %%
 

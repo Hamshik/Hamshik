@@ -6,25 +6,19 @@
 #define YY_DECL int yylex(YYSTYPE *yylval, YYLTYPE *yylloc)
 %}
 
-%{
-#include "../parser/parser.h"
-#include "../ast/ASTNode.h"
-#define YY_DECL int yylex(YYSTYPE *yylval, YYLTYPE *yylloc)
-%}
-
 %%
 "//".*               { /* skip single-line comments */ }
 "/*"([^*]|\*+[^*/])*\*+"/"   { /* skip multi-line comments */ }
-
-[ \t\r\n]+            { /* skip */ }
+\"([^"\\\n]|\\.)*\" {yylval->node = new_str(yytext, yylloc->first_line, yylloc->first_column);}  
+[ \t\r\n]+          { /* skip */ }
 if                  { return IF; }
 else                { return ELSE; }
-int                { yylval->datatype = INT; return DATATYPES; }
-short                { yylval->datatype = SHORT; return DATATYPES; }
-float                { yylval->datatype = FLOAT; return DATATYPES; }
-double                { yylval->datatype = DOUBLE; return DATATYPES; }
+int                 { yylval->datatype = INT; return DATATYPES; }
+short               { yylval->datatype = SHORT; return DATATYPES; }
+float               { yylval->datatype = FLOAT; return DATATYPES; }
+double              { yylval->datatype = DOUBLE; return DATATYPES; }
 [0-9]+(\.[0-9]+)? {
-    node->literal.raw = strdup(yytext);
+    yylval->node = new_num(yytext, UNKNOWN, yylloc->first_line, yylloc->first_column);
     return NUMBER;
 }
 "++"                { return INC; }
@@ -65,9 +59,11 @@ double                { yylval->datatype = DOUBLE; return DATATYPES; }
 "{"                 { return LBRACE; }
 "}"                 { return RBRACE; }
 [a-zA-Z_][a-zA-Z0-9_]* {
-    yylval->node = new_var(yytext, INT, yylloc->first_line, yylloc->first_column);
+    /* actual type will be determined by the semantic pass or by a
+       declaration in the parser; start unknown */
+    yylval->node = new_var(yytext, UNKNOWN, yylloc->first_line, yylloc->first_column);
     return IDENTIFIER;
 }
-.                   { printf("Unknown char: %s\n", yytext); }
+.*                   { printf("Unknown char: %s\n", yytext); }
 <<EOF>>             { return 0;  }
 %%

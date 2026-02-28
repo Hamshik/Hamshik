@@ -50,7 +50,7 @@ Value eval_assign(ASTNode_t *lhs, ASTNode_t *rhs, OP_kind_t op, DataTypes_t data
             v = eval_bool(operation, r.bval, cur.bval);
             break;
         case STRINGS:
-            do_operation_str(v.str, r.str, cur.str, operation);
+            do_operation_str(&v.str, r.str, cur.str, operation);
             break;
         case CHARACTER:
             v.characters = r.characters;

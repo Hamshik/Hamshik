@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <float.h>
 #include <limits.h>
-#include "ASTNode.h"
+#include "../ast/ASTNode.h"
 
 OP_kind_t get_assign_op(OP_kind_t op) {
     switch (op) {
@@ -136,6 +136,14 @@ void do_unop_operation(Value *result, Value *operand,DataTypes_t datatype,OP_kin
                 exit(EXIT_FAILURE);
         }
         break;
+    case BOOL:
+        switch (op) {
+            case OP_NOT: result->bval = !operand->bval; break;
+            default:
+                fprintf(stderr, "Invalid bool unary operator\n");
+                exit(EXIT_FAILURE);
+        }
+        break;
     default:
         fprintf(stderr, "Invalid datatype for unary operation\n");
         exit(EXIT_FAILURE);
@@ -146,31 +154,90 @@ Value eval_bool(OP_kind_t op, bool a, bool b) {
     switch (op) {
         case OP_AND: return (Value){.bval = a && b};
         case OP_OR:  return (Value){.bval = a || b};
-        case OP_NOT: return (Value){.bval = !a};
         default:
             fprintf(stderr, "Invalid boolean operator\n");
             exit(EXIT_FAILURE);
     }
 }
 
-void do_operation_str(char* result, const char* a, const char* b, OP_kind_t op) {
+void do_operation_str(char **result, const char* a, const char* b, OP_kind_t op) {
+    size_t size = strlen(a) + strlen(b) + 1;
     switch (op)
     {
     case OP_ADD:
-        size_t len_a = strlen(a);
-        size_t len_b = strlen(b);
-        char* res = malloc(len_a + len_b + 1);
-        if (!res) {
-            fprintf(stderr, "Memory allocation failed for string concatenation\n");
-            exit(EXIT_FAILURE);
-        }
-        strcpy(res, a);
-        strcat(res, b);
-        strncpy(result, res, len_a + len_b + 1);
-        free(res);
+        *result = malloc(size);
+        if(*result == NULL) fprintf(stderr, "Memory allocation is failed for string catination");
+        sprintf(*result, "%s%s", a, b);  // automatically adds null terminator
         break;
     
     default:
         break;
+    }
+}
+
+Value ast_eval(ASTNode_t *node) {
+    if (!node) return (Value){0};
+    Value v = {0};
+
+
+    switch (node->kind) {
+
+    case AST_NUM:
+        /* literal value is parsed according to the datatype determined
+           by the semantic analyser; if the node still has UNKNOWN we
+           have a bug earlier in the pipeline. */
+        return literal_to_value(node->literal.raw, node->datatype);
+
+    case AST_VAR: return getvar(node->var, node->datatype, node->line, node->col);
+
+    case AST_BINOP: {
+        Value l = ast_eval(node->bin.left);
+        Value r = ast_eval(node->bin.right);
+
+        switch (node->datatype) {
+            case INT: return eval_binop_int(node->bin.op, false, l.inum, r.inum);
+            case FLOAT: return eval_binop_float(node->bin.op, l.fnum, r.fnum);
+            case DOUBLE: return eval_binop_double(node->bin.op, l.lfnum, r.lfnum);
+            case SHORT: return eval_binop_int(node->bin.op, true, l.shnum, r.shnum);
+            default:
+                fprintf(stderr, "Error: unsupported data type for binary operation\n");
+                exit(EXIT_FAILURE);
+        }
+    }
+    case AST_UNOP: {
+        Value r = ast_eval(node->unop.operand);
+        do_unop_operation(&v, &r , node->datatype, node->unop.op);
+        return v;
+    }
+
+    case AST_ASSIGN: {
+        Value val = eval_assign(node->assign.lhs,
+                                node->assign.rhs,
+                                node->assign.op,
+                                node->datatype,
+                                node->line,
+                                node->col);
+
+        // 💥 IMPORTANT: rhs is no longer needed
+        ast_free(node->assign.rhs);
+        node->assign.rhs = NULL;
+
+        return val;
+    }
+
+    case AST_SEQ:
+        ast_eval(node->seq.a);
+        return ast_eval(node->seq.b);
+
+    case NODE_IF:
+        if (ast_eval(node->ifnode.cond).bval)
+            return ast_eval(node->ifnode.then_branch);
+        if (node->ifnode.else_branch)
+            return ast_eval(node->ifnode.else_branch);
+        return (Value){0};
+
+    default:
+        fprintf(stderr, "Error: unknown AST node\n");
+        exit(-1);
     }
 }

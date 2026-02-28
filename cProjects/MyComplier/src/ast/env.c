@@ -1,4 +1,5 @@
 #include "ASTNode.h"
+#include <stdio.h>
 #include "../utils/uhash.h"
 
 VarEntry *env = NULL;
