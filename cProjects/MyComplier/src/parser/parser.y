@@ -1,8 +1,14 @@
 %code requires {
     #include <stdio.h>
     #include <stdlib.h>
-    #include "ASTNode.h"
+    #include "../ast/ASTNode.h"
+    extern ASTNode_t *root;
 }
+
+%{
+    #include "../ast/ASTNode.h"
+    ASTNode_t *root = NULL;
+%}
 
 %define api.pure full
 %define parse.error verbose
@@ -10,15 +16,16 @@
 
 %union {
     ASTNode_t *node;
+    DataType_t datatype;
 }
 
 %code {
-    ASTNode_t *root = NULL;
     int yylex(YYSTYPE *yylval, YYLTYPE *yylloc);
     void yyerror(YYLTYPE *loc, const char *s);
+    int yyparse(void);
 }
 
-%token <node> IDENTIFIER NUMBER STRING CHAR
+%token <node> IDENTIFIER NUMBER
 
 %token PLUS MINUS STAR SLASH MOD POWER
 %token INC DEC
@@ -30,7 +37,8 @@
 %token AND OR NOT EQ NEQ LT LE GT GE
 %token IF ELSE
 
-%type <node> program stmt_list stmt block if_stmt expr datatypes
+%type <node> program stmt_list stmt block if_stmt expr assignment
+%token <datatype> DATATYPES
 
 %right ASSIGN PLUS_ASSIGN MINUS_ASSIGN STAR_ASSIGN SLASH_ASSIGN MOD_ASSIGN POWER_ASSIGN LSHIFT_ASSIGN RSHIFT_ASSIGN
 %left OR
@@ -105,16 +113,6 @@ expr
     | expr GT expr              { $$ = new_binop($1, $3, @$.first_line, @$.first_column, OP_GT); }
     | expr GE expr              { $$ = new_binop($1, $3, @$.first_line, @$.first_column, OP_GE); }
 
-    | IDENTIFIER ASSIGN expr          { $$ = new_assign($1, $3, @$.first_line, @$.first_column, OP_ASSIGN); }
-    | IDENTIFIER PLUS_ASSIGN expr     { $$ = new_assign($1, $3, @$.first_line, @$.first_column, OP_PLUS_ASSIGN); }
-    | IDENTIFIER MINUS_ASSIGN expr    { $$ = new_assign($1, $3, @$.first_line, @$.first_column, OP_MINUS_ASSIGN); }
-    | IDENTIFIER STAR_ASSIGN expr     { $$ = new_assign($1, $3, @$.first_line, @$.first_column, OP_MUL_ASSIGN); }
-    | IDENTIFIER SLASH_ASSIGN expr    { $$ = new_assign($1, $3, @$.first_line, @$.first_column, OP_DIV_ASSIGN); }
-    | IDENTIFIER MOD_ASSIGN expr      { $$ = new_assign($1, $3, @$.first_line, @$.first_column, OP_MOD_ASSIGN); }
-    | IDENTIFIER POWER_ASSIGN expr    { $$ = new_assign($1, $3, @$.first_line, @$.first_column, OP_POW_ASSIGN); }
-    | IDENTIFIER LSHIFT_ASSIGN expr   { $$ = new_assign($1, $3, @$.first_line, @$.first_column, OP_LSHIFT_ASSIGN); }
-    | IDENTIFIER RSHIFT_ASSIGN expr   { $$ = new_assign($1, $3, @$.first_line, @$.first_column, OP_RSHIFT_ASSIGN); }
-
     | PLUS expr %prec UPLUS     { $$ = new_unop($2, @$.first_line, @$.first_column, OP_POS); }
     | MINUS expr %prec UMINUS   { $$ = new_unop($2, @$.first_line, @$.first_column, OP_NEG); }
     | NOT expr                  { $$ = new_unop($2, @$.first_line, @$.first_column, OP_NOT); }
@@ -126,21 +124,35 @@ expr
     | LPAREN expr RPAREN        { $$ = $2; }
     ;
  
-datatypes
-    : STRING                    { $$ = $1;}
-    | NUMBER                    { $$ = $1;}
-    | CHAR                      { $$ = $1;}
-%%
+assignment
+    : DATATYPES IDENTIFIER ASSIGN expr
+        { $$ = new_assign($2, $4, datatype, @$.first_line, @$.first_column, OP_ASSIGN); }
 
-int main(void) {
-    yyparse();
-    if (root) {
-        double r = ast_eval(root);
-        printf("Program result: %g\n", r);
-        ast_free(root);
-    }
-    return 0;
-}
+    | IDENTIFIER PLUS_ASSIGN expr
+        { $$ = new_assign($1, $3, @$.first_line, @$.first_column, OP_PLUS_ASSIGN); }
+
+    | IDENTIFIER MINUS_ASSIGN expr
+        { $$ = new_assign($1, $3, @$.first_line, @$.first_column, OP_MINUS_ASSIGN); }
+
+    | IDENTIFIER STAR_ASSIGN expr
+        { $$ = new_assign($1, $3, @$.first_line, @$.first_column, OP_MUL_ASSIGN); }
+
+    | IDENTIFIER SLASH_ASSIGN expr
+        { $$ = new_assign($1, $3, @$.first_line, @$.first_column, OP_DIV_ASSIGN); }
+
+    | IDENTIFIER MOD_ASSIGN expr
+        { $$ = new_assign($1, $3, @$.first_line, @$.first_column, OP_MOD_ASSIGN); }
+
+    | IDENTIFIER LSHIFT_ASSIGN expr
+        { $$ = new_assign($1, $3, @$.first_line, @$.first_column, OP_LSHIFT_ASSIGN); }
+
+    | IDENTIFIER RSHIFT_ASSIGN expr
+        { $$ = new_assign($1, $3, @$.first_line, @$.first_column, OP_RSHIFT_ASSIGN); }
+    
+    | IDENTIFIER POWER_ASSIGN expr
+        { $$ = new_assign($1, $3, @$.first_line, @$.first_column, OP_POW_ASSIGN); }
+    ;
+%%
 
 void yyerror(YYLTYPE *loc, const char *s) {
     fprintf(stderr, "Error at %d:%d: %s\n",

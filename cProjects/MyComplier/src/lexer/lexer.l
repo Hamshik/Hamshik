@@ -1,10 +1,15 @@
 %option noyywrap
-%option bison-locations
+%option bison-location
+%{
+#include "../parser/parser.h"
+#include "../ast/ASTNode.h"
+#define YY_DECL int yylex(YYSTYPE *yylval, YYLTYPE *yylloc)
+%}
 
 %{
 #include "../parser/parser.h"
-#include "../parser/ASTNode.h"
-#include <stdlib.h>
+#include "../ast/ASTNode.h"
+#define YY_DECL int yylex(YYSTYPE *yylval, YYLTYPE *yylloc)
 %}
 
 %%
@@ -14,10 +19,12 @@
 [ \t\r\n]+            { /* skip */ }
 if                  { return IF; }
 else                { return ELSE; }
+int                { yylval->datatype = INT; return DATATYPES; }
+short                { yylval->datatype = SHORT; return DATATYPES; }
+float                { yylval->datatype = FLOAT; return DATATYPES; }
+double                { yylval->datatype = DOUBLE; return DATATYPES; }
 [0-9]+(\.[0-9]+)? {
-    Value *v = malloc(sizeof(Value));
-    v->lfnum = atof(yytext);
-    yylval->node = new_num(v, DOUBLE, yylloc->first_line, yylloc->first_column);
+    node->literal.raw = strdup(yytext);
     return NUMBER;
 }
 "++"                { return INC; }
@@ -57,7 +64,7 @@ else                { return ELSE; }
 ">"                 { return GT; }
 "{"                 { return LBRACE; }
 "}"                 { return RBRACE; }
-[a-zA-Z_][a-zA-Z0-9_]* [a-zA-Z_][a-zA-Z0-9_]* {
+[a-zA-Z_][a-zA-Z0-9_]* {
     yylval->node = new_var(yytext, INT, yylloc->first_line, yylloc->first_column);
     return IDENTIFIER;
 }

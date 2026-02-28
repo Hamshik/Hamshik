@@ -11,15 +11,16 @@ static ASTNode_t *ast_alloc(void) {
     return n;
 }
 
-ASTNode_t* new_num(Value *val, DataTypes_t datatype, int line, int col) {
+ASTNode_t* new_num(char *rawval, DataTypes_t datatype, int line, int col) {
     ASTNode_t *node = ast_alloc();
     node->kind = AST_NUM;
-    assign_val(datatype,node->val, *val);
     node->datatype = datatype;
     node->line = line;
     node->col = col;
-    if (datatype == STRINGS) { free(val->str); }
-    free(val);
+
+    node->literal.raw = *rawval;   // copy value
+    free(rawval);          // free wrapper only
+
     return node;
 }
 
@@ -54,12 +55,13 @@ ASTNode_t* new_binop(ASTNode_t *left, ASTNode_t *right, int line, int col, OP_ki
     return node;
 }
 
-ASTNode_t* new_assign(ASTNode_t *lhs, ASTNode_t *rhs, int line, int col, OP_kind_t op) {
+ASTNode_t* new_assign(ASTNode_t *lhs, ASTNode_t *rhs, DataTypes_t datatype,OP_kind_t op, int line, int col) {
     ASTNode_t *node = ast_alloc();
     node->kind = AST_ASSIGN;
+    node->assign.op = op;
     node->assign.lhs = lhs;
     node->assign.rhs = rhs;
-    node->assign.op = op;
+    node->datatype = datatype;
     node->line = line;
     node->col = col;
     return node;
@@ -83,6 +85,7 @@ ASTNode_t* new_if(ASTNode_t *cond, ASTNode_t *thenB, ASTNode_t *elseB, int line,
     node->col = col;
     return node;
 }
+
 
 void ast_free(ASTNode_t *n) {
     if (!n) return;
@@ -115,12 +118,12 @@ void set_var(const char *name, Value *val, DataTypes_t datatype) {
     VarEntry *v;
     HASH_FIND_STR(env, name, v);
     if (v != NULL)
-        assign_val(datatype, v->val, *val);
+        assign_value(datatype, &v->val, *val);
     else {
         v = malloc(sizeof(*v));
         v->name = strdup(name);
         v->datatype = datatype;
-        assign_val(datatype, v->val, *val);
+        assign_value(datatype, &v->val, *val);
         HASH_ADD_KEYPTR(hh, env, v->name, strlen(v->name), v);
     }
 }
@@ -141,7 +144,27 @@ Value getvar(const char *name, DataTypes_t datatype, int line, int col) {
 
 /* ================= ASSIGN ================= */
 
-static Value eval_assign(ASTNode_t *lhs, ASTNode_t *rhs, OP_kind_t op, DataTypes_t datatypes , 
+void assign_value(DataTypes_t dt, Value *dst, Value src) {
+    switch (dt) {
+        case INT:    dst->inum = src.inum; break;
+        case FLOAT:  dst->fnum = src.fnum; break;
+        case DOUBLE: dst->lfnum = src.lfnum; break;
+        case SHORT:  dst->shnum = src.shnum; break;
+        case BOOL:   dst->bval = src.bval; break;
+        case STRINGS:
+            free(dst->str);
+            dst->str = strdup(src.str);
+            break;
+        case CHARACTER:
+            dst->characters = src.characters;
+            break;
+        default:
+            fprintf(stderr, "Invalid assignment type\n");
+            exit(1);
+    }
+}
+
+Value eval_assign(ASTNode_t *lhs, ASTNode_t *rhs, OP_kind_t op, DataTypes_t datatypes , 
     int line, int col) {
     if (!lhs || lhs->kind != AST_VAR) {
         printf("Error [%d:%d]: assignment target must be a variable\n", line, col);
@@ -151,25 +174,25 @@ static Value eval_assign(ASTNode_t *lhs, ASTNode_t *rhs, OP_kind_t op, DataTypes
     Value r = ast_eval(rhs);
     Value cur = getvar(lhs->var, lhs->datatype, line, col);
     Value v = {0};
-
+    OP_kind_t operation = get_assign_op(op);
     switch (datatypes) {
         case INT:
-            do_assign_operation_num(v.inum, r.inum, cur.inum, op);
+            v = eval_binop_int(operation, false, r.inum, cur.inum);
             break;
         case FLOAT:
-            do_assign_operation_num(v.fnum, r.fnum, cur.fnum, op);
+            v = eval_binop_float(operation, r.fnum, cur.fnum);
             break;
         case DOUBLE:
-            do_assign_operation_num(v.lfnum, r.lfnum, cur.lfnum, op);
+            v = eval_binop_double(operation, r.lfnum, cur.lfnum);
             break;
         case SHORT:
-            do_assign_operation_num(v.shnum, r.shnum, cur.shnum, op);
+            v = eval_binop_int(operation, true, r.shnum, cur.shnum);
             break;
         case BOOL:
-            do_boolean_operation(v.bval, r.bval, cur.bval, op);
+            v = eval_bool(operation, r.bval, cur.bval);
             break;
         case STRINGS:
-            do_operation_str(v.str, r.str, cur.str, op);
+            do_operation_str(v.str, r.str, cur.str, operation);
             break;
         case CHARACTER:
             v.characters = r.characters;
@@ -178,7 +201,6 @@ static Value eval_assign(ASTNode_t *lhs, ASTNode_t *rhs, OP_kind_t op, DataTypes
             fprintf(stderr, "Error: unsupported data type for assignment\n");
             exit(EXIT_FAILURE);
     }
-
     set_var(lhs->var, &v, datatypes);
     return v;
 }
@@ -186,6 +208,7 @@ static Value eval_assign(ASTNode_t *lhs, ASTNode_t *rhs, OP_kind_t op, DataTypes
 /* ================= EVAL ================= */
 Value ast_eval(ASTNode_t *node) {
     if (!node) return (Value){0};
+    Value v;
 
 
     switch (node->kind) {
@@ -194,49 +217,38 @@ Value ast_eval(ASTNode_t *node) {
 
     case AST_VAR: return getvar(node->var, node->datatype, node->line, node->col);
 
-    case AST_BINOP:
+    case AST_BINOP: {
+        Value l = ast_eval(node->bin.left);
+        Value r = ast_eval(node->bin.right);
+
         switch (node->datatype) {
-            case INT:
-                do_num_operation(node->val.inum, ast_eval(node->bin.left).inum, ast_eval(node->bin.right).inum, node->bin.op);
-                break;
-            case FLOAT:
-                do_num_operation(node->val.fnum, ast_eval(node->bin.left).fnum, ast_eval(node->bin.right).fnum, node->bin.op);
-                break;
-            case DOUBLE:
-                do_num_operation(node->val.lfnum, ast_eval(node->bin.left).lfnum, ast_eval(node->bin.right).lfnum, node->bin.op);
-                break;
-            case SHORT:
-                do_num_operation(node->val.shnum, ast_eval(node->bin.left).shnum, ast_eval(node->bin.right).shnum, node->bin.op);
-                break;
+            case INT: return eval_binop_int(node->bin.op, false, l.inum, r.inum);
+            case FLOAT: return eval_binop_float(node->bin.op, l.fnum, r.fnum);
+            case DOUBLE: return eval_binop_double(node->bin.op, l.lfnum, r.lfnum);
+            case SHORT: return eval_binop_int(node->bin.op, true, l.shnum, r.shnum);
             default:
                 fprintf(stderr, "Error: unsupported data type for binary operation\n");
                 exit(EXIT_FAILURE);
         }
-        return node->val;
-
+    }
     case AST_UNOP: {
         Value r = ast_eval(node->unop.operand);
-        switch (node->datatype) {
-            case INT:
-                do_unop_operation(node->val.inum, r.inum, node->unop.op);
-                break;
-            case FLOAT:
-                do_unop_operation(node->val.fnum, r.fnum, node->unop.op);
-                break;
-            case DOUBLE:
-                do_unop_operation(node->val.lfnum, r.lfnum, node->unop.op);
-                break;
-            default:
-                fprintf(stderr, "Error: unsupported unary op\n");
-                exit(1);
-        }
+        do_unop_operation(&node->val, &r , node->datatype, node->unop.op);
         return node->val;
     }
 
     case AST_ASSIGN: {
-        Value val = eval_assign(node->assign.lhs, node->assign.rhs,
-                            node->assign.op, node->datatype,
-                            node->line, node->col);
+        Value val = eval_assign(node->assign.lhs,
+                                node->assign.rhs,
+                                node->assign.op,
+                                node->datatype,
+                                node->line,
+                                node->col);
+
+        // 💥 IMPORTANT: rhs is no longer needed
+        ast_free(node->assign.rhs);
+        node->assign.rhs = NULL;
+
         return val;
     }
 
@@ -249,7 +261,7 @@ Value ast_eval(ASTNode_t *node) {
             return ast_eval(node->ifnode.then_branch);
         if (node->ifnode.else_branch)
             return ast_eval(node->ifnode.else_branch);
-        return (Value)NULL;
+        return (Value){0};
 
     default:
         fprintf(stderr, "Error: unknown AST node\n");

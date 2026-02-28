@@ -1,4 +1,3 @@
-#include "../lexer/token.h"
 #include "colors.h"
 #include <stdbool.h>
 #include <stdio.h>

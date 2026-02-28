@@ -49,9 +49,10 @@ extern int yydebug;
 
     #include <stdio.h>
     #include <stdlib.h>
-    #include "ASTNode.h"
+    #include "../ast/ASTNode.h"
+    extern ASTNode_t *root;
 
-#line 55 "src/parser/parser.h"
+#line 56 "src/parser/parser.h"
 
 /* Token kinds.  */
 #ifndef YYTOKENTYPE
@@ -62,8 +63,8 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    NUMBER = 258,                  /* NUMBER  */
-    IDENTIFIER = 259,              /* IDENTIFIER  */
+    IDENTIFIER = 258,              /* IDENTIFIER  */
+    NUMBER = 259,                  /* NUMBER  */
     STRING = 260,                  /* STRING  */
     CHAR = 261,                    /* CHAR  */
     PLUS = 262,                    /* PLUS  */
@@ -117,14 +118,11 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 11 "src/parser/parser.y"
+#line 15 "src/parser/parser.y"
 
-    double nval;
-    char* sval;
-    char character;
     ASTNode_t *node;
 
-#line 128 "src/parser/parser.h"
+#line 126 "src/parser/parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

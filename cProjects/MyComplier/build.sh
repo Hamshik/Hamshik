@@ -1,26 +1,22 @@
-#!/usr/bin/env bash
-set -e
+#!/bin/bash
 
-echo "============================"
-echo " Building MyCompiler"
-echo "============================"
+PARSER_DIR="src/parser"
+LEXER_DIR="src/lexer"
+AST_DIR="src/ast"
 
-SRC=src
-BUILD=build
+echo "Running bison to generate the parser..."
+bison -d -o "$PARSER_DIR/parser.c" "$PARSER_DIR/parser.y" || exit 1
 
-echo "[1/3] Running Bison..."
-bison -d "$SRC/parser/parser.y" -o "$SRC/parser/parser.c"
-echo "Bison completed successfully."
-
-echo "[2/3] Running flex..."
-flex -o $SRC/lexer/lexer.c $SRC/lexer/lexer.l
-echo "Flex completed successfully."
+echo "Running flex to generate the lexer..."
+flex -o "$LEXER_DIR/lexer.c" "$LEXER_DIR/lexer.l" || exit 1
 
 echo "[3/3] Compiling..."
-gcc -Isrc "$SRC/parser/parser.c" "$SRC/parser/ASTNode.c" "$SRC/lexer/lexer.c" -o "MyComplier" -lm
-echo "Complied successfully."
+gcc -Wall -Wextra -g -Isrc \
+    "$PARSER_DIR/parser.c" \
+    "$AST_DIR/ASTNode.c" \
+    "$LEXER_DIR/lexer.c" \
+    "$AST_DIR/eval.c" \
+    src/main.c \
+    -o MyCompiler -lm || exit 1
 
-echo "============================"
-echo " Build successful! 🎉"
-echo " Output: $BIN/MyComplier"
-echo "============================"
+echo "Compiled successfully."
