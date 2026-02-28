@@ -1,5 +1,5 @@
 %option noyywrap
-%option bison-location
+%option bison-bridge
 %{
 #include "../parser/parser.h"
 #include "../ast/ASTNode.h"

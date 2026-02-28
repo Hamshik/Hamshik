@@ -16,6 +16,8 @@ gcc -Wall -Wextra -g -Isrc \
     "$AST_DIR/ASTNode.c" \
     "$LEXER_DIR/lexer.c" \
     "$AST_DIR/eval.c" \
+    "$AST_DIR/assigner.c" \
+    "$AST_DIR/env.c" \
     src/main.c \
     -o MyCompiler -lm || exit 1
 

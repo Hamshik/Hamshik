@@ -21,7 +21,8 @@ typedef enum DataTypes{
     SHORT,
     BOOL,
     STRINGS,
-    CHARACTER
+    CHARACTER,
+    UNKNOWN
 } DataTypes_t;
 
 typedef enum OP_kind {
@@ -59,7 +60,6 @@ typedef struct ASTNode {
     int line, col;
 
     union {
-        Value val;
         char *var;
         struct {
             char *raw;     // e.g. "123", "3.14", "true", "hello"
@@ -89,28 +89,34 @@ typedef struct ASTNode {
     };
 } ASTNode_t;
 
-typedef struct TypeKind{
-    DataTypes_t datatypes;
-}TypeKind_t;
+typedef struct {
+    DataTypes_t type;
+    union {
+        int i;
+        float f;
+        double d;
+    };
+} TypedValue;
 
 /* Constructors */
-ASTNode_t *new_num(Value *val, DataTypes_t datatype, int line, int col);
+ASTNode_t *new_num(char *rawval, DataTypes_t datatype, int line, int col);
 ASTNode_t *new_var(const char *name, DataTypes_t datatype, int line, int col);
 ASTNode_t *new_binop(ASTNode_t *l, ASTNode_t *r, int line, int col, OP_kind_t op);
 ASTNode_t *new_unop(ASTNode_t *e, int line, int col, OP_kind_t op);
-ASTNode_t *new_assign(ASTNode_t *lhs, ASTNode_t *rhs, DataTypes_t datatype,OP_kind_t op,int line, int col);
-ASTNode_t *new_seq(ASTNode_t *a, ASTNode_t *b);
+ASTNode_t *new_assign(ASTNode_t *lhs, ASTNode_t *rhs, DataTypes_t datatype, int line, int col,OP_kind_t op);
 ASTNode_t *new_if(ASTNode_t *cond, ASTNode_t *thenB, ASTNode_t *elseB, int line, int col);
 
 /* Eval + memory */
 Value ast_eval(ASTNode_t *n);
 void ast_free(ASTNode_t *n);
+ASTNode_t *ast_alloc(void);
 
 /* Env */
 void set_var(const char *name, Value *val, DataTypes_t datatype);
 Value getvar(const char *name, DataTypes_t datatype, int line, int col);
 void assign_value(DataTypes_t datatype, Value *dest, Value src);
 OP_kind_t get_assign_op(OP_kind_t op);
+Value eval_assign(ASTNode_t *lhs, ASTNode_t *rhs, OP_kind_t op, DataTypes_t datatypes , int line, int col);
 
 /*InLinner*/
 Value eval_binop_int(OP_kind_t op, bool isShort, int a, int b);

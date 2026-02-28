@@ -16,7 +16,7 @@
 
 %union {
     ASTNode_t *node;
-    DataType_t datatype;
+    DataTypes_t datatype;
 }
 
 %code {
