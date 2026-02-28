@@ -169,7 +169,7 @@ static Value eval_assign(ASTNode_t *lhs, ASTNode_t *rhs, OP_kind_t op, DataTypes
             do_boolean_operation(v.bval, r.bval, cur.bval, op);
             break;
         case STRINGS:
-            do_assign_operation_str(v.str, r.str, cur.str, op);
+            do_operation_str(v.str, r.str, cur.str, op);
             break;
         case CHARACTER:
             v.characters = r.characters;
@@ -186,6 +186,7 @@ static Value eval_assign(ASTNode_t *lhs, ASTNode_t *rhs, OP_kind_t op, DataTypes
 /* ================= EVAL ================= */
 Value ast_eval(ASTNode_t *node) {
     if (!node) return (Value){0};
+
 
     switch (node->kind) {
 
@@ -214,30 +215,31 @@ Value ast_eval(ASTNode_t *node) {
         return node->val;
 
     case AST_UNOP: {
-        switch (node->datatype)
-        {
-        case SHORT:
-            do_unop_operation(node->val.shnum, ast_eval(node->unop.operand).shnum, node->unop.op);
-            break;
-        case INT:
-            do_unop_operation(node->val.inum, ast_eval(node->unop.operand).inum, node->unop.op);
-            break;
-        case FLOAT:
-            do_unop_operation(node->val.fnum, ast_eval(node->unop.operand).fnum, node->unop.op);
-            break;
-        case DOUBLE:
-            do_unop_operation(node->val.lfnum, ast_eval(node->unop.operand).lfnum, node->unop.op);
-            break;
-        default:
-            fprintf(stderr, "Error: unsupported data type for unary operation\n");
-            exit(EXIT_FAILURE);
+        Value r = ast_eval(node->unop.operand);
+        switch (node->datatype) {
+            case INT:
+                do_unop_operation(node->val.inum, r.inum, node->unop.op);
+                break;
+            case FLOAT:
+                do_unop_operation(node->val.fnum, r.fnum, node->unop.op);
+                break;
+            case DOUBLE:
+                do_unop_operation(node->val.lfnum, r.lfnum, node->unop.op);
+                break;
+            default:
+                fprintf(stderr, "Error: unsupported unary op\n");
+                exit(1);
         }
+        return node->val;
     }
 
-    case AST_ASSIGN:
-        Value val = eval_assign(node->assign.lhs, node->assign.rhs, node->assign.op, node->datatype, node->line, node->col);
-        set_var(node->assign.lhs->var, &val, node->datatype);
-        return ast_eval(node->assign.lhs);
+    case AST_ASSIGN: {
+        Value val = eval_assign(node->assign.lhs, node->assign.rhs,
+                            node->assign.op, node->datatype,
+                            node->line, node->col);
+        return val;
+    }
+
     case AST_SEQ:
         ast_eval(node->seq.a);
         return ast_eval(node->seq.b);

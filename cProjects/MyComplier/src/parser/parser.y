@@ -9,9 +9,6 @@
 %locations
 
 %union {
-    double nval;
-    char* sval;
-    char character;
     ASTNode_t *node;
 }
 
@@ -21,10 +18,7 @@
     void yyerror(YYLTYPE *loc, const char *s);
 }
 
-%token <nval> NUMBER
-%token <node> IDENTIFIER
-%token <sval> STRING
-%token <character> CHAR
+%token <node> IDENTIFIER NUMBER STRING CHAR
 
 %token PLUS MINUS STAR SLASH MOD POWER
 %token INC DEC
@@ -84,9 +78,9 @@ if_stmt
     ;
 
 expr
-    : NUMBER                    { $$ = new_num($1, @1.first_line, @1.first_column); }
+    : NUMBER                    { $$ = $1; }
 	| IDENTIFIER				{$$ = $1;}
-	
+
     | expr PLUS expr            { $$ = new_binop($1, $3, @$.first_line, @$.first_column, OP_ADD); }
     | expr MINUS expr           { $$ = new_binop($1, $3, @$.first_line, @$.first_column, OP_SUB); }
     | expr STAR expr            { $$ = new_binop($1, $3, @$.first_line, @$.first_column, OP_MUL); }
@@ -131,7 +125,7 @@ expr
 
     | LPAREN expr RPAREN        { $$ = $2; }
     ;
-
+ 
 datatypes
     : STRING                    { $$ = $1;}
     | NUMBER                    { $$ = $1;}

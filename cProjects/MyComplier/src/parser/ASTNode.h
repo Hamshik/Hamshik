@@ -35,22 +35,23 @@
         }                                       \
     } while (0)
 
-#define do_assign_operation_str(v, r, cur, op)  \
-    do {                                        \
-        switch (op) {                           \
-            case OP_ASSIGN:                     \
-                (v) = strdup(r);                \
-                break;                          \
-            case OP_PLUS_ASSIGN:                \
-                (v) = strcat((char*)cur, (char*)r);    \
-                break;                          \
-            default:                            \
-                fprintf(stderr,                 \
-                        "Error: unsupported assignment operator for strings\n"); \
-                exit(EXIT_FAILURE);             \
-        }                                       \
+#define do_operation_str(v, r, cur, op) \
+    do { \
+        switch (op) { \
+            case OP_ASSIGN: \
+                (v) = strdup(r); \
+                break; \
+            case OP_PLUS_ASSIGN: \
+                (v) = strcat((char*)cur, (char*)r); \
+                break; \
+            case OP_ADD: \
+                (v) = strcat((char*)cur, (char*)r); \
+                break; \
+            default: \
+                fprintf(stderr, "Error: unsupported string operator\n"); \
+                exit(EXIT_FAILURE); \
+        } \
     } while (0)
-
 #define do_boolean_operation(v, r, cur, op) \
     do {                                        \
         switch (op) {                           \

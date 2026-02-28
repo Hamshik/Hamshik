@@ -14,7 +14,12 @@
 [ \t\r\n]+            { /* skip */ }
 if                  { return IF; }
 else                { return ELSE; }
-[0-9]+(\.[0-9]+)?   { yylval->nval = atof(yytext); return NUMBER; }
+[0-9]+(\.[0-9]+)? {
+    Value *v = malloc(sizeof(Value));
+    v->lfnum = atof(yytext);
+    yylval->node = new_num(v, DOUBLE, yylloc->first_line, yylloc->first_column);
+    return NUMBER;
+}
 "++"                { return INC; }
 "--"                { return DEC; }
 "+"                 { return PLUS; }
@@ -52,7 +57,10 @@ else                { return ELSE; }
 ">"                 { return GT; }
 "{"                 { return LBRACE; }
 "}"                 { return RBRACE; }
-[a-zA-Z_][a-zA-Z0-9_]* {yylval->node = new_var(yytext, yylloc->first_line, yylloc->first_column); return IDENTIFIER; }
+[a-zA-Z_][a-zA-Z0-9_]* [a-zA-Z_][a-zA-Z0-9_]* {
+    yylval->node = new_var(yytext, INT, yylloc->first_line, yylloc->first_column);
+    return IDENTIFIER;
+}
 .                   { printf("Unknown char: %s\n", yytext); }
 <<EOF>>             { return 0;  }
 %%
