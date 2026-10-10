@@ -1,0 +1,187 @@
+/* Modern Pill Wi-Fi Button */
+.modern-wifi-pill {
+    -fx-background-color: linear-gradient(to bottom right, #2563eb, #1d4ed8);
+    -fx-background-radius: 30px;
+    -fx-border-radius: 30px;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 7px 16px 7px 12px;
+    -fx-graphic-text-gap: 8px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(37, 99, 235, 0.35), 10, 0, 0, 3);
+}
+
+.modern-wifi-pill:hover {
+    -fx-background-color: linear-gradient(to bottom right, #1d4ed8, #1e40af);
+    -fx-effect: dropshadow(gaussian, rgba(37, 99, 235, 0.5), 14, 0, 0, 5);
+}
+
+.modern-wifi-pill:pressed {
+    -fx-background-color: #1e40af;
+    -fx-scale-x: 0.97;
+    -fx-scale-y: 0.97;
+}
+
+/* Semi-transparent backdrop */
+.modal-overlay {
+    -fx-background-color: rgba(0, 0, 0, 0.45);
+}
+
+/* Smooth phone-like rounded popup card */
+.modal-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 24px;
+    -fx-border-radius: 24px;
+    -fx-padding: 20px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 24, 0, 0, 8);
+}
+
+.modal-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #111827;
+}
+
+.modal-subtitle {
+    -fx-font-size: 12px;
+    -fx-text-fill: #6b7280;
+}
+
+/* Sleek Circular Close Button */
+.close-btn {
+    -fx-background-color: #f3f4f6;
+    -fx-background-radius: 50em;
+    -fx-border-radius: 50em;
+    -fx-min-width: 28px;
+    -fx-min-height: 28px;
+    -fx-max-width: 28px;
+    -fx-max-height: 28px;
+    -fx-text-fill: #6b7280;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-padding: 0;
+}
+
+.close-btn:hover {
+    -fx-background-color: #e5e7eb;
+    -fx-text-fill: #111827;
+}
+
+.close-btn:pressed {
+    -fx-background-color: #d1d5db;
+    -fx-scale-x: 0.92;
+    -fx-scale-y: 0.92;
+}
+
+/* Modern Connect Pill Button */
+.connect-btn {
+    -fx-background-color: #007aff;
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 6px 15px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 122, 255, 0.25), 6, 0, 0, 2);
+}
+
+.connect-btn:hover {
+    -fx-background-color: #0062cc;
+    -fx-effect: dropshadow(gaussian, rgba(0, 122, 255, 0.4), 8, 0, 0, 3);
+}
+
+.connect-btn:pressed {
+    -fx-background-color: #004fb3;
+    -fx-scale-x: 0.95;
+    -fx-scale-y: 0.95;
+}
+
+/* Modern Disconnect Pill Button (Red) */
+.disconnect-btn {
+    -fx-background-color: #ff3b30;
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 6px 15px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(255, 59, 48, 0.25), 6, 0, 0, 2);
+}
+
+.disconnect-btn:hover {
+    -fx-background-color: #d70015;
+    -fx-effect: dropshadow(gaussian, rgba(255, 59, 48, 0.4), 8, 0, 0, 3);
+}
+
+.disconnect-btn:pressed {
+    -fx-background-color: #b30010;
+    -fx-scale-x: 0.95;
+    -fx-scale-y: 0.95;
+}
+
+/* Device scroll pane */
+.device-scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-border-color: transparent;
+}
+
+.device-scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+/* Individual device item card */
+.device-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 14px;
+    -fx-border-radius: 14px;
+    -fx-border-color: #e5e7eb;
+    -fx-border-width: 1px;
+    -fx-padding: 10px 14px;
+    -fx-cursor: hand;
+}
+
+.device-card:hover {
+    -fx-background-color: #f9fafb;
+    -fx-border-color: #cbd5e1;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 8, 0, 0, 2);
+}
+
+.device-name {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #111827;
+}
+
+.device-host {
+    -fx-font-size: 11px;
+    -fx-text-fill: #6b7280;
+}
+
+/* to show Connected buts */
+.connected-btn {
+    -fx-background-color: #055ebd;
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 6px 15px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(5, 105, 212, 0.25), 6, 0, 0, 2);
+}
+
+.connected-btn:hover {
+    -fx-background-color: #0062cc;
+    -fx-effect: dropshadow(gaussian, rgba(0, 122, 255, 0.4), 8, 0, 0, 3);
+}
+
+.connected-btn:pressed {
+    -fx-background-color: #004fb3;
+    -fx-scale-x: 0.95;
+    -fx-scale-y: 0.95;
+}
