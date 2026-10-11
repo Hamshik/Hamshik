@@ -36,6 +36,7 @@ public class Controller {
                 System.out.println("Selected ESP32: " + device.name() + " (" + device.host() + ")");
                 setWifiButtonConnected(true);
                 wifiBut.setText(device.name());
+                WifiSender.sendDataToESP32(device.host(), "hello from java");
             },
             () -> {
                 System.out.println("ESP32 Disconnected");
