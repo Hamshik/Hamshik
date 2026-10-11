@@ -5,30 +5,27 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.Group?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.paint.ImagePattern?>
 <?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.SVGPath?>
 
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="503.0" prefWidth="399.0" stylesheets="@main.fx.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.hamshik.Controller">
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="450.0" stylesheets="@main.fx.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.hamshik.Controller">
    <children>
       <!-- Base Main Content (will be blurred when modal is open) -->
       <AnchorPane fx:id="mainContent" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Button fx:id="wifiBut" layoutX="216.0" layoutY="16.0" mnemonicParsing="false" onAction="#wifiShow" styleClass="modern-wifi-pill" text="Disconnected">
+            <Button fx:id="wifiBut" layoutX="297.0" layoutY="14.0" mnemonicParsing="false" onAction="#wifiShow" styleClass="disconnect-btn" text="Disconnected">
                <graphic>
-                  <Circle radius="11.0">
-                     <fill>
-                        <ImagePattern>
-                           <image>
-                              <Image url="@wifi.png" />
-                           </image>
-                        </ImagePattern>
-                     </fill>
-                  </Circle>
+                  <Group>
+                     <children>
+                        <SVGPath content="M2 7.5 C7.5 2.5 16.5 2.5 22 7.5 M5 11 C9 7.4 15 7.4 19 11 M9 14.5 C10.7 13 13.3 13 15 14.5" fill="TRANSPARENT" stroke="WHITE" strokeLineCap="ROUND" strokeWidth="2.4" />
+                        <Circle centerX="12" centerY="18" fill="WHITE" radius="1.4" />
+                     </children>
+                  </Group>
                </graphic>
             </Button>
          </children>

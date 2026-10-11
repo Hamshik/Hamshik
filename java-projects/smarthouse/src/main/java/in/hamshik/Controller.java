@@ -10,50 +10,47 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 public class Controller {
-    @FXML
-    private AnchorPane root;
-    @FXML
-    private AnchorPane mainContent;
-    @FXML
-    private Button wifiBut;
+    @FXML private AnchorPane root;
+    @FXML private AnchorPane mainContent;
+    @FXML private Button wifiBut;
 
     // Modal elements from FXML
-    @FXML
-    private StackPane modalOverlay;
-    @FXML
-    private VBox modalCard;
-    @FXML
-    private ProgressIndicator loadingSpinner;
-    @FXML
-    private Label statusLabel;
-    @FXML
-    private VBox deviceListContainer;
+    @FXML private StackPane modalOverlay;
+    @FXML private VBox modalCard;
+    @FXML private ProgressIndicator loadingSpinner;
+    @FXML private Label statusLabel;
+    @FXML private VBox deviceListContainer;
 
     private WifiDisplayer wifiDisplayer;
 
-    @FXML
-    public void initialize() {
+    @FXML public void initialize() {
         // Initialize dedicated Wi-Fi displayer
         wifiDisplayer = new WifiDisplayer(
-                mainContent,
-                modalOverlay,
-                modalCard,
-                loadingSpinner,
-                statusLabel,
-                deviceListContainer,
-                device -> {
-                    System.out.println("Selected ESP32: " + device.name() + " (" + device.host() + ")");
-                    wifiBut.setText(device.name());
-                },
-                () -> {
-                    System.out.println("ESP32 Disconnected");
-                    wifiBut.setText("Disconnected");
-                });
+            mainContent,
+            modalOverlay,
+            modalCard,
+            loadingSpinner,
+            statusLabel,
+            deviceListContainer,
+            device -> {
+                System.out.println("Selected ESP32: " + device.name() + " (" + device.host() + ")");
+                setWifiButtonConnected(true);
+                wifiBut.setText(device.name());
+            },
+            () -> {
+                System.out.println("ESP32 Disconnected");
+                setWifiButtonConnected(false);
+                wifiBut.setText("Disconnected");
+            }
+        );
     }
 
-    @FXML
-    void wifiShow(ActionEvent e) { wifiDisplayer.show(); }
+    @FXML void wifiShow(ActionEvent e) { wifiDisplayer.show(); }
 
-    @FXML
-    void closeModal() { wifiDisplayer.hide(); }
+    @FXML void closeModal() { wifiDisplayer.hide(); }
+
+    private void setWifiButtonConnected(boolean connected) {
+        wifiBut.getStyleClass().removeAll("connect-btn", "disconnect-btn");
+        wifiBut.getStyleClass().add(connected ? "connect-btn" : "disconnect-btn");
+    }
 }

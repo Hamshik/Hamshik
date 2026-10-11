@@ -84,6 +84,7 @@
     -fx-font-size: 12px;
     -fx-font-weight: bold;
     -fx-padding: 6px 15px;
+    -fx-graphic-text-gap: 8px;
     -fx-cursor: hand;
     -fx-effect: dropshadow(gaussian, rgba(0, 122, 255, 0.25), 6, 0, 0, 2);
 }
@@ -108,6 +109,7 @@
     -fx-font-size: 12px;
     -fx-font-weight: bold;
     -fx-padding: 6px 15px;
+    -fx-graphic-text-gap: 8px;
     -fx-cursor: hand;
     -fx-effect: dropshadow(gaussian, rgba(255, 59, 48, 0.25), 6, 0, 0, 2);
 }
@@ -160,28 +162,4 @@
 .device-host {
     -fx-font-size: 11px;
     -fx-text-fill: #6b7280;
-}
-
-/* to show Connected buts */
-.connected-btn {
-    -fx-background-color: #055ebd;
-    -fx-background-radius: 20px;
-    -fx-border-radius: 20px;
-    -fx-text-fill: #ffffff;
-    -fx-font-size: 12px;
-    -fx-font-weight: bold;
-    -fx-padding: 6px 15px;
-    -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(5, 105, 212, 0.25), 6, 0, 0, 2);
-}
-
-.connected-btn:hover {
-    -fx-background-color: #0062cc;
-    -fx-effect: dropshadow(gaussian, rgba(0, 122, 255, 0.4), 8, 0, 0, 3);
-}
-
-.connected-btn:pressed {
-    -fx-background-color: #004fb3;
-    -fx-scale-x: 0.95;
-    -fx-scale-y: 0.95;
 }

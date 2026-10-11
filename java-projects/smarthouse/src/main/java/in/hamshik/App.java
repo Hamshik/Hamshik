@@ -17,9 +17,11 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("main"), 640, 480);
+        var root = loadFXML("main");
+        scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+        stage.setResizable(false);
     }
 
     static void setRoot(String fxml) throws IOException {
@@ -28,14 +30,13 @@ public class App extends Application {
 
     private static Parent loadFXML(String fxml) throws IOException {
         java.net.URL resource = App.class.getResource(fxml + ".fxml");
-        if (resource == null) {
+        if (resource == null) 
             resource = App.class.getResource("/in/hamshik/" + fxml + ".fxml");
-        }
-        if (resource == null) {
-            throw new IllegalStateException("Cannot find FXML file: " + fxml + ".fxml (ensure resources are built to target/classes)");
-        }
-        FXMLLoader fxmlLoader = new FXMLLoader(resource);
-        return fxmlLoader.load();
+        
+        if (resource == null) 
+            throw new IllegalStateException("Cannot find FXML file: " + fxml + ".fxml");
+;
+        return new FXMLLoader(resource).load();
     }
 
     public static void main(String[] args) {
