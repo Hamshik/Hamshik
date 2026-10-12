@@ -1,7 +1,9 @@
-package in.hamshik;
+package in.hamshik.DNSHandler;
 
 import java.util.List;
 import java.util.function.Consumer;
+
+import in.hamshik.WifiHandler.*;;
 
 /**
  * Discovers ESP32 / Arduino devices on the local network using:
@@ -9,6 +11,7 @@ import java.util.function.Consumer;
  * 2. Wokwi IoT Gateway / local simulator port checks.
  * 3. Subnet sweep for open HTTP ports (80, 8266).
  */
+
 public class WiFiScanner {
 
     public record EspDevice(String name, String host, int port, String type) {}

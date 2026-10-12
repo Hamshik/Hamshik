@@ -1,4 +1,10 @@
 {
-    "java.configuration.updateBuildConfiguration": "interactive",
-    "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx4G -Xms100m -Xlog:disable"
+  // Restrict the maximum JVM memory heap size to 512MB or 768MB
+  "java.jdt.ls.vmargs": "-Xmx512m -XX:+UseG1GC -XX:+UseStringDeduplication",
+
+  // Disable heavy background CodeLens features (keeps diagnostics & autocomplete active, saves RAM)
+  "java.referencesCodeLens.enabled": false,
+
+  // Reduce Maven/Gradle cache footprint if applicable
+  "java.maven.downloadSources": false
 }

@@ -1,6 +1,8 @@
-package in.hamshik;
+package in.hamshik.WifiHandler;
 
-import in.hamshik.WiFiScanner.EspDevice;
+import in.hamshik.DNSHandler.*;
+import in.hamshik.DNSHandler.WiFiScanner.EspDevice;
+
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
@@ -17,7 +19,7 @@ import java.util.function.Consumer;
 /** Coordinates the Wi-Fi scan modal, connection state, and scanner lifecycle. */
 public class WifiDisplayer {
     private final Node backgroundNode;
-    private final StackPane modalOverlay;
+    private final StackPane modalOverlay = new StackPane();
     private final VBox modalCard;
     private final ProgressIndicator loadingSpinner;
     private final Label statusLabel;
@@ -28,19 +30,11 @@ public class WifiDisplayer {
     private final GaussianBlur blurEffect = new GaussianBlur(15);
     private String connectedDeviceName;
 
-    public WifiDisplayer(Node backgroundNode, StackPane modalOverlay, VBox modalCard,
-                         ProgressIndicator loadingSpinner, Label statusLabel,
-                         VBox deviceListContainer, Consumer<EspDevice> onDeviceConnected) {
-        this(backgroundNode, modalOverlay, modalCard, loadingSpinner, statusLabel,
-                deviceListContainer, onDeviceConnected, null);
-    }
-
-    public WifiDisplayer(Node backgroundNode, StackPane modalOverlay, VBox modalCard,
+    public WifiDisplayer(Node backgroundNode, VBox modalCard,
                          ProgressIndicator loadingSpinner, Label statusLabel,
                          VBox deviceListContainer, Consumer<EspDevice> onDeviceConnected,
                          Runnable onDeviceDisconnected) {
         this.backgroundNode = backgroundNode;
-        this.modalOverlay = modalOverlay;
         this.modalCard = modalCard;
         this.loadingSpinner = loadingSpinner;
         this.statusLabel = statusLabel;
@@ -53,9 +47,7 @@ public class WifiDisplayer {
 
     /** Opens the modal and starts scanning. */
     public void show() {
-        applyBackgroundBlur();
         resetModalState();
-        playEntranceAnimation();
         beginScanning();
     }
 
@@ -83,7 +75,7 @@ public class WifiDisplayer {
         refreshDeviceList();
     }
 
-    private void applyBackgroundBlur() {
+    public void applyBackgroundBlur() {
         if (backgroundNode != null) backgroundNode.setEffect(blurEffect);
     }
 
@@ -105,16 +97,11 @@ public class WifiDisplayer {
         modalOverlay.setVisible(true);
     }
 
-    private void playEntranceAnimation() {
-        createFadeTransition(0.0, 1.0, 220).play();
-        createScaleTransition(0.85, 1.0, 220).play();
-    }
-
     private void playExitAnimation(Runnable onFinished) {
-        FadeTransition fade = createFadeTransition(1.0, 0.0, 160);
+        FadeTransition fade = createFadeTransition(1.0, 0.0, 50);
         fade.setOnFinished(event -> onFinished.run());
         fade.play();
-        createScaleTransition(1.0, 0.88, 160).play();
+        createScaleTransition(1.0, 0.88, 50).play();
     }
 
     private FadeTransition createFadeTransition(double from, double to, int durationMs) {

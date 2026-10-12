@@ -1,33 +1,25 @@
-package in.hamshik;
+package in.hamshik.Controller;
 
-import javafx.event.ActionEvent;
+import in.hamshik.WifiHandler.WifiDisplayer;
+import in.hamshik.WifiHandler.WifiSender;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.control.SplitPane;
 import javafx.scene.layout.VBox;
 
-public class Controller {
-    @FXML private AnchorPane root;
-    @FXML private AnchorPane mainContent;
-    @FXML private Button wifiBut;
-
-    // Modal elements from FXML
-    @FXML private StackPane modalOverlay;
+public class DeviceMngController extends  Controller {
     @FXML private VBox modalCard;
     @FXML private ProgressIndicator loadingSpinner;
     @FXML private Label statusLabel;
     @FXML private VBox deviceListContainer;
-
+    @FXML private SplitPane pageContent;
+    
     private WifiDisplayer wifiDisplayer;
 
-    @FXML public void initialize() {
-        // Initialize dedicated Wi-Fi displayer
+    @FXML private void initialize() {
         wifiDisplayer = new WifiDisplayer(
-            mainContent,
-            modalOverlay,
+            pageContent,
             modalCard,
             loadingSpinner,
             statusLabel,
@@ -44,14 +36,17 @@ public class Controller {
                 wifiBut.setText("Disconnected");
             }
         );
+        wifiDisplayer.show();
+        
     }
 
-    @FXML void wifiShow(ActionEvent e) { wifiDisplayer.show(); }
+    void setWifiButtonConnected(boolean connected){
+        wifiBut.getStyleClass().removeAll("connected-btn", "disconnected-btn");
+        wifiBut.getStyleClass().add(connected ? "connected-btn" : "disconnected-btn");
 
-    @FXML void closeModal() { wifiDisplayer.hide(); }
+    }
 
-    private void setWifiButtonConnected(boolean connected) {
-        wifiBut.getStyleClass().removeAll("connect-btn", "disconnect-btn");
-        wifiBut.getStyleClass().add(connected ? "connect-btn" : "disconnect-btn");
+    void wifiShow() {
+        wifiDisplayer.show();
     }
 }

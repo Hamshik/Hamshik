@@ -1,4 +1,4 @@
-package in.hamshik;
+package in.hamshik.DNSHandler;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import in.hamshik.WifiHandler.*;
 
 final class SubnetProbe {
     private final EspDeviceRegistry registry;

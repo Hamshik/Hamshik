@@ -1,4 +1,4 @@
-package in.hamshik;
+package in.hamshik.WifiHandler;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

@@ -1,165 +1,222 @@
-/* Modern Pill Wi-Fi Button */
-.modern-wifi-pill {
-    -fx-background-color: linear-gradient(to bottom right, #2563eb, #1d4ed8);
-    -fx-background-radius: 30px;
-    -fx-border-radius: 30px;
+/* ============================================================
+   Arduino IoT Cloud inspired theme
+   Palette: teal #00878F / accent #00A9A5, ink #102027, canvas #f2f4f7
+   ============================================================ */
+
+.app-root {
+    -fx-background-color: #f2f4f7;
+    -fx-font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+
+/* ---------------- Sidebar ---------------- */
+.sidebar {
+    -fx-background-color: linear-gradient(to bottom, #062e33, #04242a);
+    -fx-padding: 22 10 16 10;
+    -fx-spacing: 20;
+    -fx-pref-width: 140;
+}
+
+.sidebar-logo {
+    -fx-spacing: 9;
+    -fx-alignment: center-left;
+    -fx-padding: 0 0 0 8;
+}
+
+.sidebar-logo-text {
     -fx-text-fill: #ffffff;
-    -fx-font-size: 12px;
+    -fx-font-size: 14px;
     -fx-font-weight: bold;
-    -fx-padding: 7px 16px 7px 12px;
-    -fx-graphic-text-gap: 8px;
+}
+
+.sidebar-nav {
+    -fx-spacing: 6;
+}
+
+.sidebar-item {
+    -fx-background-color: transparent;
+    -fx-text-fill: #93aeb3;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+    -fx-alignment: center-left;
+    -fx-padding: 10 12;
+    -fx-background-radius: 8;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(37, 99, 235, 0.35), 10, 0, 0, 3);
+    -fx-pref-width: 120;
 }
 
-.modern-wifi-pill:hover {
-    -fx-background-color: linear-gradient(to bottom right, #1d4ed8, #1e40af);
-    -fx-effect: dropshadow(gaussian, rgba(37, 99, 235, 0.5), 14, 0, 0, 5);
+.sidebar-item:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.08);
+    -fx-text-fill: #ffffff;
 }
 
-.modern-wifi-pill:pressed {
-    -fx-background-color: #1e40af;
-    -fx-scale-x: 0.97;
-    -fx-scale-y: 0.97;
+.sidebar-item-active,
+.sidebar-item-active:hover {
+    -fx-background-color: #00878F;
+    -fx-text-fill: #ffffff;
 }
 
-/* Semi-transparent backdrop */
+.sidebar-footer {
+    -fx-text-fill: #547074;
+    -fx-font-size: 10px;
+    -fx-padding: 0 0 0 8;
+}
+
+/* ---------------- Top bar ---------------- */
+.topbar {
+    -fx-background-color: #ffffff;
+    -fx-min-height: 56;
+    -fx-pref-height: 56;
+    -fx-effect: dropshadow(gaussian, rgba(16, 32, 39, 0.10), 12, 0, 0, 1);
+}
+
+.topbar-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #102027;
+}
+
+/* ---------------- Dashboard canvas ---------------- */
+.welcome-text {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-fill: #102027;
+}
+
+.section-title {
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+    -fx-fill: #7a8891;
+}
+
+/* Drop area — dashed soft border, white canvas */
+.board {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 16;
+    -fx-border-color: #dfe5ea;
+    -fx-border-radius: 16;
+    -fx-border-width: 1.5;
+    -fx-border-style: dashed;
+}
+
+/* ---------------- Widget card (added at runtime) ----------------
+   Use in code:  card.getStyleClass().add("card");            */
+.card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 14;
+    -fx-border-radius: 14;
+    -fx-border-color: #e6eaee;
+    -fx-border-width: 1;
+    -fx-padding: 16;
+    -fx-effect: dropshadow(gaussian, rgba(16, 32, 39, 0.10), 14, 0, 0, 4);
+}
+
+.card:hover {
+    -fx-border-color: rgba(0, 169, 165, 0.55);
+    -fx-effect: dropshadow(gaussian, rgba(0, 169, 165, 0.20), 18, 0, 0, 6);
+}
+
+/* ---------------- Add Device button ---------------- */
+.navbuts {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #102027;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+    -fx-padding: 8 14;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #e2e6f0;
+    -fx-border-width: 1px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(16, 32, 39, 0.06), 6, 0, 0, 2);
+}
+
+.navbuts:hover {
+    -fx-background-color: #e9f7f7;
+    -fx-border-color: rgba(0, 135, 143, 0.6);
+    -fx-text-fill: #00878F;
+}
+
+.navbuts:pressed {
+    -fx-background-color: #d8efef;
+}
+
+/* ---------------- Modal ---------------- */
 .modal-overlay {
-    -fx-background-color: rgba(0, 0, 0, 0.45);
+    -fx-background-color: rgba(6, 30, 35, 0.5);
 }
 
-/* Smooth phone-like rounded popup card */
 .modal-card {
     -fx-background-color: #ffffff;
-    -fx-background-radius: 24px;
-    -fx-border-radius: 24px;
-    -fx-padding: 20px;
+    -fx-background-radius: 24;
+    -fx-border-radius: 24;
+    -fx-padding: 20;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 24, 0, 0, 8);
 }
 
 .modal-title {
     -fx-font-size: 16px;
     -fx-font-weight: bold;
-    -fx-text-fill: #111827;
+    -fx-text-fill: #102027;
 }
 
 .modal-subtitle {
     -fx-font-size: 12px;
-    -fx-text-fill: #6b7280;
+    -fx-text-fill: #7a8891;
 }
 
-/* Sleek Circular Close Button */
-.close-btn {
-    -fx-background-color: #f3f4f6;
-    -fx-background-radius: 50em;
-    -fx-border-radius: 50em;
-    -fx-min-width: 28px;
-    -fx-min-height: 28px;
-    -fx-max-width: 28px;
-    -fx-max-height: 28px;
-    -fx-text-fill: #6b7280;
-    -fx-font-size: 12px;
-    -fx-font-weight: bold;
-    -fx-cursor: hand;
-    -fx-padding: 0;
-}
-
-.close-btn:hover {
-    -fx-background-color: #e5e7eb;
-    -fx-text-fill: #111827;
-}
-
-.close-btn:pressed {
-    -fx-background-color: #d1d5db;
-    -fx-scale-x: 0.92;
-    -fx-scale-y: 0.92;
-}
-
-/* Modern Connect Pill Button */
-.connect-btn {
-    -fx-background-color: #007aff;
-    -fx-background-radius: 20px;
-    -fx-border-radius: 20px;
-    -fx-text-fill: #ffffff;
-    -fx-font-size: 12px;
-    -fx-font-weight: bold;
-    -fx-padding: 6px 15px;
-    -fx-graphic-text-gap: 8px;
-    -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0, 122, 255, 0.25), 6, 0, 0, 2);
-}
-
-.connect-btn:hover {
-    -fx-background-color: #0062cc;
-    -fx-effect: dropshadow(gaussian, rgba(0, 122, 255, 0.4), 8, 0, 0, 3);
-}
-
-.connect-btn:pressed {
-    -fx-background-color: #004fb3;
-    -fx-scale-x: 0.95;
-    -fx-scale-y: 0.95;
-}
-
-/* Modern Disconnect Pill Button (Red) */
-.disconnect-btn {
-    -fx-background-color: #ff3b30;
-    -fx-background-radius: 20px;
-    -fx-border-radius: 20px;
-    -fx-text-fill: #ffffff;
-    -fx-font-size: 12px;
-    -fx-font-weight: bold;
-    -fx-padding: 6px 15px;
-    -fx-graphic-text-gap: 8px;
-    -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(255, 59, 48, 0.25), 6, 0, 0, 2);
-}
-
-.disconnect-btn:hover {
-    -fx-background-color: #d70015;
-    -fx-effect: dropshadow(gaussian, rgba(255, 59, 48, 0.4), 8, 0, 0, 3);
-}
-
-.disconnect-btn:pressed {
-    -fx-background-color: #b30010;
-    -fx-scale-x: 0.95;
-    -fx-scale-y: 0.95;
-}
-
-/* Device scroll pane */
 .device-scroll-pane {
     -fx-background-color: transparent;
     -fx-background: transparent;
-    -fx-border-color: transparent;
+    -fx-border-color: rgba(0, 169, 165, 0.5);
+    -fx-border-width: 1.5px;
+    -fx-border-radius: 14;
+    -fx-border-style: dashed;
 }
 
 .device-scroll-pane > .viewport {
     -fx-background-color: transparent;
 }
 
-/* Individual device item card */
 .device-card {
     -fx-background-color: #ffffff;
-    -fx-background-radius: 14px;
-    -fx-border-radius: 14px;
-    -fx-border-color: #e5e7eb;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #e6eaee;
     -fx-border-width: 1px;
-    -fx-padding: 10px 14px;
+    -fx-padding: 10 14;
     -fx-cursor: hand;
 }
 
 .device-card:hover {
-    -fx-background-color: #f9fafb;
-    -fx-border-color: #cbd5e1;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 8, 0, 0, 2);
+    -fx-background-color: #f2fbfa;
+    -fx-border-color: rgba(0, 169, 165, 0.6);
+    -fx-effect: dropshadow(gaussian, rgba(0, 169, 165, 0.15), 8, 0, 0, 2);
 }
 
 .device-name {
     -fx-font-size: 13px;
     -fx-font-weight: bold;
-    -fx-text-fill: #111827;
+    -fx-text-fill: #102027;
 }
 
 .device-host {
     -fx-font-size: 11px;
-    -fx-text-fill: #6b7280;
+    -fx-text-fill: #7a8891;
+}
+
+.dropdown-menu {
+    -fx-font-family: cursive, monospace;
+    -fx-font-style: italic;
+    -fx-background-color: white;
+    -fx-border-color: #11dfe9;
+    -fx-border-radius: 2.5em;
+}
+
+.dropdown-menu:hover {
+    -fx-background-color: rgb(211, 211, 211);
+}
+
+.dropdown-menu:active {
+    -fx-background-color: rgb(211, 211, 211);
+
 }
