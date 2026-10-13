@@ -1,0 +1,202 @@
+[
+    {
+        "question": "What is the average-case time complexity of quicksort?",
+        "choices": [
+            "O(n log n)",
+            "O(n^2)",
+            "O(log n)",
+            "O(n)"
+        ],
+        "answer": "O(n log n)"
+    },
+    {
+        "question": "Which data structure implements LIFO order?",
+        "choices": [
+            "Queue",
+            "Stack",
+            "Tree",
+            "Graph"
+        ],
+        "answer": "Stack"
+    },
+    {
+        "question": "In a binary search tree, which property must hold for every node?",
+        "choices": [
+            "All keys in the left subtree are greater than the node.",
+            "All keys in the left subtree are less than the node.",
+            "All keys in the left subtree are equal to the node.",
+            "There is no constraint on subtree keys."
+        ],
+        "answer": "All keys in the left subtree are less than the node."
+    },
+    {
+        "question": "Which CPU scheduling algorithm is designed to be fair and responsive by giving each process a fixed time slice?",
+        "choices": [
+            "First-Come, First-Served",
+            "Round-robin",
+            "Shortest-Job-Next",
+            "Priority Scheduling"
+        ],
+        "answer": "Round-robin"
+    },
+    {
+        "question": "Which OSI layer provides end-to-end communication control and reliability?",
+        "choices": [
+            "Application",
+            "Transport",
+            "Network",
+            "Data Link"
+        ],
+        "answer": "Transport"
+    },
+    {
+        "question": "What does ACID stand for in database systems?",
+        "choices": [
+            "Atomicity, Consistency, Isolation, Durability",
+            "Atomicity, Cache, Isolation, Durability",
+            "Asynchrony, Consistency, Isolation, Durability",
+            "Atomicity, Consistency, Integrity, Durability"
+        ],
+        "answer": "Atomicity, Consistency, Isolation, Durability"
+    },
+    {
+        "question": "What characterizes a pure function?",
+        "choices": [
+            "A function with side effects",
+            "A function that returns the same output for the same input and has no side effects",
+            "A function that modifies global state",
+            "A function that uses randomness"
+        ],
+        "answer": "A function that returns the same output for the same input and has no side effects"
+    },
+    {
+        "question": "Which data structure provides O(1) average-case time complexity for key lookups?",
+        "choices": [
+            "Array",
+            "Linked list",
+            "Hash table",
+            "Binary search tree"
+        ],
+        "answer": "Hash table"
+    },
+    {
+        "question": "What describes overfitting in machine learning?",
+        "choices": [
+            "The model performs well on unseen data",
+            "The model learns the training data too well and fails to generalize",
+            "The model has high bias",
+            "The model underfits the data"
+        ],
+        "answer": "The model learns the training data too well and fails to generalize"
+    },
+    {
+        "question": "Dijkstra's algorithm computes which of the following?",
+        "choices": [
+            "Minimum spanning tree",
+            "Shortest paths from a source to all vertices in a graph with non-negative weights",
+            "Maximum flow",
+            "Topological order"
+        ],
+        "answer": "Shortest paths from a source to all vertices in a graph with non-negative weights"
+    },
+    {
+        "question": "Which statement about P versus NP is most widely believed?",
+        "choices": [
+            "P = NP",
+            "P is a subset of NP",
+            "P != NP",
+            "P is undecidable"
+        ],
+        "answer": "P != NP"
+    },
+    {
+        "question": "Which cryptographic technique is used to verify data integrity and authenticity with digital signatures?",
+        "choices": [
+            "Hash functions",
+            "Public-key cryptography",
+            "Symmetric-key encryption",
+            "Stream ciphers"
+        ],
+        "answer": "Public-key cryptography"
+    },
+    {
+        "question": "Which memory management technique provides each process with its own virtual address space for isolation?",
+        "choices": [
+            "Segmentation",
+            "Virtual memory",
+            "Paging",
+            "Cache memory"
+        ],
+        "answer": "Virtual memory"
+    },
+    {
+        "question": "What does IaaS stand for in cloud computing?",
+        "choices": [
+            "Infrastructure as a Service",
+            "Integrated as a Service",
+            "Interface as a Service",
+            "Internet as a Service"
+        ],
+        "answer": "Infrastructure as a Service"
+    },
+    {
+        "question": "Which data structure follows First-In-First-Out (FIFO) ordering?",
+        "choices": [
+            "Stack",
+            "Queue",
+            "Graph",
+            "Tree"
+        ],
+        "answer": "Queue"
+    },
+    {
+        "question": "Which synchronization primitive is typically used to block threads until a condition becomes true?",
+        "choices": [
+            "Mutex",
+            "Semaphore",
+            "Condition variable",
+            "Spinlock"
+        ],
+        "answer": "Condition variable"
+    },
+    {
+        "question": "Which protocol is used to securely transfer web pages between a client and a server?",
+        "choices": [
+            "HTTP",
+            "FTP",
+            "SSH",
+            "HTTPS"
+        ],
+        "answer": "HTTPS"
+    },
+    {
+        "question": "In SQL, which statement is used to retrieve data from a database?",
+        "choices": [
+            "INSERT",
+            "SELECT",
+            "UPDATE",
+            "DELETE"
+        ],
+        "answer": "SELECT"
+    },
+    {
+        "question": "Which language adds optional static typing to JavaScript and compiles to JavaScript?",
+        "choices": [
+            "TypeScript",
+            "CoffeeScript",
+            "ReasonML",
+            "Elm"
+        ],
+        "answer": "TypeScript"
+    },
+    {
+        "question": "Which sorting algorithm guarantees O(n log n) worst-case performance and sorts in place?",
+        "choices": [
+            "Quicksort",
+            "Mergesort",
+            "Heapsort",
+            "Bubble sort"
+        ],
+        "answer": "Heapsort"
+    }
+]

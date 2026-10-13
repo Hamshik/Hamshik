@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Rectangle?>
+
+<AnchorPane id="rootPanel" fx:id="rootPanel" focusTraversable="true" prefHeight="650.0" prefWidth="500.0" stylesheets="@App.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.hamshik.Controller">
+   <children>
+      <!-- Hero Image -->
+      <ImageView fx:id="heroView" fitHeight="154.0" fitWidth="149.0" layoutX="175.0" layoutY="502.0" pickOnBounds="true">
+         <image>
+            <Image url="@hero.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="coffView1" fitHeight="69.0" fitWidth="83.0" layoutX="-375.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@coffeeBean.png" />
+         </image>
+      </ImageView>
+      <Rectangle fx:id="rectangle1" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="34.0" layoutX="56.0" layoutY="30.0" stroke="BLACK" strokeType="INSIDE" width="76.0" />
+      <Circle fill="DODGERBLUE" layoutX="-42.0" layoutY="127.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+      <ImageView fitHeight="50.0" fitWidth="33.0" layoutX="32.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@coffeeBean.png" />
+         </image>
+      </ImageView>
+      <Circle fx:id="circle1" fill="DODGERBLUE" layoutX="48.0" layoutY="47.0" radius="17.0" stroke="BLACK" strokeType="INSIDE" />
+      <Label fx:id="scoreLabel" layoutX="65.0" layoutY="30.0" prefHeight="34.0" prefWidth="70.0" text="0" />
+      <Label fx:id="gameOver" alignment="CENTER" contentDisplay="CENTER" layoutX="194.0" layoutY="212.0" prefHeight="58.0" prefWidth="113.0" text="Game Over" visible="false" />
+      <ImageView fx:id="block" fitHeight="150.0" fitWidth="200.0" layoutX="155.0" layoutY="-60.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@block.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="bat" fitHeight="45.0" fitWidth="131.0" layoutX="32.0" layoutY="-60.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@bat.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="bomb" fitHeight="85.0" fitWidth="113.0" layoutX="181.0" layoutY="-102.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@bomb.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="gameOverLabel" layoutY="190.0" prefHeight="69.0" prefWidth="500.0" text="Game Over! Pls reopen it to start the game" underline="true" visible="false" />
+   </children>
+</AnchorPane>

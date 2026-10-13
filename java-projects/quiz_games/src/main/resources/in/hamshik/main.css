@@ -1,0 +1,106 @@
+/* =====================================================
+   BASE BUTTON STYLE
+   ===================================================== */
+.button {
+    -fx-background-color: #cacaca;
+    -fx-text-fill: #222222;
+    -fx-font-size: 14px;
+    -fx-background-radius: 6px;
+    -fx-cursor: hand;
+}
+
+
+/* =====================================================
+   BUTTON HOVER
+   ===================================================== */
+.button:hover {
+   -fx-background-color: #4fc3f7;      /* soft blue */
+    -fx-text-fill: white; 
+}
+
+
+/* =====================================================
+   ACTIVE / SELECTED BUTTON
+   ===================================================== */
+.button.activeBut,
+.button.activeBut:hover,
+.button.activeBut:pressed,
+.button.activeBut:focused {
+    -fx-background-color: #0288d1;      /* strong blue */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.button.activeBut:hover {
+    -fx-background-color: #0277bd;      /* darker blue */
+}
+
+
+/* =====================================================
+   INACTIVE BUTTON
+   ===================================================== */
+.button.inactiveBut,
+.button.inactiveBut:pressed,
+.button.inactiveBut:focused {
+    -fx-background-color: #e0e0e0;      /* light gray */
+    -fx-text-fill: #777777;
+    -fx-cursor: default;
+}
+
+.button.inactiveBut:hover{
+    -fx-background-color: #4fc3f7;      /* soft blue */
+    -fx-text-fill: white;
+}
+
+
+/* =====================================================
+   QUESTION TEXT
+   ===================================================== */
+#ques_text {
+    -fx-padding: 8px;
+    -fx-background-color: rgba(179, 229, 252, 0.85);
+    -fx-text-fill: #0d47a1;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6px;
+}
+
+
+/* =====================================================
+   ANSWER FEEDBACK
+   ===================================================== */
+.correct {
+    -fx-text-fill: #2e7d32;             /* green */
+    -fx-font-weight: bold;
+}
+
+.incorrect {
+    -fx-text-fill: #c62828;             /* red */
+    -fx-font-weight: bold;
+}
+
+
+/* =====================================================
+   LABEL STYLES
+   ===================================================== */
+.label {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0d47a1;
+    -fx-text-alignment: center;
+}
+
+#welcomText{
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0d47a1;
+}
+
+#quizPerformBut{
+    -fx-background-image: url('leaderBoard.png');
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
+ 

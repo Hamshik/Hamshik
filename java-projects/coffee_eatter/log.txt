@@ -1,0 +1,1185 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ----------------------< in.hamshik:coffee_eatter >----------------------
+[INFO] Building coffee_eatter 1.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ coffee_eatter ---
+[INFO] Deleting C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target
+[INFO] 
+[INFO] >>> javafx:0.0.8:run (default-cli) > process-classes @ coffee_eatter >>>
+[INFO] 
+[INFO] --- enforcer:3.1.0:enforce (enforce-min-java) @ coffee_eatter ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ coffee_eatter ---
+[INFO] Copying 11 resources from src\main\resources\in\hamshik to target\classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ coffee_eatter ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 6 source files with javac [debug release 25 module-path] to target\classes
+[INFO] 
+[INFO] <<< javafx:0.0.8:run (default-cli) < process-classes @ coffee_eatter <<<
+[INFO] 
+[INFO] 
+[INFO] --- javafx:0.0.8:run (default-cli) @ coffee_eatter ---
+[WARNING] Module name not found in <mainClass>. Module name will be assumed from module-info.java
+[ERROR] Command execution failed.
+org.apache.commons.exec.ExecuteException: Process exited with an error: 1 (Exit value: 1)
+    at org.apache.commons.exec.DefaultExecutor.executeInternal (DefaultExecutor.java:404)
+    at org.apache.commons.exec.DefaultExecutor.execute (DefaultExecutor.java:166)
+    at org.openjfx.JavaFXBaseMojo.executeCommandLine (JavaFXBaseMojo.java:567)
+    at org.openjfx.JavaFXBaseMojo.executeCommandLine (JavaFXBaseMojo.java:434)
+    at org.openjfx.JavaFXRunMojo.execute (JavaFXRunMojo.java:105)
+    at org.apache.maven.plugin.DefaultBuildPluginManager.executeMojo (DefaultBuildPluginManager.java:126)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.doExecute2 (MojoExecutor.java:328)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.doExecute (MojoExecutor.java:316)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:212)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:174)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.access$000 (MojoExecutor.java:75)
+    at org.apache.maven.lifecycle.internal.MojoExecutor$1.run (MojoExecutor.java:162)
+    at org.apache.maven.plugin.DefaultMojosExecutionStrategy.execute (DefaultMojosExecutionStrategy.java:39)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:159)
+    at org.apache.maven.lifecycle.internal.LifecycleModuleBuilder.buildProject (LifecycleModuleBuilder.java:105)
+    at org.apache.maven.lifecycle.internal.LifecycleModuleBuilder.buildProject (LifecycleModuleBuilder.java:73)
+    at org.apache.maven.lifecycle.internal.builder.singlethreaded.SingleThreadedBuilder.build (SingleThreadedBuilder.java:53)
+    at org.apache.maven.lifecycle.internal.LifecycleStarter.execute (LifecycleStarter.java:118)
+    at org.apache.maven.DefaultMaven.doExecute (DefaultMaven.java:261)
+    at org.apache.maven.DefaultMaven.doExecute (DefaultMaven.java:173)
+    at org.apache.maven.DefaultMaven.execute (DefaultMaven.java:101)
+    at org.apache.maven.cli.MavenCli.execute (MavenCli.java:906)
+    at org.apache.maven.cli.MavenCli.doMain (MavenCli.java:283)
+    at org.apache.maven.cli.MavenCli.main (MavenCli.java:206)
+    at jdk.internal.reflect.DirectMethodHandleAccessor.invoke (DirectMethodHandleAccessor.java:104)
+    at java.lang.reflect.Method.invoke (Method.java:565)
+    at org.codehaus.plexus.classworlds.launcher.Launcher.launchEnhanced (Launcher.java:255)
+    at org.codehaus.plexus.classworlds.launcher.Launcher.launch (Launcher.java:201)
+    at org.codehaus.plexus.classworlds.launcher.Launcher.mainWithExitCode (Launcher.java:361)
+    at org.codehaus.plexus.classworlds.launcher.Launcher.main (Launcher.java:314)
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  2.940 s
+[INFO] Finished at: 2025-10-26T14:33:59+05:30
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.openjfx:javafx-maven-plugin:0.0.8:run (default-cli) on project coffee_eatter: Error: Command execution failed. Process exited with an error: 1 (Exit value: 1) -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
+Apache Maven 3.9.11 (3e54c93a704957b63ee3494413a2b544fd3d825b)
+Maven home: C:\Users\prscm\AppData\Roaming\Code\User\globalStorage\pleiades.java-extension-pack-jdk\maven\latest
+Java version: 25, vendor: Oracle Corporation, runtime: C:\Program Files\Java\jdk-25
+Default locale: en_IN, platform encoding: UTF-8
+OS name: "windows 11", version: "10.0", arch: "amd64", family: "windows"
+[DEBUG] Created new class realm maven.api
+[DEBUG] Importing foreign packages into class realm maven.api
+[DEBUG]   Imported: javax.annotation.* < plexus.core
+[DEBUG]   Imported: javax.annotation.security.* < plexus.core
+[DEBUG]   Imported: javax.inject.* < plexus.core
+[DEBUG]   Imported: org.apache.maven.* < plexus.core
+[DEBUG]   Imported: org.apache.maven.artifact < plexus.core
+[DEBUG]   Imported: org.apache.maven.classrealm < plexus.core
+[DEBUG]   Imported: org.apache.maven.cli < plexus.core
+[DEBUG]   Imported: org.apache.maven.configuration < plexus.core
+[DEBUG]   Imported: org.apache.maven.exception < plexus.core
+[DEBUG]   Imported: org.apache.maven.execution < plexus.core
+[DEBUG]   Imported: org.apache.maven.execution.scope < plexus.core
+[DEBUG]   Imported: org.apache.maven.graph < plexus.core
+[DEBUG]   Imported: org.apache.maven.lifecycle < plexus.core
+[DEBUG]   Imported: org.apache.maven.model < plexus.core
+[DEBUG]   Imported: org.apache.maven.monitor < plexus.core
+[DEBUG]   Imported: org.apache.maven.plugin < plexus.core
+[DEBUG]   Imported: org.apache.maven.profiles < plexus.core
+[DEBUG]   Imported: org.apache.maven.project < plexus.core
+[DEBUG]   Imported: org.apache.maven.reporting < plexus.core
+[DEBUG]   Imported: org.apache.maven.repository < plexus.core
+[DEBUG]   Imported: org.apache.maven.rtinfo < plexus.core
+[DEBUG]   Imported: org.apache.maven.settings < plexus.core
+[DEBUG]   Imported: org.apache.maven.toolchain < plexus.core
+[DEBUG]   Imported: org.apache.maven.usability < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.* < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.authentication < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.authorization < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.events < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.observers < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.proxy < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.repository < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.resource < plexus.core
+[DEBUG]   Imported: org.codehaus.classworlds < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.* < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.classworlds < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.component < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.configuration < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.container < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.context < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.lifecycle < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.logging < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.personality < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.util.xml.Xpp3Dom < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.util.xml.pull.XmlPullParser < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.util.xml.pull.XmlPullParserException < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.util.xml.pull.XmlSerializer < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.* < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.artifact < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.collection < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.deployment < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.graph < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.impl < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.installation < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.internal.impl < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.metadata < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.repository < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.resolution < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.spi < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.transfer < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.util < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.version < plexus.core
+[DEBUG]   Imported: org.fusesource.jansi.* < plexus.core
+[DEBUG]   Imported: org.slf4j.* < plexus.core
+[DEBUG]   Imported: org.slf4j.event.* < plexus.core
+[DEBUG]   Imported: org.slf4j.helpers.* < plexus.core
+[DEBUG]   Imported: org.slf4j.spi.* < plexus.core
+[DEBUG] Populating class realm maven.api
+[DEBUG] Created adapter factory; available factories [file-lock, rwlock-local, semaphore-local, noop]; available name mappers [discriminating, file-gav, file-hgav, file-static, gav, static]
+[INFO] Error stacktraces are turned on.
+[DEBUG] Message scheme: color
+[DEBUG] Message styles: debug info warning error success failure strong mojo project
+[DEBUG] Reading global settings from C:\Users\prscm\AppData\Roaming\Code\User\globalStorage\pleiades.java-extension-pack-jdk\maven\latest\conf\settings.xml
+[DEBUG] Reading user settings from C:\Users\prscm\.m2\settings.xml
+[DEBUG] Reading global toolchains from C:\Users\prscm\AppData\Roaming\Code\User\globalStorage\pleiades.java-extension-pack-jdk\maven\latest\conf\toolchains.xml
+[DEBUG] Reading user toolchains from C:\Users\prscm\.m2\toolchains.xml
+[DEBUG] Using local repository at C:\Users\prscm\.m2\repository
+[DEBUG] Using manager EnhancedLocalRepositoryManager with priority 10.0 for C:\Users\prscm\.m2\repository
+[INFO] Scanning for projects...
+[DEBUG] Extension realms for project in.hamshik:coffee_eatter:jar:1.0-SNAPSHOT: (none)
+[DEBUG] Looking up lifecycle mappings for packaging jar from ClassRealm[plexus.core, parent: null]
+[DEBUG] Resolving plugin prefix javafx from [org.apache.maven.plugins, org.codehaus.mojo]
+[DEBUG] Creating adapter using nameMapper 'gav' and factory 'rwlock-local'
+[DEBUG] Resolved plugin prefix javafx to org.openjfx:javafx-maven-plugin from POM in.hamshik:coffee_eatter:jar:1.0-SNAPSHOT
+[DEBUG] === REACTOR BUILD PLAN ================================================
+[DEBUG] Project: in.hamshik:coffee_eatter:jar:1.0-SNAPSHOT
+[DEBUG] Tasks:   [clean, javafx:run]
+[DEBUG] Style:   Regular
+[DEBUG] =======================================================================
+[INFO] 
+[INFO] ----------------------< in.hamshik:coffee_eatter >----------------------
+[INFO] Building coffee_eatter 1.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[DEBUG] Lifecycle clean -> [pre-clean, clean, post-clean]
+[DEBUG] Lifecycle default -> [validate, initialize, generate-sources, process-sources, generate-resources, process-resources, compile, process-classes, generate-test-sources, process-test-sources, generate-test-resources, process-test-resources, test-compile, process-test-classes, test, prepare-package, package, pre-integration-test, integration-test, post-integration-test, verify, install, deploy]
+[DEBUG] Lifecycle site -> [pre-site, site, post-site, site-deploy]
+[DEBUG] Resolving plugin prefix javafx from [org.apache.maven.plugins, org.codehaus.mojo]
+[DEBUG] Resolved plugin prefix javafx to org.openjfx:javafx-maven-plugin from POM in.hamshik:coffee_eatter:jar:1.0-SNAPSHOT
+[DEBUG] Lifecycle clean -> [pre-clean, clean, post-clean]
+[DEBUG] Lifecycle default -> [validate, initialize, generate-sources, process-sources, generate-resources, process-resources, compile, process-classes, generate-test-sources, process-test-sources, generate-test-resources, process-test-resources, test-compile, process-test-classes, test, prepare-package, package, pre-integration-test, integration-test, post-integration-test, verify, install, deploy]
+[DEBUG] Lifecycle site -> [pre-site, site, post-site, site-deploy]
+[DEBUG] Lifecycle clean -> [pre-clean, clean, post-clean]
+[DEBUG] Lifecycle default -> [validate, initialize, generate-sources, process-sources, generate-resources, process-resources, compile, process-classes, generate-test-sources, process-test-sources, generate-test-resources, process-test-resources, test-compile, process-test-classes, test, prepare-package, package, pre-integration-test, integration-test, post-integration-test, verify, install, deploy]
+[DEBUG] Lifecycle site -> [pre-site, site, post-site, site-deploy]
+[DEBUG] Lifecycle clean -> [pre-clean, clean, post-clean]
+[DEBUG] Lifecycle default -> [validate, initialize, generate-sources, process-sources, generate-resources, process-resources, compile, process-classes, generate-test-sources, process-test-sources, generate-test-resources, process-test-resources, test-compile, process-test-classes, test, prepare-package, package, pre-integration-test, integration-test, post-integration-test, verify, install, deploy]
+[DEBUG] Lifecycle site -> [pre-site, site, post-site, site-deploy]
+[DEBUG] === PROJECT BUILD PLAN ================================================
+[DEBUG] Project:       in.hamshik:coffee_eatter:1.0-SNAPSHOT
+[DEBUG] Dependencies (collect): []
+[DEBUG] Dependencies (resolve): [runtime]
+[DEBUG] Repositories (dependencies): [openjfx (https://maven.pkg.github.com/openjfx/javafx, default, releases+snapshots), central (https://repo.maven.apache.org/maven2, default, releases+snapshots)]
+[DEBUG] Repositories (plugins)     : [central (https://repo.maven.apache.org/maven2, default, releases)]
+[DEBUG] -----------------------------------------------------------------------
+[DEBUG] Goal:          org.apache.maven.plugins:maven-clean-plugin:3.2.0:clean (default-clean)
+[DEBUG] Style:         Regular
+[DEBUG] Configuration: <?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <directory default-value="${project.build.directory}"/>
+  <excludeDefaultDirectories default-value="false">${maven.clean.excludeDefaultDirectories}</excludeDefaultDirectories>
+  <failOnError default-value="true">${maven.clean.failOnError}</failOnError>
+  <fast default-value="false">${maven.clean.fast}</fast>
+  <fastDir>${maven.clean.fastDir}</fastDir>
+  <fastMode default-value="background">${maven.clean.fastMode}</fastMode>
+  <followSymLinks default-value="false">${maven.clean.followSymLinks}</followSymLinks>
+  <outputDirectory default-value="${project.build.outputDirectory}"/>
+  <reportDirectory default-value="${project.build.outputDirectory}"/>
+  <retryOnError default-value="true">${maven.clean.retryOnError}</retryOnError>
+  <session default-value="${session}"/>
+  <skip default-value="false">${maven.clean.skip}</skip>
+  <testOutputDirectory default-value="${project.build.testOutputDirectory}"/>
+  <verbose>${maven.clean.verbose}</verbose>
+</configuration>
+[DEBUG] --- init fork of in.hamshik:coffee_eatter:1.0-SNAPSHOT for org.openjfx:javafx-maven-plugin:0.0.8:run (default-cli) ---
+[DEBUG] Dependencies (collect): [test]
+[DEBUG] Dependencies (resolve): [compile]
+[DEBUG] -----------------------------------------------------------------------
+[DEBUG] Goal:          org.apache.maven.plugins:maven-enforcer-plugin:3.1.0:enforce (enforce-min-java)
+[DEBUG] Style:         Regular
+[DEBUG] Configuration: <?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <commandLineRules>${rules}</commandLineRules>
+  <fail default-value="true">true</fail>
+  <failFast default-value="false">${enforcer.failFast}</failFast>
+  <ignoreCache default-value="false">${enforcer.ignoreCache}</ignoreCache>
+  <mojoExecution default-value="${mojoExecution}"/>
+  <project default-value="${project}"/>
+  <rules>
+    <requireJavaVersion>
+      <version>[21,)</version>
+    </requireJavaVersion>
+  </rules>
+  <session default-value="${session}"/>
+  <skip default-value="false">${enforcer.skip}</skip>
+</configuration>
+[DEBUG] -----------------------------------------------------------------------
+[DEBUG] Goal:          org.apache.maven.plugins:maven-resources-plugin:3.3.1:resources (default-resources)
+[DEBUG] Style:         Regular
+[DEBUG] Configuration: <?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <addDefaultExcludes default-value="true"/>
+  <buildFilters default-value="${project.build.filters}"/>
+  <encoding default-value="${project.build.sourceEncoding}"/>
+  <escapeWindowsPaths default-value="true"/>
+  <fileNameFiltering default-value="false"/>
+  <includeEmptyDirs default-value="false"/>
+  <outputDirectory default-value="${project.build.outputDirectory}"/>
+  <overwrite default-value="false"/>
+  <project default-value="${project}"/>
+  <resources default-value="${project.resources}"/>
+  <session default-value="${session}"/>
+  <skip default-value="false">${maven.resources.skip}</skip>
+  <supportMultiLineFiltering default-value="false"/>
+  <useBuildFilters default-value="true"/>
+  <useDefaultDelimiters default-value="true"/>
+</configuration>
+[DEBUG] -----------------------------------------------------------------------
+[DEBUG] Goal:          org.apache.maven.plugins:maven-compiler-plugin:3.13.0:compile (default-compile)
+[DEBUG] Style:         Regular
+[DEBUG] Configuration: <?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <annotationProcessorPathsUseDepMgmt default-value="false"/>
+  <basedir default-value="${basedir}"/>
+  <buildDirectory default-value="${project.build.directory}"/>
+  <compilePath default-value="${project.compileClasspathElements}"/>
+  <compileSourceRoots default-value="${project.compileSourceRoots}"/>
+  <compilerId default-value="javac">${maven.compiler.compilerId}</compilerId>
+  <compilerReuseStrategy default-value="${reuseCreated}">${maven.compiler.compilerReuseStrategy}</compilerReuseStrategy>
+  <compilerVersion>${maven.compiler.compilerVersion}</compilerVersion>
+  <createMissingPackageInfoClass default-value="true">${maven.compiler.createMissingPackageInfoClass}</createMissingPackageInfoClass>
+  <debug default-value="true">${maven.compiler.debug}</debug>
+  <debugFileName default-value="javac"/>
+  <debuglevel>${maven.compiler.debuglevel}</debuglevel>
+  <enablePreview default-value="false">${maven.compiler.enablePreview}</enablePreview>
+  <encoding default-value="${project.build.sourceEncoding}">${encoding}</encoding>
+  <executable>${maven.compiler.executable}</executable>
+  <failOnError default-value="true">${maven.compiler.failOnError}</failOnError>
+  <failOnWarning default-value="false">${maven.compiler.failOnWarning}</failOnWarning>
+  <fileExtensions default-value="class,jar"/>
+  <forceJavacCompilerUse default-value="false">${maven.compiler.forceJavacCompilerUse}</forceJavacCompilerUse>
+  <forceLegacyJavacApi default-value="false">${maven.compiler.forceLegacyJavacApi}</forceLegacyJavacApi>
+  <fork default-value="false">${maven.compiler.fork}</fork>
+  <generatedSourcesDirectory default-value="${project.build.directory}/generated-sources/annotations"/>
+  <implicit>${maven.compiler.implicit}</implicit>
+  <maxmem>${maven.compiler.maxmem}</maxmem>
+  <meminitial>${maven.compiler.meminitial}</meminitial>
+  <mojoExecution default-value="${mojoExecution}"/>
+  <optimize default-value="false">${maven.compiler.optimize}</optimize>
+  <outputDirectory default-value="${project.build.outputDirectory}">${maven.compiler.outputDirectory}</outputDirectory>
+  <outputTimestamp default-value="${project.build.outputTimestamp}"/>
+  <parameters default-value="false">${maven.compiler.parameters}</parameters>
+  <proc>${maven.compiler.proc}</proc>
+  <project default-value="${project}"/>
+  <projectArtifact default-value="${project.artifact}"/>
+  <release>25</release>
+  <session default-value="${session}"/>
+  <showCompilationChanges default-value="false">${maven.compiler.showCompilationChanges}</showCompilationChanges>
+  <showDeprecation default-value="false">${maven.compiler.showDeprecation}</showDeprecation>
+  <showWarnings default-value="true">${maven.compiler.showWarnings}</showWarnings>
+  <skipMain>${maven.main.skip}</skipMain>
+  <skipMultiThreadWarning default-value="false">${maven.compiler.skipMultiThreadWarning}</skipMultiThreadWarning>
+  <source default-value="1.8">${maven.compiler.source}</source>
+  <staleMillis default-value="0">${lastModGranularityMs}</staleMillis>
+  <target default-value="1.8">${maven.compiler.target}</target>
+  <useIncrementalCompilation default-value="true">${maven.compiler.useIncrementalCompilation}</useIncrementalCompilation>
+  <verbose default-value="false">${maven.compiler.verbose}</verbose>
+</configuration>
+[DEBUG] --- exit fork of in.hamshik:coffee_eatter:1.0-SNAPSHOT for org.openjfx:javafx-maven-plugin:0.0.8:run (default-cli) ---
+[DEBUG] -----------------------------------------------------------------------
+[DEBUG] Goal:          org.openjfx:javafx-maven-plugin:0.0.8:run (default-cli)
+[DEBUG] Style:         Regular
+[DEBUG] Configuration: <?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <async default-value="false">${javafx.async}</async>
+  <asyncDestroyOnShutdown default-value="true">${javafx.asyncDestroyOnShutdown}</asyncDestroyOnShutdown>
+  <basedir default-value="${basedir}"/>
+  <builddir default-value="${project.build.directory}"/>
+  <commandlineArgs>${javafx.args}</commandlineArgs>
+  <compilePath default-value="${project.compileClasspathElements}"/>
+  <executable default-value="java">${javafx.executable}</executable>
+  <includePathExceptionsInClasspath default-value="false">${javafx.includePathExceptionsInClasspath}</includePathExceptionsInClasspath>
+  <mainClass>in.hamshik.App</mainClass>
+  <outputFile>${javafx.outputFile}</outputFile>
+  <project default-value="${project}"/>
+  <runtimePathOption>${javafx.runtimePathOption}</runtimePathOption>
+  <session default-value="${session}"/>
+  <skip default-value="false">${javafx.skip}</skip>
+  <workingDirectory>${javafx.workingDirectory}</workingDirectory>
+</configuration>
+[DEBUG] =======================================================================
+[DEBUG] Dependency collection stats {ConflictMarker.analyzeTime=353800, ConflictMarker.markTime=54400, ConflictMarker.nodeCount=32, ConflictIdSorter.graphTime=223100, ConflictIdSorter.topsortTime=199900, ConflictIdSorter.conflictIdCount=13, ConflictIdSorter.conflictIdCycleCount=8, ConflictResolver.totalTime=1925000, ConflictResolver.conflictItemCount=23, DfDependencyCollector.collectTime=40448100, DfDependencyCollector.transformTime=3734800}
+[DEBUG] in.hamshik:coffee_eatter:jar:1.0-SNAPSHOT
+[DEBUG]    org.openjfx:javafx-base:jar:win:25.0.1:compile
+[DEBUG]    org.openjfx:javafx-controls:jar:win:25.0.1:compile
+[DEBUG]       org.openjfx:javafx-graphics:jar:25.0.1:compile
+[DEBUG]    org.openjfx:javafx-graphics:jar:win:25.0.1:compile
+[DEBUG]       org.openjfx:javafx-base:jar:25.0.1:compile
+[DEBUG]    org.openjfx:javafx-fxml:jar:win:25.0.1:compile
+[DEBUG]       org.openjfx:javafx-controls:jar:25.0.1:compile
+[DEBUG]    org.openjfx:javafx-media:jar:win:25.0.1:compile
+[DEBUG]    org.openjfx:javafx-swing:jar:win:25.0.1:compile
+[DEBUG]    org.openjfx:javafx-web:jar:win:25.0.1:compile
+[DEBUG]       org.openjfx:javafx-media:jar:25.0.1:compile
+[DEBUG]       org.openjfx:jdk-jsobject:jar:25.0.1:compile
+[DEBUG]          org.openjfx:jdk-jsobject:jar:win:25.0.1:compile
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ coffee_eatter ---
+[DEBUG] Dependency collection stats {ConflictMarker.analyzeTime=12400, ConflictMarker.markTime=22200, ConflictMarker.nodeCount=3, ConflictIdSorter.graphTime=4100, ConflictIdSorter.topsortTime=7100, ConflictIdSorter.conflictIdCount=3, ConflictIdSorter.conflictIdCycleCount=0, ConflictResolver.totalTime=60400, ConflictResolver.conflictItemCount=3, DfDependencyCollector.collectTime=23300000, DfDependencyCollector.transformTime=116300}
+[DEBUG] org.apache.maven.plugins:maven-clean-plugin:jar:3.2.0
+[DEBUG]    org.apache.maven.shared:maven-shared-utils:jar:3.3.4:compile
+[DEBUG]       commons-io:commons-io:jar:2.6:compile
+[DEBUG] Created new class realm plugin>org.apache.maven.plugins:maven-clean-plugin:3.2.0
+[DEBUG] Importing foreign packages into class realm plugin>org.apache.maven.plugins:maven-clean-plugin:3.2.0
+[DEBUG]   Imported:  < maven.api
+[DEBUG] Populating class realm plugin>org.apache.maven.plugins:maven-clean-plugin:3.2.0
+[DEBUG]   Included: org.apache.maven.plugins:maven-clean-plugin:jar:3.2.0
+[DEBUG]   Included: org.apache.maven.shared:maven-shared-utils:jar:3.3.4
+[DEBUG]   Included: commons-io:commons-io:jar:2.6
+[DEBUG] Loading mojo org.apache.maven.plugins:maven-clean-plugin:3.2.0:clean from plugin realm ClassRealm[plugin>org.apache.maven.plugins:maven-clean-plugin:3.2.0, parent: jdk.internal.loader.ClassLoaders$AppClassLoader@1affbebc]
+[DEBUG] Configuring mojo execution 'org.apache.maven.plugins:maven-clean-plugin:3.2.0:clean:default-clean' with basic configurator -->
+[DEBUG]   (f) directory = C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target
+[DEBUG]   (f) excludeDefaultDirectories = false
+[DEBUG]   (f) failOnError = true
+[DEBUG]   (f) fast = false
+[DEBUG]   (f) fastMode = background
+[DEBUG]   (f) followSymLinks = false
+[DEBUG]   (f) outputDirectory = C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes
+[DEBUG]   (f) reportDirectory = C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes
+[DEBUG]   (f) retryOnError = true
+[DEBUG]   (f) session = org.apache.maven.execution.MavenSession@154bd49b
+[DEBUG]   (f) skip = false
+[DEBUG]   (f) testOutputDirectory = C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\test-classes
+[DEBUG] -- end configuration --
+[INFO] Deleting C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target
+[INFO] Deleting file C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\maven-status\maven-compiler-plugin\compile\default-compile\inputFiles.lst
+[INFO] Deleting file C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\maven-status\maven-compiler-plugin\compile\default-compile\createdFiles.lst
+[INFO] Deleting directory C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\maven-status\maven-compiler-plugin\compile\default-compile
+[INFO] Deleting directory C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\maven-status\maven-compiler-plugin\compile
+[INFO] Deleting directory C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\maven-status\maven-compiler-plugin
+[INFO] Deleting directory C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\maven-status
+[INFO] Deleting directory C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\generated-sources\annotations
+[INFO] Deleting directory C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\generated-sources
+[INFO] Deleting file C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes\Scene.fxml
+[INFO] Deleting file C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes\resetBut.png
+[INFO] Deleting file C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes\module-info.class
+[INFO] Deleting file C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes\menu2.png
+[INFO] Deleting file C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes\menu1.png
+[INFO] Deleting file C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes\in\hamshik\GameOver.class
+[INFO] Deleting file C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes\in\hamshik\GameOver$1.class
+[INFO] Deleting file C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes\in\hamshik\Controller.class
+[INFO] Deleting file C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes\in\hamshik\CoffeeFalling.class
+[INFO] Deleting file C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes\in\hamshik\CoffeeFalling$1.class
+[INFO] Deleting file C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes\in\hamshik\App.class
+[INFO] Deleting file C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes\in\hamshik\App$2.class
+[INFO] Deleting file C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes\in\hamshik\App$1.class
+[INFO] Deleting file C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes\in\hamshik\AlertHandler.class
+[INFO] Deleting directory C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes\in\hamshik
+[INFO] Deleting directory C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes\in
+[INFO] Deleting file C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes\hero.png
+[INFO] Deleting file C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes\coffeeBean.png
+[INFO] Deleting file C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes\coffee.png
+[INFO] Deleting file C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes\bomb.png
+[INFO] Deleting file C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes\block.png
+[INFO] Deleting file C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes\bat.png
+[INFO] Deleting file C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes\App.css
+[INFO] Deleting directory C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes
+[INFO] Deleting directory C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target
+[DEBUG] Skipping non-existing directory C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes
+[DEBUG] Skipping non-existing directory C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\test-classes
+[DEBUG] Skipping non-existing directory C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes
+[INFO] 
+[INFO] >>> javafx:0.0.8:run (default-cli) > process-classes @ coffee_eatter >>>
+[DEBUG] Dependency collection stats {ConflictMarker.analyzeTime=62600, ConflictMarker.markTime=43200, ConflictMarker.nodeCount=32, ConflictIdSorter.graphTime=35000, ConflictIdSorter.topsortTime=39900, ConflictIdSorter.conflictIdCount=13, ConflictIdSorter.conflictIdCycleCount=8, ConflictResolver.totalTime=442600, ConflictResolver.conflictItemCount=23, DfDependencyCollector.collectTime=1430500, DfDependencyCollector.transformTime=642100}
+[DEBUG] in.hamshik:coffee_eatter:jar:1.0-SNAPSHOT
+[DEBUG]    org.openjfx:javafx-base:jar:win:25.0.1:compile
+[DEBUG]    org.openjfx:javafx-controls:jar:win:25.0.1:compile
+[DEBUG]       org.openjfx:javafx-graphics:jar:25.0.1:compile
+[DEBUG]    org.openjfx:javafx-graphics:jar:win:25.0.1:compile
+[DEBUG]       org.openjfx:javafx-base:jar:25.0.1:compile
+[DEBUG]    org.openjfx:javafx-fxml:jar:win:25.0.1:compile
+[DEBUG]       org.openjfx:javafx-controls:jar:25.0.1:compile
+[DEBUG]    org.openjfx:javafx-media:jar:win:25.0.1:compile
+[DEBUG]    org.openjfx:javafx-swing:jar:win:25.0.1:compile
+[DEBUG]    org.openjfx:javafx-web:jar:win:25.0.1:compile
+[DEBUG]       org.openjfx:javafx-media:jar:25.0.1:compile
+[DEBUG]       org.openjfx:jdk-jsobject:jar:25.0.1:compile
+[DEBUG]          org.openjfx:jdk-jsobject:jar:win:25.0.1:compile
+[INFO] 
+[INFO] --- enforcer:3.1.0:enforce (enforce-min-java) @ coffee_eatter ---
+[DEBUG] Using mirror maven-default-http-blocker (http://0.0.0.0/) for apache.snapshots (http://repository.apache.org/snapshots).
+[DEBUG] Using mirror maven-default-http-blocker (http://0.0.0.0/) for jboss-public-repository-group (http://repository.jboss.org/nexus/content/groups/public).
+[DEBUG] Dependency collection stats {ConflictMarker.analyzeTime=282900, ConflictMarker.markTime=133800, ConflictMarker.nodeCount=148, ConflictIdSorter.graphTime=94500, ConflictIdSorter.topsortTime=26600, ConflictIdSorter.conflictIdCount=38, ConflictIdSorter.conflictIdCycleCount=0, ConflictResolver.totalTime=1161600, ConflictResolver.conflictItemCount=89, DfDependencyCollector.collectTime=165423700, DfDependencyCollector.transformTime=1717100}
+[DEBUG] org.apache.maven.plugins:maven-enforcer-plugin:jar:3.1.0
+[DEBUG]    org.apache.maven.enforcer:enforcer-api:jar:3.1.0:compile
+[DEBUG]       org.apache.maven:maven-plugin-api:jar:3.2.5:compile (version managed from default)
+[DEBUG]          org.apache.maven:maven-model:jar:3.2.5:compile
+[DEBUG]          org.eclipse.sisu:org.eclipse.sisu.plexus:jar:0.3.5:compile (version managed from default)
+[DEBUG]             javax.annotation:javax.annotation-api:jar:1.2:compile
+[DEBUG]             javax.enterprise:cdi-api:jar:1.2:compile
+[DEBUG]             org.eclipse.sisu:org.eclipse.sisu.inject:jar:0.3.5:compile (version managed from default)
+[DEBUG]    org.apache.maven.enforcer:enforcer-rules:jar:3.1.0:compile
+[DEBUG]       org.apache.maven:maven-artifact:jar:3.2.5:compile (version managed from default)
+[DEBUG]       org.apache.maven:maven-core:jar:3.2.5:compile (version managed from default)
+[DEBUG]          org.apache.maven:maven-settings:jar:3.2.5:compile
+[DEBUG]          org.apache.maven:maven-settings-builder:jar:3.2.5:compile
+[DEBUG]          org.apache.maven:maven-repository-metadata:jar:3.2.5:compile
+[DEBUG]          org.apache.maven:maven-model-builder:jar:3.2.5:compile
+[DEBUG]          org.apache.maven:maven-aether-provider:jar:3.2.5:compile
+[DEBUG]             org.eclipse.aether:aether-spi:jar:1.0.0.v20140518:compile
+[DEBUG]          org.eclipse.aether:aether-impl:jar:1.0.0.v20140518:compile
+[DEBUG]          org.eclipse.aether:aether-api:jar:1.0.0.v20140518:compile
+[DEBUG]          org.sonatype.sisu:sisu-guice:jar:no_aop:3.2.3:compile
+[DEBUG]             javax.inject:javax.inject:jar:1:compile
+[DEBUG]             aopalliance:aopalliance:jar:1.0:compile
+[DEBUG]             com.google.guava:guava:jar:16.0.1:compile
+[DEBUG]          org.codehaus.plexus:plexus-interpolation:jar:1.21:compile
+[DEBUG]          org.codehaus.plexus:plexus-classworlds:jar:2.5.2:compile
+[DEBUG]          org.codehaus.plexus:plexus-component-annotations:jar:2.1.1:compile (version managed from default)
+[DEBUG]          org.sonatype.plexus:plexus-sec-dispatcher:jar:1.3:compile
+[DEBUG]             org.sonatype.plexus:plexus-cipher:jar:1.4:compile
+[DEBUG]       org.eclipse.aether:aether-util:jar:1.1.0:compile
+[DEBUG]       org.apache.maven.shared:maven-shared-utils:jar:3.3.4:compile (version managed from default)
+[DEBUG]       org.codehaus.plexus:plexus-utils:jar:3.4.2:compile (version managed from default)
+[DEBUG]       org.apache.commons:commons-lang3:jar:3.12.0:compile (version managed from default)
+[DEBUG]       commons-codec:commons-codec:jar:1.15:compile (version managed from default)
+[DEBUG]       commons-io:commons-io:jar:2.11.0:compile (version managed from default)
+[DEBUG]       org.apache-extras.beanshell:bsh:jar:2.0b6:compile
+[DEBUG]       org.apache.maven.shared:maven-dependency-tree:jar:3.1.1:compile (version managed from default)
+[DEBUG]       org.apache.maven:maven-compat:jar:3.2.5:test (scope managed from default) (version managed from default)
+[DEBUG]          org.apache.maven.wagon:wagon-provider-api:jar:2.8:test
+[DEBUG] Created new class realm plugin>org.apache.maven.plugins:maven-enforcer-plugin:3.1.0
+[DEBUG] Importing foreign packages into class realm plugin>org.apache.maven.plugins:maven-enforcer-plugin:3.1.0
+[DEBUG]   Imported:  < maven.api
+[DEBUG] Populating class realm plugin>org.apache.maven.plugins:maven-enforcer-plugin:3.1.0
+[DEBUG]   Included: org.apache.maven.plugins:maven-enforcer-plugin:jar:3.1.0
+[DEBUG]   Included: org.apache.maven.enforcer:enforcer-api:jar:3.1.0
+[DEBUG]   Included: javax.enterprise:cdi-api:jar:1.2
+[DEBUG]   Included: org.eclipse.sisu:org.eclipse.sisu.inject:jar:0.3.5
+[DEBUG]   Included: org.apache.maven.enforcer:enforcer-rules:jar:3.1.0
+[DEBUG]   Included: org.sonatype.sisu:sisu-guice:jar:no_aop:3.2.3
+[DEBUG]   Included: aopalliance:aopalliance:jar:1.0
+[DEBUG]   Included: com.google.guava:guava:jar:16.0.1
+[DEBUG]   Included: org.codehaus.plexus:plexus-interpolation:jar:1.21
+[DEBUG]   Included: org.codehaus.plexus:plexus-component-annotations:jar:2.1.1
+[DEBUG]   Included: org.sonatype.plexus:plexus-sec-dispatcher:jar:1.3
+[DEBUG]   Included: org.sonatype.plexus:plexus-cipher:jar:1.4
+[DEBUG]   Included: org.apache.maven.shared:maven-shared-utils:jar:3.3.4
+[DEBUG]   Included: org.codehaus.plexus:plexus-utils:jar:3.4.2
+[DEBUG]   Included: org.apache.commons:commons-lang3:jar:3.12.0
+[DEBUG]   Included: commons-codec:commons-codec:jar:1.15
+[DEBUG]   Included: commons-io:commons-io:jar:2.11.0
+[DEBUG]   Included: org.apache-extras.beanshell:bsh:jar:2.0b6
+[DEBUG]   Included: org.apache.maven.shared:maven-dependency-tree:jar:3.1.1
+[DEBUG] Loading mojo org.apache.maven.plugins:maven-enforcer-plugin:3.1.0:enforce from plugin realm ClassRealm[plugin>org.apache.maven.plugins:maven-enforcer-plugin:3.1.0, parent: jdk.internal.loader.ClassLoaders$AppClassLoader@1affbebc]
+[DEBUG] Configuring mojo execution 'org.apache.maven.plugins:maven-enforcer-plugin:3.1.0:enforce:enforce-min-java' with basic configurator -->
+[DEBUG]   (f) commandLineRules = []
+[DEBUG]   (s) fail = true
+[DEBUG]   (s) failFast = false
+[DEBUG]   (f) ignoreCache = false
+[DEBUG]   (f) mojoExecution = org.apache.maven.plugins:maven-enforcer-plugin:3.1.0:enforce {execution: enforce-min-java}
+[DEBUG]   (s) project = MavenProject: in.hamshik:coffee_eatter:1.0-SNAPSHOT @ C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\pom.xml
+[DEBUG]   (s) version = [21,)
+[DEBUG]   (s) rules = [org.apache.maven.plugins.enforcer.RequireJavaVersion@4f0f7849]
+[DEBUG]   (s) session = org.apache.maven.execution.MavenSession@154bd49b
+[DEBUG]   (s) skip = false
+[DEBUG] -- end configuration --
+[DEBUG] Executing rule: org.apache.maven.plugins.enforcer.RequireJavaVersion
+[DEBUG] Rule org.apache.maven.plugins.enforcer.RequireJavaVersion is cacheable.
+[DEBUG] Detected Java String: '25'
+[DEBUG] Normalized Java String: '25'
+[DEBUG] Parsed Version: Major: 25 Minor: 0 Incremental: 0 Build: 0 Qualifier: null
+[DEBUG] Detected JDK Version: 25 is allowed in the range [21,).
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ coffee_eatter ---
+[DEBUG] Dependency collection stats {ConflictMarker.analyzeTime=123100, ConflictMarker.markTime=18900, ConflictMarker.nodeCount=13, ConflictIdSorter.graphTime=64100, ConflictIdSorter.topsortTime=11300, ConflictIdSorter.conflictIdCount=9, ConflictIdSorter.conflictIdCycleCount=0, ConflictResolver.totalTime=247200, ConflictResolver.conflictItemCount=13, DfDependencyCollector.collectTime=24373300, DfDependencyCollector.transformTime=479100}
+[DEBUG] org.apache.maven.plugins:maven-resources-plugin:jar:3.3.1
+[DEBUG]    org.codehaus.plexus:plexus-interpolation:jar:1.26:runtime
+[DEBUG]    org.codehaus.plexus:plexus-utils:jar:3.5.1:compile
+[DEBUG]    org.apache.maven.shared:maven-filtering:jar:3.3.1:compile
+[DEBUG]       javax.inject:javax.inject:jar:1:compile
+[DEBUG]       org.slf4j:slf4j-api:jar:1.7.36:compile
+[DEBUG]       org.sonatype.plexus:plexus-build-api:jar:0.0.7:compile
+[DEBUG]    commons-io:commons-io:jar:2.11.0:compile
+[DEBUG]    org.apache.commons:commons-lang3:jar:3.12.0:compile
+[DEBUG] Created new class realm plugin>org.apache.maven.plugins:maven-resources-plugin:3.3.1
+[DEBUG] Importing foreign packages into class realm plugin>org.apache.maven.plugins:maven-resources-plugin:3.3.1
+[DEBUG]   Imported:  < maven.api
+[DEBUG] Populating class realm plugin>org.apache.maven.plugins:maven-resources-plugin:3.3.1
+[DEBUG]   Included: org.apache.maven.plugins:maven-resources-plugin:jar:3.3.1
+[DEBUG]   Included: org.codehaus.plexus:plexus-interpolation:jar:1.26
+[DEBUG]   Included: org.codehaus.plexus:plexus-utils:jar:3.5.1
+[DEBUG]   Included: org.apache.maven.shared:maven-filtering:jar:3.3.1
+[DEBUG]   Included: org.sonatype.plexus:plexus-build-api:jar:0.0.7
+[DEBUG]   Included: commons-io:commons-io:jar:2.11.0
+[DEBUG]   Included: org.apache.commons:commons-lang3:jar:3.12.0
+[DEBUG] Loading mojo org.apache.maven.plugins:maven-resources-plugin:3.3.1:resources from plugin realm ClassRealm[plugin>org.apache.maven.plugins:maven-resources-plugin:3.3.1, parent: jdk.internal.loader.ClassLoaders$AppClassLoader@1affbebc]
+[DEBUG] Configuring mojo execution 'org.apache.maven.plugins:maven-resources-plugin:3.3.1:resources:default-resources' with basic configurator -->
+[DEBUG]   (f) addDefaultExcludes = true
+[DEBUG]   (f) buildFilters = []
+[DEBUG]   (f) encoding = UTF-8
+[DEBUG]   (f) escapeWindowsPaths = true
+[DEBUG]   (f) fileNameFiltering = false
+[DEBUG]   (s) includeEmptyDirs = false
+[DEBUG]   (s) outputDirectory = C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes
+[DEBUG]   (s) overwrite = false
+[DEBUG]   (f) project = MavenProject: in.hamshik:coffee_eatter:1.0-SNAPSHOT @ C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\pom.xml
+[DEBUG]   (s) resources = [Resource {targetPath: null, filtering: false, FileSet {directory: C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\src\main\resources\in\hamshik, PatternSet [includes: {}, excludes: {}]}}]
+[DEBUG]   (f) session = org.apache.maven.execution.MavenSession@154bd49b
+[DEBUG]   (f) skip = false
+[DEBUG]   (f) supportMultiLineFiltering = false
+[DEBUG]   (f) useBuildFilters = true
+[DEBUG]   (s) useDefaultDelimiters = true
+[DEBUG] -- end configuration --
+[DEBUG] properties used:
+[DEBUG] classworlds.conf: C:/Users/prscm/AppData/Roaming/Code/User/globalStorage/pleiades.java-extension-pack-jdk/maven/latest/bin/m2.conf
+[DEBUG] env.ACLOCAL_PATH: C:\Program Files\Git\mingw64\share\aclocal;C:\Program Files\Git\usr\share\aclocal
+[DEBUG] env.ALLUSERSPROFILE: C:\ProgramData
+[DEBUG] env.APPDATA: C:\Users\prscm\AppData\Roaming
+[DEBUG] env.CHROME_CRASHPAD_PIPE_NAME: \\.\pipe\crashpad_7088_MSFIYFPBZBGLESHU
+[DEBUG] env.COLORTERM: truecolor
+[DEBUG] env.COMMONPROGRAMFILES: C:\Program Files\Common Files
+[DEBUG] env.COMMONPROGRAMFILES(X86): C:\Program Files (x86)\Common Files
+[DEBUG] env.COMMONPROGRAMW6432: C:\Program Files\Common Files
+[DEBUG] env.COMPUTERNAME: PRSC9
+[DEBUG] env.COMSPEC: C:\WINDOWS\system32\cmd.exe
+[DEBUG] env.CONFIG_SITE: C:/Program Files/Git/etc/config.site
+[DEBUG] env.DISPLAY: needs-to-be-defined
+[DEBUG] env.DRIVERDATA: C:\Windows\System32\Drivers\DriverData
+[DEBUG] env.EFC_7648_1262719628: 1
+[DEBUG] env.EFC_7648_1592913036: 1
+[DEBUG] env.EFC_7648_2283032206: 1
+[DEBUG] env.EFC_7648_2775293581: 1
+[DEBUG] env.EFC_7648_3789132940: 1
+[DEBUG] env.EXEPATH: C:\Program Files\Git\bin
+[DEBUG] env.GIT_ASKPASS: c:\Users\prscm\AppData\Local\Programs\Microsoft VS Code\resources\app\extensions\git\dist\askpass.sh
+[DEBUG] env.HOME: C:\Users\prscm
+[DEBUG] env.HOMEDRIVE: C:
+[DEBUG] env.HOMEPATH: \Users\prscm
+[DEBUG] env.HOSTNAME: prsc9
+[DEBUG] env.IGCCSVC_DB: AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAJrLJvPPdZUq0nfXzrSq3LAQAAAACAAAAAAAQZgAAAAEAACAAAABpoQe7jwpAZXe6kkK0A3FSPGT0wVJkpqAQbvi5gxruwwAAAAAOgAAAAAIAACAAAADVfAgvc2PYsAw2jt9wDhoMSH3MT247W81UQ3/23mQSWmAAAADQpFCAQFVIiG360Fi79BcYQf+wpFJ4BBQ2Kdh+ENqiqHRAfZuevYrqMZE5qDQhDSouTr8sLXOk4mrNVXe2THtVgOVEHXeCr6u+lQqZhxXOyI3GDMtaTH4hpowMfGLiS51AAAAALHH8JOCkHvZ8c/grPI2/N7dUhrmSCt2jdw3MvjiF1mMHLsXOJH0lC44Zt2CHWYMYVpCCsh5jTe46z9wreKmlAg==
+[DEBUG] env.INFOPATH: C:\Program Files\Git\mingw64\local\info;C:\Program Files\Git\mingw64\share\info;C:\Program Files\Git\usr\local\info;C:\Program Files\Git\usr\share\info;C:\Program Files\Git\usr\info;C:\Program Files\Git\share\info
+[DEBUG] env.JAVA_HOME: C:/Program Files/Java/jdk-25
+[DEBUG] env.LANG: en_US.UTF-8
+[DEBUG] env.LOCALAPPDATA: C:\Users\prscm\AppData\Local
+[DEBUG] env.LOGONSERVER: \\PRSC9
+[DEBUG] env.MANPATH: C:\Program Files\Git\mingw64\local\man;C:\Program Files\Git\mingw64\share\man;C:\Program Files\Git\usr\local\man;C:\Program Files\Git\usr\share\man;C:\Program Files\Git\usr\man;C:\Program Files\Git\share\man
+[DEBUG] env.MAVEN_CMD_LINE_ARGS:  clean javafx:run -X
+[DEBUG] env.MAVEN_PROJECTBASEDIR: C:/Users/prscm/Downloads/Hamshik/JavaProject/coffee_eatter
+[DEBUG] env.MINGW_CHOST: x86_64-w64-mingw32
+[DEBUG] env.MINGW_PACKAGE_PREFIX: mingw-w64-x86_64
+[DEBUG] env.MINGW_PREFIX: C:/Program Files/Git/mingw64
+[DEBUG] env.MSYSTEM: MINGW64
+[DEBUG] env.MSYSTEM_CARCH: x86_64
+[DEBUG] env.MSYSTEM_CHOST: x86_64-w64-mingw32
+[DEBUG] env.MSYSTEM_PREFIX: C:/Program Files/Git/mingw64
+[DEBUG] env.NUMBER_OF_PROCESSORS: 12
+[DEBUG] env.OLDPWD: C:/Users/prscm/Downloads/Hamshik/JavaProject/coffee_eatter
+[DEBUG] env.ONEDRIVE: C:\Users\prscm\OneDrive
+[DEBUG] env.ONLINESERVICES: Online Services
+[DEBUG] env.ORIGINAL_PATH: C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\prscm\bin;C:\Users\prscm\AppData\Roaming\Code\User\globalStorage\pleiades.java-extension-pack-jdk\gradle\latest\bin;C:\Users\prscm\AppData\Roaming\Code\User\globalStorage\pleiades.java-extension-pack-jdk\maven\latest\bin;C:\Program Files\Java\jdk-25\bin;C:\Program Files\Common Files\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Program Files\Git\cmd;C:\Users\prscm\AppData\Local\Programs\Python\Launcher;C:\Users\prscm\AppData\Local\Microsoft\WindowsApps;C:\Users\prscm\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\prscm\AppData\Roaming\Code\User\globalStorage\github.copilot-chat\debugCommand
+[DEBUG] env.ORIGINAL_TEMP: C:/Users/prscm/AppData/Local/Temp
+[DEBUG] env.ORIGINAL_TMP: C:/Users/prscm/AppData/Local/Temp
+[DEBUG] env.ORIGINAL_XDG_CURRENT_DESKTOP: undefined
+[DEBUG] env.OS: Windows_NT
+[DEBUG] env.PATH: C:\Users\prscm\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\local\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\prscm\bin;C:\Users\prscm\AppData\Roaming\Code\User\globalStorage\pleiades.java-extension-pack-jdk\gradle\latest\bin;C:\Users\prscm\AppData\Roaming\Code\User\globalStorage\pleiades.java-extension-pack-jdk\maven\latest\bin;C:\Program Files\Java\jdk-25\bin;C:\Program Files\Common Files\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Program Files\Git\cmd;C:\Users\prscm\AppData\Local\Programs\Python\Launcher;C:\Users\prscm\AppData\Local\Microsoft\WindowsApps;C:\Users\prscm\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\prscm\AppData\Roaming\Code\User\globalStorage\github.copilot-chat\debugCommand;C:\Program Files\Git\usr\bin\vendor_perl;C:\Program Files\Git\usr\bin\core_perl
+[DEBUG] env.PATHEXT: .COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC
+[DEBUG] env.PKG_CONFIG_PATH: C:\Program Files\Git\mingw64\lib\pkgconfig;C:\Program Files\Git\mingw64\share\pkgconfig
+[DEBUG] env.PKG_CONFIG_SYSTEM_INCLUDE_PATH: C:/Program Files/Git/mingw64/include
+[DEBUG] env.PKG_CONFIG_SYSTEM_LIBRARY_PATH: C:/Program Files/Git/mingw64/lib
+[DEBUG] env.PLATFORMCODE: 1M
+[DEBUG] env.PLINK_PROTOCOL: ssh
+[DEBUG] env.PROCESSOR_ARCHITECTURE: AMD64
+[DEBUG] env.PROCESSOR_IDENTIFIER: Intel64 Family 6 Model 151 Stepping 5, GenuineIntel
+[DEBUG] env.PROCESSOR_LEVEL: 6
+[DEBUG] env.PROCESSOR_REVISION: 9705
+[DEBUG] env.PROGRAMDATA: C:\ProgramData
+[DEBUG] env.PROGRAMFILES: C:\Program Files
+[DEBUG] env.PROGRAMFILES(X86): C:\Program Files (x86)
+[DEBUG] env.PROGRAMW6432: C:\Program Files
+[DEBUG] env.PSMODULEPATH: C:\Program Files\WindowsPowerShell\Modules;C:\WINDOWS\system32\WindowsPowerShell\v1.0\Modules
+[DEBUG] env.PUBLIC: C:\Users\Public
+[DEBUG] env.PWD: C:/Users/prscm/Downloads/Hamshik/JavaProject/coffee_eatter
+[DEBUG] env.PYTHONSTARTUP: c:\Users\prscm\AppData\Roaming\Code\User\workspaceStorage\e530bba30824903fad0b9ac30011ab2a\ms-python.python\pythonrc.py
+[DEBUG] env.PYTHON_BASIC_REPL: 1
+[DEBUG] env.REGIONCODE: APJ
+[DEBUG] env.SESSIONNAME: Console
+[DEBUG] env.SHELL: C:\Program Files\Git\usr\bin\bash.exe
+[DEBUG] env.SHLVL: 1
+[DEBUG] env.SSH_ASKPASS: C:/Program Files/Git/mingw64/bin/git-askpass.exe
+[DEBUG] env.SYSTEMDRIVE: C:
+[DEBUG] env.SYSTEMROOT: C:\WINDOWS
+[DEBUG] env.TEMP: C:\Users\prscm\AppData\Local\Temp
+[DEBUG] env.TERM: xterm-256color
+[DEBUG] env.TERM_PROGRAM: vscode
+[DEBUG] env.TERM_PROGRAM_VERSION: 1.105.1
+[DEBUG] env.TMP: C:\Users\prscm\AppData\Local\Temp
+[DEBUG] env.TMPDIR: C:\Users\prscm\AppData\Local\Temp
+[DEBUG] env.USERDOMAIN: PRSC9
+[DEBUG] env.USERDOMAIN_ROAMINGPROFILE: PRSC9
+[DEBUG] env.USERNAME: prscm
+[DEBUG] env.USERPROFILE: C:\Users\prscm
+[DEBUG] env.VSCODE_GIT_ASKPASS_EXTRA_ARGS: 
+[DEBUG] env.VSCODE_GIT_ASKPASS_MAIN: c:\Users\prscm\AppData\Local\Programs\Microsoft VS Code\resources\app\extensions\git\dist\askpass-main.js
+[DEBUG] env.VSCODE_GIT_ASKPASS_NODE: C:\Users\prscm\AppData\Local\Programs\Microsoft VS Code\Code.exe
+[DEBUG] env.VSCODE_GIT_IPC_HANDLE: \\.\pipe\vscode-git-ab45e37e2e-sock
+[DEBUG] env.VSCODE_PYTHON_AUTOACTIVATE_GUARD: 1
+[DEBUG] env.WINDIR: C:\WINDOWS
+[DEBUG] env.ZES_ENABLE_SYSMAN: 1
+[DEBUG] env.__PSLOCKDOWNPOLICY: 0
+[DEBUG] file.encoding: UTF-8
+[DEBUG] file.separator: \
+[DEBUG] java.class.path: C:/Users/prscm/AppData/Roaming/Code/User/globalStorage/pleiades.java-extension-pack-jdk/maven/latest/boot/plexus-classworlds-2.9.0.jar
+[DEBUG] java.class.version: 69.0
+[DEBUG] java.home: C:\Program Files\Java\jdk-25
+[DEBUG] java.io.tmpdir: C:\Users\prscm\AppData\Local\Temp\
+[DEBUG] java.library.path: C:\Program Files\Java\jdk-25\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Users\prscm\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\local\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\prscm\bin;C:\Users\prscm\AppData\Roaming\Code\User\globalStorage\pleiades.java-extension-pack-jdk\gradle\latest\bin;C:\Users\prscm\AppData\Roaming\Code\User\globalStorage\pleiades.java-extension-pack-jdk\maven\latest\bin;C:\Program Files\Java\jdk-25\bin;C:\Program Files\Common Files\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Program Files\Git\cmd;C:\Users\prscm\AppData\Local\Programs\Python\Launcher;C:\Users\prscm\AppData\Local\Microsoft\WindowsApps;C:\Users\prscm\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\prscm\AppData\Roaming\Code\User\globalStorage\github.copilot-chat\debugCommand;C:\Program Files\Git\usr\bin\vendor_perl;C:\Program Files\Git\usr\bin\core_perl;.
+[DEBUG] java.runtime.name: Java(TM) SE Runtime Environment
+[DEBUG] java.runtime.version: 25+37-LTS-3491
+[DEBUG] java.specification.name: Java Platform API Specification
+[DEBUG] java.specification.vendor: Oracle Corporation
+[DEBUG] java.specification.version: 25
+[DEBUG] java.vendor: Oracle Corporation
+[DEBUG] java.vendor.url: https://java.oracle.com/
+[DEBUG] java.vendor.url.bug: https://bugreport.java.com/bugreport/
+[DEBUG] java.version: 25
+[DEBUG] java.version.date: 2025-09-16
+[DEBUG] java.vm.compressedOopsMode: 32-bit
+[DEBUG] java.vm.info: mixed mode, sharing
+[DEBUG] java.vm.name: Java HotSpot(TM) 64-Bit Server VM
+[DEBUG] java.vm.specification.name: Java Virtual Machine Specification
+[DEBUG] java.vm.specification.vendor: Oracle Corporation
+[DEBUG] java.vm.specification.version: 25
+[DEBUG] java.vm.vendor: Oracle Corporation
+[DEBUG] java.vm.version: 25+37-LTS-3491
+[DEBUG] javafx.platform: win
+[DEBUG] javafx.version: 25.0.1
+[DEBUG] jdk.debug: release
+[DEBUG] library.jansi.path: C:/Users/prscm/AppData/Roaming/Code/User/globalStorage/pleiades.java-extension-pack-jdk/maven/latest/lib/jansi-native
+[DEBUG] line.separator: 
+
+[DEBUG] maven.build.timestamp: 2025-10-26T09:05:16Z
+[DEBUG] maven.build.version: Apache Maven 3.9.11 (3e54c93a704957b63ee3494413a2b544fd3d825b)
+[DEBUG] maven.compiler.source: 25
+[DEBUG] maven.compiler.target: 25
+[DEBUG] maven.conf: C:/Users/prscm/AppData/Roaming/Code/User/globalStorage/pleiades.java-extension-pack-jdk/maven/latest/conf
+[DEBUG] maven.home: C:\Users\prscm\AppData\Roaming\Code\User\globalStorage\pleiades.java-extension-pack-jdk\maven\latest
+[DEBUG] maven.multiModuleProjectDirectory: C:/Users/prscm/Downloads/Hamshik/JavaProject/coffee_eatter
+[DEBUG] maven.version: 3.9.11
+[DEBUG] native.encoding: Cp1252
+[DEBUG] os.arch: amd64
+[DEBUG] os.name: Windows 11
+[DEBUG] os.version: 10.0
+[DEBUG] path.separator: ;
+[DEBUG] project.baseUri: file:/C:/Users/prscm/Downloads/Hamshik/JavaProject/coffee_eatter/
+[DEBUG] project.build.sourceEncoding: UTF-8
+[DEBUG] stderr.encoding: cp437
+[DEBUG] stdin.encoding: cp437
+[DEBUG] stdout.encoding: Cp1252
+[DEBUG] sun.arch.data.model: 64
+[DEBUG] sun.boot.library.path: C:\Program Files\Java\jdk-25\bin
+[DEBUG] sun.cpu.endian: little
+[DEBUG] sun.cpu.isalist: amd64
+[DEBUG] sun.io.unicode.encoding: UnicodeLittle
+[DEBUG] sun.java.command: org.codehaus.plexus.classworlds.launcher.Launcher clean javafx:run -X
+[DEBUG] sun.java.launcher: SUN_STANDARD
+[DEBUG] sun.jnu.encoding: Cp1252
+[DEBUG] sun.management.compiler: HotSpot 64-Bit Tiered Compilers
+[DEBUG] sun.os.patch.level: 
+[DEBUG] user.country: IN
+[DEBUG] user.dir: C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter
+[DEBUG] user.home: C:\Users\prscm
+[DEBUG] user.language: en
+[DEBUG] user.name: prscm
+[DEBUG] user.script: 
+[DEBUG] user.variant: 
+[DEBUG] Using 'UTF-8' encoding to copy filtered resources.
+[DEBUG] Using 'UTF-8' encoding to copy filtered properties files.
+[DEBUG] resource with targetPath null
+directory C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\src\main\resources\in\hamshik
+excludes []
+includes []
+[DEBUG] ignoreDelta true
+[INFO] Copying 11 resources from src\main\resources\in\hamshik to target\classes
+[DEBUG] Copying file App.css
+[DEBUG] file App.css has a filtered file extension
+[DEBUG] Using 'UTF-8' encoding to copy filtered resource 'App.css'.
+[DEBUG] copy C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\src\main\resources\in\hamshik\App.css to C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes\App.css
+[DEBUG] Copying file bat.png
+[DEBUG] file bat.png has a non filtered file extension
+[DEBUG] Using 'UTF-8' encoding to copy filtered resource 'bat.png'.
+[DEBUG] copy C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\src\main\resources\in\hamshik\bat.png to C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes\bat.png
+[DEBUG] Copying file block.png
+[DEBUG] file block.png has a non filtered file extension
+[DEBUG] Using 'UTF-8' encoding to copy filtered resource 'block.png'.
+[DEBUG] copy C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\src\main\resources\in\hamshik\block.png to C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes\block.png
+[DEBUG] Copying file bomb.png
+[DEBUG] file bomb.png has a non filtered file extension
+[DEBUG] Using 'UTF-8' encoding to copy filtered resource 'bomb.png'.
+[DEBUG] copy C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\src\main\resources\in\hamshik\bomb.png to C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes\bomb.png
+[DEBUG] Copying file coffee.png
+[DEBUG] file coffee.png has a non filtered file extension
+[DEBUG] Using 'UTF-8' encoding to copy filtered resource 'coffee.png'.
+[DEBUG] copy C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\src\main\resources\in\hamshik\coffee.png to C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes\coffee.png
+[DEBUG] Copying file coffeeBean.png
+[DEBUG] file coffeeBean.png has a non filtered file extension
+[DEBUG] Using 'UTF-8' encoding to copy filtered resource 'coffeeBean.png'.
+[DEBUG] copy C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\src\main\resources\in\hamshik\coffeeBean.png to C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes\coffeeBean.png
+[DEBUG] Copying file hero.png
+[DEBUG] file hero.png has a non filtered file extension
+[DEBUG] Using 'UTF-8' encoding to copy filtered resource 'hero.png'.
+[DEBUG] copy C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\src\main\resources\in\hamshik\hero.png to C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes\hero.png
+[DEBUG] Copying file menu1.png
+[DEBUG] file menu1.png has a non filtered file extension
+[DEBUG] Using 'UTF-8' encoding to copy filtered resource 'menu1.png'.
+[DEBUG] copy C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\src\main\resources\in\hamshik\menu1.png to C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes\menu1.png
+[DEBUG] Copying file menu2.png
+[DEBUG] file menu2.png has a non filtered file extension
+[DEBUG] Using 'UTF-8' encoding to copy filtered resource 'menu2.png'.
+[DEBUG] copy C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\src\main\resources\in\hamshik\menu2.png to C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes\menu2.png
+[DEBUG] Copying file resetBut.png
+[DEBUG] file resetBut.png has a non filtered file extension
+[DEBUG] Using 'UTF-8' encoding to copy filtered resource 'resetBut.png'.
+[DEBUG] copy C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\src\main\resources\in\hamshik\resetBut.png to C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes\resetBut.png
+[DEBUG] Copying file Scene.fxml
+[DEBUG] file Scene.fxml has a filtered file extension
+[DEBUG] Using 'UTF-8' encoding to copy filtered resource 'Scene.fxml'.
+[DEBUG] copy C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\src\main\resources\in\hamshik\Scene.fxml to C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes\Scene.fxml
+[DEBUG] no user filter components
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ coffee_eatter ---
+[DEBUG] Dependency collection stats {ConflictMarker.analyzeTime=37700, ConflictMarker.markTime=16000, ConflictMarker.nodeCount=22, ConflictIdSorter.graphTime=9100, ConflictIdSorter.topsortTime=11500, ConflictIdSorter.conflictIdCount=14, ConflictIdSorter.conflictIdCycleCount=0, ConflictResolver.totalTime=167200, ConflictResolver.conflictItemCount=22, DfDependencyCollector.collectTime=43039200, DfDependencyCollector.transformTime=254400}
+[DEBUG] org.apache.maven.plugins:maven-compiler-plugin:jar:3.13.0
+[DEBUG]    org.apache.maven.shared:maven-shared-utils:jar:3.4.2:compile
+[DEBUG]       org.slf4j:slf4j-api:jar:1.7.36:compile
+[DEBUG]       commons-io:commons-io:jar:2.11.0:compile
+[DEBUG]    org.apache.maven.shared:maven-shared-incremental:jar:1.1:compile
+[DEBUG]    org.codehaus.plexus:plexus-java:jar:1.2.0:compile
+[DEBUG]       org.ow2.asm:asm:jar:9.6:compile
+[DEBUG]       com.thoughtworks.qdox:qdox:jar:2.0.3:compile
+[DEBUG]    org.codehaus.plexus:plexus-compiler-api:jar:2.15.0:compile
+[DEBUG]    org.codehaus.plexus:plexus-compiler-manager:jar:2.15.0:compile
+[DEBUG]       javax.inject:javax.inject:jar:1:compile
+[DEBUG]       org.codehaus.plexus:plexus-xml:jar:3.0.0:compile (version managed from default)
+[DEBUG]    org.codehaus.plexus:plexus-compiler-javac:jar:2.15.0:runtime
+[DEBUG]    org.codehaus.plexus:plexus-utils:jar:4.0.0:compile
+[DEBUG] Created new class realm plugin>org.apache.maven.plugins:maven-compiler-plugin:3.13.0
+[DEBUG] Importing foreign packages into class realm plugin>org.apache.maven.plugins:maven-compiler-plugin:3.13.0
+[DEBUG]   Imported:  < maven.api
+[DEBUG] Populating class realm plugin>org.apache.maven.plugins:maven-compiler-plugin:3.13.0
+[DEBUG]   Included: org.apache.maven.plugins:maven-compiler-plugin:jar:3.13.0
+[DEBUG]   Included: org.apache.maven.shared:maven-shared-utils:jar:3.4.2
+[DEBUG]   Included: commons-io:commons-io:jar:2.11.0
+[DEBUG]   Included: org.apache.maven.shared:maven-shared-incremental:jar:1.1
+[DEBUG]   Included: org.codehaus.plexus:plexus-java:jar:1.2.0
+[DEBUG]   Included: org.ow2.asm:asm:jar:9.6
+[DEBUG]   Included: com.thoughtworks.qdox:qdox:jar:2.0.3
+[DEBUG]   Included: org.codehaus.plexus:plexus-compiler-api:jar:2.15.0
+[DEBUG]   Included: org.codehaus.plexus:plexus-compiler-manager:jar:2.15.0
+[DEBUG]   Included: org.codehaus.plexus:plexus-xml:jar:3.0.0
+[DEBUG]   Included: org.codehaus.plexus:plexus-compiler-javac:jar:2.15.0
+[DEBUG]   Included: org.codehaus.plexus:plexus-utils:jar:4.0.0
+[DEBUG] Loading mojo org.apache.maven.plugins:maven-compiler-plugin:3.13.0:compile from plugin realm ClassRealm[plugin>org.apache.maven.plugins:maven-compiler-plugin:3.13.0, parent: jdk.internal.loader.ClassLoaders$AppClassLoader@1affbebc]
+[DEBUG] Configuring mojo execution 'org.apache.maven.plugins:maven-compiler-plugin:3.13.0:compile:default-compile' with basic configurator -->
+[DEBUG]   (f) annotationProcessorPathsUseDepMgmt = false
+[DEBUG]   (f) basedir = C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter
+[DEBUG]   (f) buildDirectory = C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target
+[DEBUG]   (f) compilePath = [C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes, C:\Users\prscm\.m2\repository\org\openjfx\javafx-base\25.0.1\javafx-base-25.0.1-win.jar, C:\Users\prscm\.m2\repository\org\openjfx\javafx-controls\25.0.1\javafx-controls-25.0.1-win.jar, C:\Users\prscm\.m2\repository\org\openjfx\javafx-graphics\25.0.1\javafx-graphics-25.0.1.jar, C:\Users\prscm\.m2\repository\org\openjfx\javafx-graphics\25.0.1\javafx-graphics-25.0.1-win.jar, C:\Users\prscm\.m2\repository\org\openjfx\javafx-base\25.0.1\javafx-base-25.0.1.jar, C:\Users\prscm\.m2\repository\org\openjfx\javafx-fxml\25.0.1\javafx-fxml-25.0.1-win.jar, C:\Users\prscm\.m2\repository\org\openjfx\javafx-controls\25.0.1\javafx-controls-25.0.1.jar, C:\Users\prscm\.m2\repository\org\openjfx\javafx-media\25.0.1\javafx-media-25.0.1-win.jar, C:\Users\prscm\.m2\repository\org\openjfx\javafx-swing\25.0.1\javafx-swing-25.0.1-win.jar, C:\Users\prscm\.m2\repository\org\openjfx\javafx-web\25.0.1\javafx-web-25.0.1-win.jar, C:\Users\prscm\.m2\repository\org\openjfx\javafx-media\25.0.1\javafx-media-25.0.1.jar, C:\Users\prscm\.m2\repository\org\openjfx\jdk-jsobject\25.0.1\jdk-jsobject-25.0.1.jar, C:\Users\prscm\.m2\repository\org\openjfx\jdk-jsobject\25.0.1\jdk-jsobject-25.0.1-win.jar]
+[DEBUG]   (f) compileSourceRoots = [C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\src\main\java]
+[DEBUG]   (f) compilerId = javac
+[DEBUG]   (f) createMissingPackageInfoClass = true
+[DEBUG]   (f) debug = true
+[DEBUG]   (f) debugFileName = javac
+[DEBUG]   (f) enablePreview = false
+[DEBUG]   (f) encoding = UTF-8
+[DEBUG]   (f) failOnError = true
+[DEBUG]   (f) failOnWarning = false
+[DEBUG]   (f) fileExtensions = [jar, class]
+[DEBUG]   (f) forceJavacCompilerUse = false
+[DEBUG]   (f) forceLegacyJavacApi = false
+[DEBUG]   (f) fork = false
+[DEBUG]   (f) generatedSourcesDirectory = C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\generated-sources\annotations
+[DEBUG]   (f) mojoExecution = org.apache.maven.plugins:maven-compiler-plugin:3.13.0:compile {execution: default-compile}
+[DEBUG]   (f) optimize = false
+[DEBUG]   (f) outputDirectory = C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes
+[DEBUG]   (f) parameters = false
+[DEBUG]   (f) project = MavenProject: in.hamshik:coffee_eatter:1.0-SNAPSHOT @ C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\pom.xml
+[DEBUG]   (f) projectArtifact = in.hamshik:coffee_eatter:jar:1.0-SNAPSHOT
+[DEBUG]   (s) release = 25
+[DEBUG]   (f) session = org.apache.maven.execution.MavenSession@154bd49b
+[DEBUG]   (f) showCompilationChanges = false
+[DEBUG]   (f) showDeprecation = false
+[DEBUG]   (f) showWarnings = true
+[DEBUG]   (f) skipMultiThreadWarning = false
+[DEBUG]   (f) source = 25
+[DEBUG]   (f) staleMillis = 0
+[DEBUG]   (s) target = 25
+[DEBUG]   (f) useIncrementalCompilation = true
+[DEBUG]   (f) verbose = false
+[DEBUG] -- end configuration --
+[DEBUG] Using compiler 'javac'.
+[DEBUG] Adding C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\generated-sources\annotations to compile source roots:
+  C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\src\main\java
+[DEBUG] New compile source roots:
+  C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\src\main\java
+  C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\generated-sources\annotations
+[DEBUG] CompilerReuseStrategy: reuseCreated
+[DEBUG] useIncrementalCompilation enabled
+[INFO] 	Stale source detected: C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\src\main\java\in\hamshik\Controller.java
+[INFO] 	Stale source detected: C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\src\main\java\in\hamshik\GameOver.java
+[INFO] 	Stale source detected: C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\src\main\java\module-info.java
+[INFO] 	Stale source detected: C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\src\main\java\in\hamshik\CoffeeFalling.java
+[INFO] 	Stale source detected: C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\src\main\java\in\hamshik\App.java
+[INFO] 	Stale source detected: C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\src\main\java\in\hamshik\AlertHandler.java
+[INFO] 	Input tree files (+): C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\src\main\java\in\hamshik\AlertHandler.java
+[INFO] 	Input tree files (+): C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\src\main\java\in\hamshik\App.java
+[INFO] 	Input tree files (+): C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\src\main\java\in\hamshik\CoffeeFalling.java
+[INFO] 	Input tree files (+): C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\src\main\java\in\hamshik\Controller.java
+[INFO] 	Input tree files (+): C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\src\main\java\in\hamshik\GameOver.java
+[INFO] 	Input tree files (+): C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\src\main\java\module-info.java
+[INFO] Recompiling the module because of changed source code.
+[DEBUG] Classpath:
+[DEBUG]  C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\javafx-graphics\25.0.1\javafx-graphics-25.0.1.jar
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\javafx-base\25.0.1\javafx-base-25.0.1.jar
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\javafx-controls\25.0.1\javafx-controls-25.0.1.jar
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\javafx-media\25.0.1\javafx-media-25.0.1-win.jar
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\javafx-swing\25.0.1\javafx-swing-25.0.1-win.jar
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\javafx-web\25.0.1\javafx-web-25.0.1-win.jar
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\javafx-media\25.0.1\javafx-media-25.0.1.jar
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\jdk-jsobject\25.0.1\jdk-jsobject-25.0.1.jar
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\jdk-jsobject\25.0.1\jdk-jsobject-25.0.1-win.jar
+[DEBUG] Modulepath:
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\javafx-base\25.0.1\javafx-base-25.0.1-win.jar
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\javafx-controls\25.0.1\javafx-controls-25.0.1-win.jar
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\javafx-graphics\25.0.1\javafx-graphics-25.0.1-win.jar
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\javafx-fxml\25.0.1\javafx-fxml-25.0.1-win.jar
+[DEBUG] Source roots:
+[DEBUG]  C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\src\main\java
+[DEBUG]  C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\generated-sources\annotations
+[DEBUG] Command line options:
+[DEBUG] -d C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes -classpath C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes;C:\Users\prscm\.m2\repository\org\openjfx\javafx-graphics\25.0.1\javafx-graphics-25.0.1.jar;C:\Users\prscm\.m2\repository\org\openjfx\javafx-base\25.0.1\javafx-base-25.0.1.jar;C:\Users\prscm\.m2\repository\org\openjfx\javafx-controls\25.0.1\javafx-controls-25.0.1.jar;C:\Users\prscm\.m2\repository\org\openjfx\javafx-media\25.0.1\javafx-media-25.0.1-win.jar;C:\Users\prscm\.m2\repository\org\openjfx\javafx-swing\25.0.1\javafx-swing-25.0.1-win.jar;C:\Users\prscm\.m2\repository\org\openjfx\javafx-web\25.0.1\javafx-web-25.0.1-win.jar;C:\Users\prscm\.m2\repository\org\openjfx\javafx-media\25.0.1\javafx-media-25.0.1.jar;C:\Users\prscm\.m2\repository\org\openjfx\jdk-jsobject\25.0.1\jdk-jsobject-25.0.1.jar;C:\Users\prscm\.m2\repository\org\openjfx\jdk-jsobject\25.0.1\jdk-jsobject-25.0.1-win.jar; --module-path C:\Users\prscm\.m2\repository\org\openjfx\javafx-base\25.0.1\javafx-base-25.0.1-win.jar;C:\Users\prscm\.m2\repository\org\openjfx\javafx-controls\25.0.1\javafx-controls-25.0.1-win.jar;C:\Users\prscm\.m2\repository\org\openjfx\javafx-graphics\25.0.1\javafx-graphics-25.0.1-win.jar;C:\Users\prscm\.m2\repository\org\openjfx\javafx-fxml\25.0.1\javafx-fxml-25.0.1-win.jar; -sourcepath C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\src\main\java;C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\generated-sources\annotations; -s C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\generated-sources\annotations -g --release 25 -encoding UTF-8 --module-version 1.0-SNAPSHOT -XDuseUnsharedTable=true
+[DEBUG] incrementalBuildHelper#beforeRebuildExecution
+[INFO] Compiling 6 source files with javac [debug release 25 module-path] to target\classes
+[DEBUG] incrementalBuildHelper#afterRebuildExecution
+[INFO] 
+[INFO] <<< javafx:0.0.8:run (default-cli) < process-classes @ coffee_eatter <<<
+[INFO] 
+[INFO] 
+[INFO] --- javafx:0.0.8:run (default-cli) @ coffee_eatter ---
+[DEBUG] Using mirror maven-default-http-blocker (http://0.0.0.0/) for repository.jboss.org (http://repository.jboss.org/maven2).
+[DEBUG] Using mirror maven-default-http-blocker (http://0.0.0.0/) for snapshots.jboss.org (http://snapshots.jboss.org/maven2).
+[DEBUG] Using mirror maven-default-http-blocker (http://0.0.0.0/) for oss.sonatype.org/jboss-snapshots (http://oss.sonatype.org/content/repositories/jboss-snapshots).
+[DEBUG] Using mirror maven-default-http-blocker (http://0.0.0.0/) for ow2-snapshot (http://repository.ow2.org/nexus/content/repositories/snapshots).
+[DEBUG] Using mirror maven-default-http-blocker (http://0.0.0.0/) for codehaus.snapshots (http://snapshots.repository.codehaus.org).
+[DEBUG] Using mirror maven-default-http-blocker (http://0.0.0.0/) for codehaus-snapshots (http://nexus.codehaus.org/snapshots/).
+[DEBUG] Dependency collection stats {ConflictMarker.analyzeTime=210700, ConflictMarker.markTime=135700, ConflictMarker.nodeCount=96, ConflictIdSorter.graphTime=95100, ConflictIdSorter.topsortTime=43300, ConflictIdSorter.conflictIdCount=48, ConflictIdSorter.conflictIdCycleCount=0, ConflictResolver.totalTime=942200, ConflictResolver.conflictItemCount=94, DfDependencyCollector.collectTime=215908000, DfDependencyCollector.transformTime=1469800}
+[DEBUG] org.openjfx:javafx-maven-plugin:jar:0.0.8
+[DEBUG]    org.apache.maven:maven-plugin-api:jar:3.6.0:compile
+[DEBUG]       org.apache.maven:maven-model:jar:3.6.0:compile
+[DEBUG]       org.apache.maven:maven-artifact:jar:3.6.0:compile
+[DEBUG]       org.eclipse.sisu:org.eclipse.sisu.plexus:jar:0.3.3:compile
+[DEBUG]          javax.enterprise:cdi-api:jar:1.0:compile
+[DEBUG]             javax.annotation:jsr250-api:jar:1.0:compile
+[DEBUG]       org.codehaus.plexus:plexus-utils:jar:3.1.0:compile
+[DEBUG]       org.codehaus.plexus:plexus-classworlds:jar:2.5.2:compile
+[DEBUG]    org.codehaus.plexus:plexus-java:jar:0.9.11:compile
+[DEBUG]       org.ow2.asm:asm:jar:7.0-beta:compile
+[DEBUG]       com.thoughtworks.qdox:qdox:jar:2.0-M9:compile
+[DEBUG]    org.codehaus.plexus:plexus-archiver:jar:3.6.0:compile
+[DEBUG]       org.codehaus.plexus:plexus-io:jar:3.0.1:compile
+[DEBUG]          commons-io:commons-io:jar:2.6:compile
+[DEBUG]       org.apache.commons:commons-compress:jar:1.16.1:compile
+[DEBUG]          org.objenesis:objenesis:jar:2.6:compile
+[DEBUG]       org.iq80.snappy:snappy:jar:0.4:compile
+[DEBUG]       org.tukaani:xz:jar:1.8:runtime
+[DEBUG]    org.apache.commons:commons-exec:jar:1.3:compile
+[DEBUG]    org.apache.maven:maven-core:jar:3.6.0:compile
+[DEBUG]       org.apache.maven:maven-settings:jar:3.6.0:compile
+[DEBUG]       org.apache.maven:maven-settings-builder:jar:3.6.0:compile
+[DEBUG]          org.codehaus.plexus:plexus-interpolation:jar:1.25:compile
+[DEBUG]          org.sonatype.plexus:plexus-sec-dispatcher:jar:1.4:compile
+[DEBUG]             org.sonatype.plexus:plexus-cipher:jar:1.4:compile
+[DEBUG]       org.apache.maven:maven-builder-support:jar:3.6.0:compile
+[DEBUG]       org.apache.maven:maven-repository-metadata:jar:3.6.0:compile
+[DEBUG]       org.apache.maven:maven-model-builder:jar:3.6.0:compile
+[DEBUG]       org.apache.maven:maven-resolver-provider:jar:3.6.0:compile
+[DEBUG]          org.slf4j:slf4j-api:jar:1.7.25:compile
+[DEBUG]       org.apache.maven.resolver:maven-resolver-impl:jar:1.3.1:compile
+[DEBUG]       org.apache.maven.resolver:maven-resolver-api:jar:1.3.1:compile
+[DEBUG]       org.apache.maven.resolver:maven-resolver-spi:jar:1.3.1:compile
+[DEBUG]       org.apache.maven.resolver:maven-resolver-util:jar:1.3.1:compile
+[DEBUG]       org.apache.maven.shared:maven-shared-utils:jar:3.2.1:compile
+[DEBUG]       org.eclipse.sisu:org.eclipse.sisu.inject:jar:0.3.3:compile
+[DEBUG]       com.google.inject:guice:jar:no_aop:4.2.1:compile
+[DEBUG]          aopalliance:aopalliance:jar:1.0:compile
+[DEBUG]          com.google.guava:guava:jar:25.1-android:compile
+[DEBUG]             com.google.code.findbugs:jsr305:jar:3.0.2:compile
+[DEBUG]             org.checkerframework:checker-compat-qual:jar:2.0.0:compile
+[DEBUG]             com.google.errorprone:error_prone_annotations:jar:2.1.3:compile
+[DEBUG]             com.google.j2objc:j2objc-annotations:jar:1.1:compile
+[DEBUG]             org.codehaus.mojo:animal-sniffer-annotations:jar:1.14:compile
+[DEBUG]       javax.inject:javax.inject:jar:1:compile
+[DEBUG]       org.codehaus.plexus:plexus-component-annotations:jar:1.7.1:compile
+[DEBUG]       org.apache.commons:commons-lang3:jar:3.8.1:compile
+[DEBUG] Created new class realm plugin>org.openjfx:javafx-maven-plugin:0.0.8
+[DEBUG] Importing foreign packages into class realm plugin>org.openjfx:javafx-maven-plugin:0.0.8
+[DEBUG]   Imported:  < maven.api
+[DEBUG] Populating class realm plugin>org.openjfx:javafx-maven-plugin:0.0.8
+[DEBUG]   Included: org.openjfx:javafx-maven-plugin:jar:0.0.8
+[DEBUG]   Included: javax.enterprise:cdi-api:jar:1.0
+[DEBUG]   Included: javax.annotation:jsr250-api:jar:1.0
+[DEBUG]   Included: org.codehaus.plexus:plexus-utils:jar:3.1.0
+[DEBUG]   Included: org.codehaus.plexus:plexus-java:jar:0.9.11
+[DEBUG]   Included: org.ow2.asm:asm:jar:7.0-beta
+[DEBUG]   Included: com.thoughtworks.qdox:qdox:jar:2.0-M9
+[DEBUG]   Included: org.codehaus.plexus:plexus-archiver:jar:3.6.0
+[DEBUG]   Included: org.codehaus.plexus:plexus-io:jar:3.0.1
+[DEBUG]   Included: commons-io:commons-io:jar:2.6
+[DEBUG]   Included: org.apache.commons:commons-compress:jar:1.16.1
+[DEBUG]   Included: org.objenesis:objenesis:jar:2.6
+[DEBUG]   Included: org.iq80.snappy:snappy:jar:0.4
+[DEBUG]   Included: org.tukaani:xz:jar:1.8
+[DEBUG]   Included: org.apache.commons:commons-exec:jar:1.3
+[DEBUG]   Included: org.codehaus.plexus:plexus-interpolation:jar:1.25
+[DEBUG]   Included: org.sonatype.plexus:plexus-sec-dispatcher:jar:1.4
+[DEBUG]   Included: org.sonatype.plexus:plexus-cipher:jar:1.4
+[DEBUG]   Included: org.apache.maven:maven-builder-support:jar:3.6.0
+[DEBUG]   Included: org.apache.maven.shared:maven-shared-utils:jar:3.2.1
+[DEBUG]   Included: org.eclipse.sisu:org.eclipse.sisu.inject:jar:0.3.3
+[DEBUG]   Included: com.google.inject:guice:jar:no_aop:4.2.1
+[DEBUG]   Included: aopalliance:aopalliance:jar:1.0
+[DEBUG]   Included: com.google.guava:guava:jar:25.1-android
+[DEBUG]   Included: com.google.code.findbugs:jsr305:jar:3.0.2
+[DEBUG]   Included: org.checkerframework:checker-compat-qual:jar:2.0.0
+[DEBUG]   Included: com.google.errorprone:error_prone_annotations:jar:2.1.3
+[DEBUG]   Included: com.google.j2objc:j2objc-annotations:jar:1.1
+[DEBUG]   Included: org.codehaus.mojo:animal-sniffer-annotations:jar:1.14
+[DEBUG]   Included: org.codehaus.plexus:plexus-component-annotations:jar:1.7.1
+[DEBUG]   Included: org.apache.commons:commons-lang3:jar:3.8.1
+[DEBUG] Loading mojo org.openjfx:javafx-maven-plugin:0.0.8:run from plugin realm ClassRealm[plugin>org.openjfx:javafx-maven-plugin:0.0.8, parent: jdk.internal.loader.ClassLoaders$AppClassLoader@1affbebc]
+[DEBUG] Configuring mojo execution 'org.openjfx:javafx-maven-plugin:0.0.8:run:default-cli' with basic configurator -->
+[DEBUG]   (f) async = false
+[DEBUG]   (f) asyncDestroyOnShutdown = true
+[DEBUG]   (f) basedir = C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter
+[DEBUG]   (f) builddir = C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target
+[DEBUG]   (f) compilePath = [C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes, C:\Users\prscm\.m2\repository\org\openjfx\javafx-base\25.0.1\javafx-base-25.0.1-win.jar, C:\Users\prscm\.m2\repository\org\openjfx\javafx-controls\25.0.1\javafx-controls-25.0.1-win.jar, C:\Users\prscm\.m2\repository\org\openjfx\javafx-graphics\25.0.1\javafx-graphics-25.0.1.jar, C:\Users\prscm\.m2\repository\org\openjfx\javafx-graphics\25.0.1\javafx-graphics-25.0.1-win.jar, C:\Users\prscm\.m2\repository\org\openjfx\javafx-base\25.0.1\javafx-base-25.0.1.jar, C:\Users\prscm\.m2\repository\org\openjfx\javafx-fxml\25.0.1\javafx-fxml-25.0.1-win.jar, C:\Users\prscm\.m2\repository\org\openjfx\javafx-controls\25.0.1\javafx-controls-25.0.1.jar, C:\Users\prscm\.m2\repository\org\openjfx\javafx-media\25.0.1\javafx-media-25.0.1-win.jar, C:\Users\prscm\.m2\repository\org\openjfx\javafx-swing\25.0.1\javafx-swing-25.0.1-win.jar, C:\Users\prscm\.m2\repository\org\openjfx\javafx-web\25.0.1\javafx-web-25.0.1-win.jar, C:\Users\prscm\.m2\repository\org\openjfx\javafx-media\25.0.1\javafx-media-25.0.1.jar, C:\Users\prscm\.m2\repository\org\openjfx\jdk-jsobject\25.0.1\jdk-jsobject-25.0.1.jar, C:\Users\prscm\.m2\repository\org\openjfx\jdk-jsobject\25.0.1\jdk-jsobject-25.0.1-win.jar]
+[DEBUG]   (f) executable = java
+[DEBUG]   (f) includePathExceptionsInClasspath = false
+[DEBUG]   (f) mainClass = in.hamshik.App
+[DEBUG]   (f) project = MavenProject: in.hamshik:coffee_eatter:1.0-SNAPSHOT @ C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\pom.xml
+[DEBUG]   (f) session = org.apache.maven.execution.MavenSession@154bd49b
+[DEBUG]   (f) skip = false
+[DEBUG] -- end configuration --
+[DEBUG] Executable [C:\Program Files\Java\jdk-25\bin\java.exe]
+[DEBUG] Total dependencyArtifacts: 14
+[DEBUG] module descriptor path: C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes\module-info.class
+[DEBUG] Classpath:9
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\javafx-base\25.0.1\javafx-base-25.0.1.jar
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\javafx-controls\25.0.1\javafx-controls-25.0.1.jar
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\javafx-graphics\25.0.1\javafx-graphics-25.0.1.jar
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\javafx-media\25.0.1\javafx-media-25.0.1-win.jar
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\javafx-media\25.0.1\javafx-media-25.0.1.jar
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\javafx-swing\25.0.1\javafx-swing-25.0.1-win.jar
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\javafx-web\25.0.1\javafx-web-25.0.1-win.jar
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\jdk-jsobject\25.0.1\jdk-jsobject-25.0.1-win.jar
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\jdk-jsobject\25.0.1\jdk-jsobject-25.0.1.jar
+[DEBUG] Modulepath: 5
+[DEBUG]  C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\javafx-base\25.0.1\javafx-base-25.0.1-win.jar
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\javafx-controls\25.0.1\javafx-controls-25.0.1-win.jar
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\javafx-fxml\25.0.1\javafx-fxml-25.0.1-win.jar
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\javafx-graphics\25.0.1\javafx-graphics-25.0.1-win.jar
+[DEBUG] pathElements: 14
+[DEBUG]  C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes :: in.hamshik
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\javafx-base\25.0.1\javafx-base-25.0.1-win.jar :: javafx.base
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\javafx-base\25.0.1\javafx-base-25.0.1.jar :: javafx.baseEmpty
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\javafx-controls\25.0.1\javafx-controls-25.0.1-win.jar :: javafx.controls
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\javafx-controls\25.0.1\javafx-controls-25.0.1.jar :: javafx.controlsEmpty
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\javafx-fxml\25.0.1\javafx-fxml-25.0.1-win.jar :: javafx.fxml
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\javafx-graphics\25.0.1\javafx-graphics-25.0.1-win.jar :: javafx.graphics
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\javafx-graphics\25.0.1\javafx-graphics-25.0.1.jar :: javafx.graphicsEmpty
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\javafx-media\25.0.1\javafx-media-25.0.1-win.jar :: javafx.media
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\javafx-media\25.0.1\javafx-media-25.0.1.jar :: javafx.mediaEmpty
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\javafx-swing\25.0.1\javafx-swing-25.0.1-win.jar :: javafx.swing
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\javafx-web\25.0.1\javafx-web-25.0.1-win.jar :: javafx.web
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\jdk-jsobject\25.0.1\jdk-jsobject-25.0.1-win.jar :: jdk.jsobject
+[DEBUG]  C:\Users\prscm\.m2\repository\org\openjfx\jdk-jsobject\25.0.1\jdk-jsobject-25.0.1.jar :: jdk.jsobjectEmpty
+[WARNING] Module name not found in <mainClass>. Module name will be assumed from module-info.java
+[DEBUG] Executing command line: [C:\Program Files\Java\jdk-25\bin\java.exe, --module-path, C:\Users\prscm\Downloads\Hamshik\JavaProject\coffee_eatter\target\classes;C:\Users\prscm\.m2\repository\org\openjfx\javafx-base\25.0.1\javafx-base-25.0.1-win.jar;C:\Users\prscm\.m2\repository\org\openjfx\javafx-controls\25.0.1\javafx-controls-25.0.1-win.jar;C:\Users\prscm\.m2\repository\org\openjfx\javafx-fxml\25.0.1\javafx-fxml-25.0.1-win.jar;C:\Users\prscm\.m2\repository\org\openjfx\javafx-graphics\25.0.1\javafx-graphics-25.0.1-win.jar, --add-modules, in.hamshik, -classpath, C:\Users\prscm\.m2\repository\org\openjfx\javafx-base\25.0.1\javafx-base-25.0.1.jar;C:\Users\prscm\.m2\repository\org\openjfx\javafx-controls\25.0.1\javafx-controls-25.0.1.jar;C:\Users\prscm\.m2\repository\org\openjfx\javafx-graphics\25.0.1\javafx-graphics-25.0.1.jar;C:\Users\prscm\.m2\repository\org\openjfx\javafx-media\25.0.1\javafx-media-25.0.1-win.jar;C:\Users\prscm\.m2\repository\org\openjfx\javafx-media\25.0.1\javafx-media-25.0.1.jar;C:\Users\prscm\.m2\repository\org\openjfx\javafx-swing\25.0.1\javafx-swing-25.0.1-win.jar;C:\Users\prscm\.m2\repository\org\openjfx\javafx-web\25.0.1\javafx-web-25.0.1-win.jar;C:\Users\prscm\.m2\repository\org\openjfx\jdk-jsobject\25.0.1\jdk-jsobject-25.0.1-win.jar;C:\Users\prscm\.m2\repository\org\openjfx\jdk-jsobject\25.0.1\jdk-jsobject-25.0.1.jar, --module, in.hamshik/in.hamshik.App]
+[ERROR] Command execution failed.
+org.apache.commons.exec.ExecuteException: Process exited with an error: 1 (Exit value: 1)
+    at org.apache.commons.exec.DefaultExecutor.executeInternal (DefaultExecutor.java:404)
+    at org.apache.commons.exec.DefaultExecutor.execute (DefaultExecutor.java:166)
+    at org.openjfx.JavaFXBaseMojo.executeCommandLine (JavaFXBaseMojo.java:567)
+    at org.openjfx.JavaFXBaseMojo.executeCommandLine (JavaFXBaseMojo.java:434)
+    at org.openjfx.JavaFXRunMojo.execute (JavaFXRunMojo.java:105)
+    at org.apache.maven.plugin.DefaultBuildPluginManager.executeMojo (DefaultBuildPluginManager.java:126)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.doExecute2 (MojoExecutor.java:328)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.doExecute (MojoExecutor.java:316)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:212)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:174)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.access$000 (MojoExecutor.java:75)
+    at org.apache.maven.lifecycle.internal.MojoExecutor$1.run (MojoExecutor.java:162)
+    at org.apache.maven.plugin.DefaultMojosExecutionStrategy.execute (DefaultMojosExecutionStrategy.java:39)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:159)
+    at org.apache.maven.lifecycle.internal.LifecycleModuleBuilder.buildProject (LifecycleModuleBuilder.java:105)
+    at org.apache.maven.lifecycle.internal.LifecycleModuleBuilder.buildProject (LifecycleModuleBuilder.java:73)
+    at org.apache.maven.lifecycle.internal.builder.singlethreaded.SingleThreadedBuilder.build (SingleThreadedBuilder.java:53)
+    at org.apache.maven.lifecycle.internal.LifecycleStarter.execute (LifecycleStarter.java:118)
+    at org.apache.maven.DefaultMaven.doExecute (DefaultMaven.java:261)
+    at org.apache.maven.DefaultMaven.doExecute (DefaultMaven.java:173)
+    at org.apache.maven.DefaultMaven.execute (DefaultMaven.java:101)
+    at org.apache.maven.cli.MavenCli.execute (MavenCli.java:906)
+    at org.apache.maven.cli.MavenCli.doMain (MavenCli.java:283)
+    at org.apache.maven.cli.MavenCli.main (MavenCli.java:206)
+    at jdk.internal.reflect.DirectMethodHandleAccessor.invoke (DirectMethodHandleAccessor.java:104)
+    at java.lang.reflect.Method.invoke (Method.java:565)
+    at org.codehaus.plexus.classworlds.launcher.Launcher.launchEnhanced (Launcher.java:255)
+    at org.codehaus.plexus.classworlds.launcher.Launcher.launch (Launcher.java:201)
+    at org.codehaus.plexus.classworlds.launcher.Launcher.mainWithExitCode (Launcher.java:361)
+    at org.codehaus.plexus.classworlds.launcher.Launcher.main (Launcher.java:314)
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  2.846 s
+[INFO] Finished at: 2025-10-26T14:35:18+05:30
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.openjfx:javafx-maven-plugin:0.0.8:run (default-cli) on project coffee_eatter: Error: Command execution failed. Process exited with an error: 1 (Exit value: 1) -> [Help 1]
+org.apache.maven.lifecycle.LifecycleExecutionException: Failed to execute goal org.openjfx:javafx-maven-plugin:0.0.8:run (default-cli) on project coffee_eatter: Error
+    at org.apache.maven.lifecycle.internal.MojoExecutor.doExecute2 (MojoExecutor.java:333)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.doExecute (MojoExecutor.java:316)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:212)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:174)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.access$000 (MojoExecutor.java:75)
+    at org.apache.maven.lifecycle.internal.MojoExecutor$1.run (MojoExecutor.java:162)
+    at org.apache.maven.plugin.DefaultMojosExecutionStrategy.execute (DefaultMojosExecutionStrategy.java:39)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:159)
+    at org.apache.maven.lifecycle.internal.LifecycleModuleBuilder.buildProject (LifecycleModuleBuilder.java:105)
+    at org.apache.maven.lifecycle.internal.LifecycleModuleBuilder.buildProject (LifecycleModuleBuilder.java:73)
+    at org.apache.maven.lifecycle.internal.builder.singlethreaded.SingleThreadedBuilder.build (SingleThreadedBuilder.java:53)
+    at org.apache.maven.lifecycle.internal.LifecycleStarter.execute (LifecycleStarter.java:118)
+    at org.apache.maven.DefaultMaven.doExecute (DefaultMaven.java:261)
+    at org.apache.maven.DefaultMaven.doExecute (DefaultMaven.java:173)
+    at org.apache.maven.DefaultMaven.execute (DefaultMaven.java:101)
+    at org.apache.maven.cli.MavenCli.execute (MavenCli.java:906)
+    at org.apache.maven.cli.MavenCli.doMain (MavenCli.java:283)
+    at org.apache.maven.cli.MavenCli.main (MavenCli.java:206)
+    at jdk.internal.reflect.DirectMethodHandleAccessor.invoke (DirectMethodHandleAccessor.java:104)
+    at java.lang.reflect.Method.invoke (Method.java:565)
+    at org.codehaus.plexus.classworlds.launcher.Launcher.launchEnhanced (Launcher.java:255)
+    at org.codehaus.plexus.classworlds.launcher.Launcher.launch (Launcher.java:201)
+    at org.codehaus.plexus.classworlds.launcher.Launcher.mainWithExitCode (Launcher.java:361)
+    at org.codehaus.plexus.classworlds.launcher.Launcher.main (Launcher.java:314)
+Caused by: org.apache.maven.plugin.MojoExecutionException: Error
+    at org.openjfx.JavaFXRunMojo.execute (JavaFXRunMojo.java:122)
+    at org.apache.maven.plugin.DefaultBuildPluginManager.executeMojo (DefaultBuildPluginManager.java:126)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.doExecute2 (MojoExecutor.java:328)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.doExecute (MojoExecutor.java:316)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:212)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:174)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.access$000 (MojoExecutor.java:75)
+    at org.apache.maven.lifecycle.internal.MojoExecutor$1.run (MojoExecutor.java:162)
+    at org.apache.maven.plugin.DefaultMojosExecutionStrategy.execute (DefaultMojosExecutionStrategy.java:39)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:159)
+    at org.apache.maven.lifecycle.internal.LifecycleModuleBuilder.buildProject (LifecycleModuleBuilder.java:105)
+    at org.apache.maven.lifecycle.internal.LifecycleModuleBuilder.buildProject (LifecycleModuleBuilder.java:73)
+    at org.apache.maven.lifecycle.internal.builder.singlethreaded.SingleThreadedBuilder.build (SingleThreadedBuilder.java:53)
+    at org.apache.maven.lifecycle.internal.LifecycleStarter.execute (LifecycleStarter.java:118)
+    at org.apache.maven.DefaultMaven.doExecute (DefaultMaven.java:261)
+    at org.apache.maven.DefaultMaven.doExecute (DefaultMaven.java:173)
+    at org.apache.maven.DefaultMaven.execute (DefaultMaven.java:101)
+    at org.apache.maven.cli.MavenCli.execute (MavenCli.java:906)
+    at org.apache.maven.cli.MavenCli.doMain (MavenCli.java:283)
+    at org.apache.maven.cli.MavenCli.main (MavenCli.java:206)
+    at jdk.internal.reflect.DirectMethodHandleAccessor.invoke (DirectMethodHandleAccessor.java:104)
+    at java.lang.reflect.Method.invoke (Method.java:565)
+    at org.codehaus.plexus.classworlds.launcher.Launcher.launchEnhanced (Launcher.java:255)
+    at org.codehaus.plexus.classworlds.launcher.Launcher.launch (Launcher.java:201)
+    at org.codehaus.plexus.classworlds.launcher.Launcher.mainWithExitCode (Launcher.java:361)
+    at org.codehaus.plexus.classworlds.launcher.Launcher.main (Launcher.java:314)
+Caused by: org.apache.maven.plugin.MojoExecutionException: Command execution failed.
+    at org.openjfx.JavaFXRunMojo.execute (JavaFXRunMojo.java:116)
+    at org.apache.maven.plugin.DefaultBuildPluginManager.executeMojo (DefaultBuildPluginManager.java:126)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.doExecute2 (MojoExecutor.java:328)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.doExecute (MojoExecutor.java:316)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:212)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:174)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.access$000 (MojoExecutor.java:75)
+    at org.apache.maven.lifecycle.internal.MojoExecutor$1.run (MojoExecutor.java:162)
+    at org.apache.maven.plugin.DefaultMojosExecutionStrategy.execute (DefaultMojosExecutionStrategy.java:39)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:159)
+    at org.apache.maven.lifecycle.internal.LifecycleModuleBuilder.buildProject (LifecycleModuleBuilder.java:105)
+    at org.apache.maven.lifecycle.internal.LifecycleModuleBuilder.buildProject (LifecycleModuleBuilder.java:73)
+    at org.apache.maven.lifecycle.internal.builder.singlethreaded.SingleThreadedBuilder.build (SingleThreadedBuilder.java:53)
+    at org.apache.maven.lifecycle.internal.LifecycleStarter.execute (LifecycleStarter.java:118)
+    at org.apache.maven.DefaultMaven.doExecute (DefaultMaven.java:261)
+    at org.apache.maven.DefaultMaven.doExecute (DefaultMaven.java:173)
+    at org.apache.maven.DefaultMaven.execute (DefaultMaven.java:101)
+    at org.apache.maven.cli.MavenCli.execute (MavenCli.java:906)
+    at org.apache.maven.cli.MavenCli.doMain (MavenCli.java:283)
+    at org.apache.maven.cli.MavenCli.main (MavenCli.java:206)
+    at jdk.internal.reflect.DirectMethodHandleAccessor.invoke (DirectMethodHandleAccessor.java:104)
+    at java.lang.reflect.Method.invoke (Method.java:565)
+    at org.codehaus.plexus.classworlds.launcher.Launcher.launchEnhanced (Launcher.java:255)
+    at org.codehaus.plexus.classworlds.launcher.Launcher.launch (Launcher.java:201)
+    at org.codehaus.plexus.classworlds.launcher.Launcher.mainWithExitCode (Launcher.java:361)
+    at org.codehaus.plexus.classworlds.launcher.Launcher.main (Launcher.java:314)
+Caused by: org.apache.commons.exec.ExecuteException: Process exited with an error: 1 (Exit value: 1)
+    at org.apache.commons.exec.DefaultExecutor.executeInternal (DefaultExecutor.java:404)
+    at org.apache.commons.exec.DefaultExecutor.execute (DefaultExecutor.java:166)
+    at org.openjfx.JavaFXBaseMojo.executeCommandLine (JavaFXBaseMojo.java:567)
+    at org.openjfx.JavaFXBaseMojo.executeCommandLine (JavaFXBaseMojo.java:434)
+    at org.openjfx.JavaFXRunMojo.execute (JavaFXRunMojo.java:105)
+    at org.apache.maven.plugin.DefaultBuildPluginManager.executeMojo (DefaultBuildPluginManager.java:126)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.doExecute2 (MojoExecutor.java:328)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.doExecute (MojoExecutor.java:316)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:212)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:174)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.access$000 (MojoExecutor.java:75)
+    at org.apache.maven.lifecycle.internal.MojoExecutor$1.run (MojoExecutor.java:162)
+    at org.apache.maven.plugin.DefaultMojosExecutionStrategy.execute (DefaultMojosExecutionStrategy.java:39)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:159)
+    at org.apache.maven.lifecycle.internal.LifecycleModuleBuilder.buildProject (LifecycleModuleBuilder.java:105)
+    at org.apache.maven.lifecycle.internal.LifecycleModuleBuilder.buildProject (LifecycleModuleBuilder.java:73)
+    at org.apache.maven.lifecycle.internal.builder.singlethreaded.SingleThreadedBuilder.build (SingleThreadedBuilder.java:53)
+    at org.apache.maven.lifecycle.internal.LifecycleStarter.execute (LifecycleStarter.java:118)
+    at org.apache.maven.DefaultMaven.doExecute (DefaultMaven.java:261)
+    at org.apache.maven.DefaultMaven.doExecute (DefaultMaven.java:173)
+    at org.apache.maven.DefaultMaven.execute (DefaultMaven.java:101)
+    at org.apache.maven.cli.MavenCli.execute (MavenCli.java:906)
+    at org.apache.maven.cli.MavenCli.doMain (MavenCli.java:283)
+    at org.apache.maven.cli.MavenCli.main (MavenCli.java:206)
+    at jdk.internal.reflect.DirectMethodHandleAccessor.invoke (DirectMethodHandleAccessor.java:104)
+    at java.lang.reflect.Method.invoke (Method.java:565)
+    at org.codehaus.plexus.classworlds.launcher.Launcher.launchEnhanced (Launcher.java:255)
+    at org.codehaus.plexus.classworlds.launcher.Launcher.launch (Launcher.java:201)
+    at org.codehaus.plexus.classworlds.launcher.Launcher.mainWithExitCode (Launcher.java:361)
+    at org.codehaus.plexus.classworlds.launcher.Launcher.main (Launcher.java:314)
+[ERROR] 
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
+[DEBUG] Shutting down adapter factory; available factories [file-lock, rwlock-local, semaphore-local, noop]; available name mappers [discriminating, file-gav, file-hgav, file-static, gav, static]
+[DEBUG] Shutting down 'file-lock' factory
+[DEBUG] Shutting down 'rwlock-local' factory
+[DEBUG] Shutting down 'semaphore-local' factory
+[DEBUG] Shutting down 'noop' factory
