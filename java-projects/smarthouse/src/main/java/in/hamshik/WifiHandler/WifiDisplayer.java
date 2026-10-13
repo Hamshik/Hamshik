@@ -60,6 +60,11 @@ public class WifiDisplayer {
         });
     }
 
+    public void dispose() {
+        removeBackgroundBlur();
+        endScanning();
+    }
+
     public void disconnect() {
         if (connectedDeviceName == null) return;
         connectedDeviceName = null;

@@ -50,7 +50,6 @@ public class CardManager {
     public void addNewCard() {
         VBox newCard = createIoTSensorCard();
         addCard(newCard);
-        DragHelper.makeDraggable(board.getChildren().get(board.getChildren().size() - 1), newCard);
     }
 
     private void addCard(VBox card) {

@@ -5,21 +5,22 @@ import in.hamshik.WifiHandler.WifiSender;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
-import javafx.scene.control.SplitPane;
 import javafx.scene.layout.VBox;
 
-public class DeviceMngController extends  Controller {
+public class DeviceMngController extends Controller {
     @FXML private VBox modalCard;
     @FXML private ProgressIndicator loadingSpinner;
     @FXML private Label statusLabel;
     @FXML private VBox deviceListContainer;
-    @FXML private SplitPane pageContent;
     
     private WifiDisplayer wifiDisplayer;
 
-    @FXML private void initialize() {
+    @FXML 
+    protected  void initialize() {
+        super.initialize(); // Injects shared layout and binds shared elements automatically
+        
         wifiDisplayer = new WifiDisplayer(
-            pageContent,
+            root, // Inherited from base Controller
             modalCard,
             loadingSpinner,
             statusLabel,
@@ -27,26 +28,38 @@ public class DeviceMngController extends  Controller {
             device -> {
                 System.out.println("Selected ESP32: " + device.name() + " (" + device.host() + ")");
                 setWifiButtonConnected(true);
-                wifiBut.setText(device.name());
+                if (wifiBut != null) {
+                    wifiBut.setText(device.name());
+                }
                 WifiSender.sendDataToESP32(device.host(), "hello from java");
             },
             () -> {
                 System.out.println("ESP32 Disconnected");
                 setWifiButtonConnected(false);
-                wifiBut.setText("Disconnected");
+                if (wifiBut != null) {
+                    wifiBut.setText("Disconnected");
+                }
             }
         );
-        wifiDisplayer.show();
-        
+    }
+
+    public void dispose() {
+        if (wifiDisplayer != null) {
+            wifiDisplayer.dispose();
+        }
     }
 
     void setWifiButtonConnected(boolean connected){
-        wifiBut.getStyleClass().removeAll("connected-btn", "disconnected-btn");
-        wifiBut.getStyleClass().add(connected ? "connected-btn" : "disconnected-btn");
-
+        if (wifiBut != null) {
+            wifiBut.getStyleClass().removeAll("connected-btn", "disconnected-btn");
+            wifiBut.getStyleClass().add(connected ? "connected-btn" : "disconnected-btn");
+        }
     }
 
-    void wifiShow() {
-        wifiDisplayer.show();
+    @FXML 
+    void wifiShow() { 
+        if (wifiDisplayer != null) {
+            wifiDisplayer.show(); 
+        }
     }
 }

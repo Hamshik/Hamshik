@@ -64,9 +64,10 @@
 /* ---------------- Top bar ---------------- */
 .topbar {
     -fx-background-color: #ffffff;
+    -fx-background-radius: 10;
     -fx-min-height: 56;
     -fx-pref-height: 56;
-    -fx-effect: dropshadow(gaussian, rgba(16, 32, 39, 0.10), 12, 0, 0, 1);
+    -fx-effect: dropshadow(gaussian, rgba(16, 32, 39, 0.18), 16, 0, 0, 4);
 }
 
 .topbar-title {
@@ -77,9 +78,10 @@
 
 /* ---------------- Dashboard canvas ---------------- */
 .welcome-text {
-    -fx-font-size: 20px;
+    -fx-font-size: 2.5em;
     -fx-font-weight: bold;
     -fx-fill: #102027;
+
 }
 
 .section-title {

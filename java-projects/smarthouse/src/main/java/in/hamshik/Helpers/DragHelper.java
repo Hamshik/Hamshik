@@ -15,24 +15,26 @@ public class DragHelper {
         final double[] offset = new double[2];
 
         node.setOnMousePressed(e -> {
-            offset[0] = e.getSceneX() - node.getLayoutX();
-            offset[1] = e.getSceneY() - node.getLayoutY();
+            var point = container.sceneToLocal(e.getSceneX(), e.getSceneY());
+            offset[0] = point.getX() - node.getLayoutX();
+            offset[1] = point.getY() - node.getLayoutY();
             node.toFront();
         });
 
         node.setOnMouseDragged(e -> {
-            double x = e.getSceneX() - offset[0];
-            double y = e.getSceneY() - offset[1];
+            var point = container.sceneToLocal(e.getSceneX(), e.getSceneY());
+            double x = point.getX() - offset[0];
+            double y = point.getY() - offset[1];
 
-            x = clamp(x, 0, container.getWidth() - node.getLayoutBounds().getWidth());
-            y = clamp(y, 0, container.getHeight() - node.getLayoutBounds().getHeight());
+            x = clamp(x, Math.max(0, container.getWidth() - node.getLayoutBounds().getWidth()));
+            y = clamp(y, Math.max(0, container.getHeight() - node.getLayoutBounds().getHeight()));
 
             node.setLayoutX(x);
             node.setLayoutY(y);
         });
     }
 
-    private static double clamp(double v, double min, double max) {
-        return Math.max(min, Math.min(max, v));
+    private static double clamp(double value, double max) {
+        return Math.clamp(value, 0, max);
     }
 }

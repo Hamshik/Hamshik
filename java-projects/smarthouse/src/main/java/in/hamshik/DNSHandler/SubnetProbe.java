@@ -21,7 +21,11 @@ final class SubnetProbe {
     void startScanning() {
         scanning = true;
         stopScanningInternal();
-        scheduler = Executors.newSingleThreadScheduledExecutor();
+        scheduler = Executors.newSingleThreadScheduledExecutor(task -> {
+            Thread thread = new Thread(task, "SubnetProbe");
+            thread.setDaemon(true);
+            return thread;
+        });
         scheduler.scheduleWithFixedDelay(this::runSubnetScan, 0, 4, TimeUnit.SECONDS);
     }
 

@@ -9,8 +9,10 @@ import java.net.InetAddress;
 import in.hamshik.WifiHandler.*;
 
 final class MdnsDeviceDiscovery {
+    private static final System.Logger LOGGER = System.getLogger(MdnsDeviceDiscovery.class.getName());
+
     private final EspDeviceRegistry registry;
-    private JmDNS jmDNS;
+    private volatile JmDNS jmDNS;
 
     MdnsDeviceDiscovery(EspDeviceRegistry registry) {
         this.registry = registry;
@@ -22,7 +24,7 @@ final class MdnsDeviceDiscovery {
             jmDNS = JmDNS.create(localHost);
             jmDNS.addServiceListener("_http._tcp.", createServiceListener());
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(System.Logger.Level.ERROR, "Unable to start mDNS discovery", e);
         }
     }
 
@@ -32,13 +34,15 @@ final class MdnsDeviceDiscovery {
         JmDNS instanceToClose = jmDNS;
         jmDNS = null;
 
-        new Thread(() -> {
+        Thread shutdownThread = new Thread(() -> {
             try {
                 instanceToClose.close();
-            } catch (IOException ignored) {
-                // shutdown is best effort
+            } catch (IOException e) {
+                LOGGER.log(System.Logger.Level.ERROR, "Unable to close mDNS discovery", e);
             }
-        }, "JmDNS-Shutdown-Thread").start();
+        }, "JmDNS-Shutdown-Thread");
+        shutdownThread.setDaemon(true);
+        shutdownThread.start();
     }
 
     private ServiceListener createServiceListener() {
