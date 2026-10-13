@@ -16,24 +16,24 @@ public class App extends Application {
     private static Node dashboardPage;
     private static Node devicePage;
 
-    private static Controller homeController;
-    private static DeviceMngController deviceMngController;
-    private static DashController dashController;
+    public static Controller homeController;
+    public static DeviceMngController deviceMngController;
+    public static DashController dashController;
 
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader homeLoader = createFXMLLoader("main.fxml");
         homePage = homeLoader.load();
         homeController = homeLoader.getController();
-
+        
         FXMLLoader dashboardLoader = createFXMLLoader("dashboard.fxml");
         dashboardPage = dashboardLoader.load();
         dashController = dashboardLoader.getController();
-
+        
         FXMLLoader deviceLoader = createFXMLLoader("deviceMg.fxml");
         devicePage = deviceLoader.load();
         deviceMngController = deviceLoader.getController();
-
+        
         StackPane pageHost = new StackPane(homePage, dashboardPage, devicePage);
         showHome();
         stage.setScene(new Scene(pageHost));
@@ -41,6 +41,10 @@ public class App extends Application {
         stage.setMinWidth(600);
         stage.setMinHeight(500);
         stage.show();
+        
+        homeController.addSplitDividerListener(homeController.root);
+        homeController.addSplitDividerListener(dashController.root);
+        homeController.addSplitDividerListener(deviceMngController.root);
     }
 
     @Override

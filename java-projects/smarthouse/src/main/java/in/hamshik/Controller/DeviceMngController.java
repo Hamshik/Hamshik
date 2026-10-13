@@ -5,20 +5,21 @@ import in.hamshik.WifiHandler.WifiSender;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.SplitPane;
 import javafx.scene.layout.VBox;
 
 public class DeviceMngController extends Controller {
     @FXML private VBox modalCard;
     @FXML private ProgressIndicator loadingSpinner;
     @FXML private Label statusLabel;
+    @FXML public SplitPane root;
     @FXML private VBox deviceListContainer;
     
     private WifiDisplayer wifiDisplayer;
 
     @FXML 
-    protected  void initialize() {
-        super.initialize(); // Injects shared layout and binds shared elements automatically
-        
+    protected  void initialize() {  
+        super.initialize();      
         wifiDisplayer = new WifiDisplayer(
             root, // Inherited from base Controller
             modalCard,
@@ -43,23 +44,13 @@ public class DeviceMngController extends Controller {
         );
     }
 
-    public void dispose() {
-        if (wifiDisplayer != null) {
-            wifiDisplayer.dispose();
-        }
-    }
+    public void dispose() { wifiDisplayer.dispose(); }
 
     void setWifiButtonConnected(boolean connected){
-        if (wifiBut != null) {
-            wifiBut.getStyleClass().removeAll("connected-btn", "disconnected-btn");
-            wifiBut.getStyleClass().add(connected ? "connected-btn" : "disconnected-btn");
-        }
+        wifiBut.getStyleClass().removeAll("connected-btn", "disconnected-btn");
+        wifiBut.getStyleClass().add(connected ? "connected-btn" : "disconnected-btn");
     }
 
-    @FXML 
-    void wifiShow() { 
-        if (wifiDisplayer != null) {
-            wifiDisplayer.show(); 
-        }
-    }
+    @FXML void wifiShow() { wifiDisplayer.show(); }
+
 }

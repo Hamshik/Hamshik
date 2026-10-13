@@ -3,12 +3,14 @@ package in.hamshik.Controller;
 import in.hamshik.Helpers.CardManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.SplitPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
 public class DashController extends Controller {
     @FXML private Pane board;
     @FXML private StackPane modalOverlay;
+    @FXML public SplitPane root;
 
     private CardManager cardManager;
 

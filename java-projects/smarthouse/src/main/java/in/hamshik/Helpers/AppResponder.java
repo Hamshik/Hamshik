@@ -49,6 +49,7 @@ public class AppResponder {
         }
 
         boolean wantCollapsed = width < COLLAPSE_AT;
+        double sidebarWidth = wantCollapsed ? SIDEBAR_MIN : SIDEBAR_FULL;
 
         if (wantCollapsed != collapsed) {
             collapsed = wantCollapsed;
@@ -67,11 +68,11 @@ public class AppResponder {
                 setNav(sideDeviceBut, "◉   Devices", 120);
                 setNav(sideThingsBut, "⚙   Things", 120);
             }
+
+            root.setDividerPositions(Math.min(sidebarWidth / width, 1.0));
         }
 
-        double sidebarWidth = collapsed ? SIDEBAR_MIN : SIDEBAR_FULL;
         sidebar.setPrefWidth(sidebarWidth);
-        root.setDividerPositions(Math.min(sidebarWidth / width, 1.0));
     }
 
     private void setNav(Button btn, String text, double prefWidth) {

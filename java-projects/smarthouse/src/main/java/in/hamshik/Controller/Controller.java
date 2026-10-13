@@ -8,6 +8,8 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
 
 public class Controller extends SharedUIComponents {
+    private static boolean syncingDividerPositions;
+
     public enum NavigationItem {
         HOME,
         DASHBOARD,
@@ -16,8 +18,7 @@ public class Controller extends SharedUIComponents {
     }
 
     @FXML private AnchorPane pageContent;
-    @FXML SplitPane root;
-    private AppResponder appResponder;
+    @FXML public SplitPane root;
 
 
     @FXML protected void initialize() {
@@ -51,7 +52,30 @@ public class Controller extends SharedUIComponents {
 
     @FXML protected void showDevices() { App.showDevices(); }
 
-    @FXML void showWifi(){
-        App.showDevices();
+    @FXML void showWifi(){ App.showDevices(); }
+
+    public void addSplitDividerListener(SplitPane pane) {
+        pane.getDividers().get(0).positionProperty().addListener(
+            (obs, oldVal, newVal) -> {
+                if (syncingDividerPositions) {
+                    return;
+                }
+
+                syncingDividerPositions = true;
+                try {
+                    double position = newVal.doubleValue();
+                    if (pane != App.homeController.root) {
+                        App.homeController.root.setDividerPosition(0, position);
+                    }
+                    if (pane != App.dashController.root) {
+                        App.dashController.root.setDividerPosition(0, position);
+                    }
+                    if (pane != App.deviceMngController.root) {
+                        App.deviceMngController.root.setDividerPosition(0, position);
+                    }
+                } finally {
+                    syncingDividerPositions = false;
+                }
+            });
     }
 }
