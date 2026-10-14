@@ -1,9 +1,10 @@
 package in.hamshik.DNSHandler;
 
 import java.io.IOException;
-import java.net.InetAddress;
+import java.net.Inet4Address;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -61,13 +62,25 @@ final class SubnetProbe {
     }
 
     private void probeLocalSubnet() {
-        String subnetPrefix = getSubnetPrefix();
-        if (subnetPrefix == null) return;
+        List<Inet4Address> addresses;
+        try {
+            addresses = LocalNetworkInterfaces.getIPv4Addresses();
+        } catch (IOException e) {
+            System.getLogger(SubnetProbe.class.getName()).log(
+                    System.Logger.Level.ERROR, "Unable to list local network interfaces", e);
+            return;
+        }
 
-        for (int i = 1; i <= 254; i++) {
-            if (!scanning) return;
-            String targetIp = subnetPrefix + "." + i;
-            probeIpForEsp(targetIp);
+        for (Inet4Address address : addresses) {
+            String[] octets = address.getHostAddress().split("\\.");
+            String subnetPrefix = octets[0] + "." + octets[1] + "." + octets[2];
+            for (int i = 1; i <= 254; i++) {
+                if (!scanning) return;
+                String targetIp = subnetPrefix + "." + i;
+                if (!targetIp.equals(address.getHostAddress())) {
+                    probeIpForEsp(targetIp);
+                }
+            }
         }
     }
 
@@ -76,15 +89,6 @@ final class SubnetProbe {
             registry.addOrUpdateDevice("esp-" + ip, ip, 80, "subnet:80");
         } else if (isPortReachable(ip, 8266, 150)) {
             registry.addOrUpdateDevice("esp-" + ip, ip, 8266, "subnet:8266");
-        }
-    }
-
-    private String getSubnetPrefix() {
-        try {
-            InetAddress local = InetAddress.getLocalHost();
-            return local.getHostAddress().replaceAll("\\.\\d+$", "");
-        } catch (Exception e) {
-            return null;
         }
     }
 

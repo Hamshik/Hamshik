@@ -5,40 +5,58 @@ import javax.jmdns.ServiceEvent;
 import javax.jmdns.ServiceInfo;
 import javax.jmdns.ServiceListener;
 import java.io.IOException;
-import java.net.InetAddress;
+import java.net.Inet4Address;
+import java.net.SocketException;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import in.hamshik.WifiHandler.*;
 
 final class MdnsDeviceDiscovery {
     private static final System.Logger LOGGER = System.getLogger(MdnsDeviceDiscovery.class.getName());
 
     private final EspDeviceRegistry registry;
-    private volatile JmDNS jmDNS;
+    private final List<JmDNS> jmDNSInstances = new CopyOnWriteArrayList<>();
 
     MdnsDeviceDiscovery(EspDeviceRegistry registry) {
         this.registry = registry;
     }
 
     void startDiscovery() {
+        List<Inet4Address> addresses;
         try {
-            InetAddress localHost = InetAddress.getLocalHost();
-            jmDNS = JmDNS.create(localHost);
-            jmDNS.addServiceListener("_http._tcp.", createServiceListener());
-        } catch (IOException e) {
-            LOGGER.log(System.Logger.Level.ERROR, "Unable to start mDNS discovery", e);
+            addresses = LocalNetworkInterfaces.getIPv4Addresses();
+        } catch (SocketException e) {
+            LOGGER.log(System.Logger.Level.ERROR, "Unable to list local network interfaces", e);
+            return;
+        }
+
+        for (Inet4Address address : addresses) {
+            try {
+                JmDNS instance = JmDNS.create(address);
+                jmDNSInstances.add(instance);
+                instance.addServiceListener("_http._tcp.", createServiceListener());
+            } catch (IOException e) {
+                LOGGER.log(System.Logger.Level.ERROR,
+                        "Unable to start mDNS discovery on " + address.getHostAddress(), e);
+            }
+        }
+        if (jmDNSInstances.isEmpty()) {
+            LOGGER.log(System.Logger.Level.ERROR, "No mDNS discovery interface could be started");
         }
     }
 
     void stopDiscovery() {
-        if (jmDNS == null) return;
-
-        JmDNS instanceToClose = jmDNS;
-        jmDNS = null;
+        if (jmDNSInstances.isEmpty()) return;
+        List<JmDNS> instancesToClose = List.copyOf(jmDNSInstances);
+        jmDNSInstances.clear();
 
         Thread shutdownThread = new Thread(() -> {
-            try {
-                instanceToClose.close();
-            } catch (IOException e) {
-                LOGGER.log(System.Logger.Level.ERROR, "Unable to close mDNS discovery", e);
+            for (JmDNS instance : instancesToClose) {
+                try {
+                    instance.close();
+                } catch (IOException e) {
+                    LOGGER.log(System.Logger.Level.ERROR, "Unable to close mDNS discovery", e);
+                }
             }
         }, "JmDNS-Shutdown-Thread");
         shutdownThread.setDaemon(true);
@@ -64,7 +82,6 @@ final class MdnsDeviceDiscovery {
                 if (info == null) return;
 
                 String hostName = info.getName().replace(".local", "");
-                if (!isEspDevice(hostName)) return;
 
                 String ip = extractIpAddress(info);
                 if (ip != null) {
@@ -75,14 +92,9 @@ final class MdnsDeviceDiscovery {
     }
 
     private void requestServiceDetails(ServiceEvent event) {
-        if (jmDNS != null) {
-            jmDNS.requestServiceInfo(event.getType(), event.getName(), 1);
+        for (JmDNS instance : jmDNSInstances) {
+            instance.requestServiceInfo(event.getType(), event.getName(), 1);
         }
-    }
-
-    private boolean isEspDevice(String name) {
-        String lower = name.toLowerCase();
-        return lower.contains("esp32") || lower.contains("esp8266") || lower.contains("esp");
     }
 
     private String extractIpAddress(ServiceInfo info) {
