@@ -8,8 +8,7 @@ import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.VBox;
 
-public class DeviceMngController extends Controller {
-    @FXML private VBox modalCard;
+public class deviceMngCtrl extends Controller {
     @FXML private ProgressIndicator loadingSpinner;
     @FXML private Label statusLabel;
     @FXML public SplitPane root;
@@ -17,12 +16,11 @@ public class DeviceMngController extends Controller {
     
     private WifiDisplayer wifiDisplayer;
 
-    @FXML 
-    protected  void initialize() {  
-        super.initialize();      
+    @FXML protected void initialize() {
+        super.initialize(); // Uses this screen's own fields (wifiBut, root, etc.)
+        wifiBut.setOnAction(e -> wifiShow());
         wifiDisplayer = new WifiDisplayer(
-            root, // Inherited from base Controller
-            modalCard,
+            root,
             loadingSpinner,
             statusLabel,
             deviceListContainer,
@@ -51,6 +49,5 @@ public class DeviceMngController extends Controller {
         wifiBut.getStyleClass().add(connected ? "connected-btn" : "disconnected-btn");
     }
 
-    @FXML void wifiShow() { wifiDisplayer.show(); }
-
+    @FXML public void wifiShow() { wifiDisplayer.show(); }
 }

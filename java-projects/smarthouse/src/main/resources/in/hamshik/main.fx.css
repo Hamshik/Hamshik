@@ -175,6 +175,10 @@
     -fx-border-style: dashed;
 }
 
+.board > .viewport {
+    -fx-background-color: transparent;
+}
+
 .device-scroll-pane > .viewport {
     -fx-background-color: transparent;
 }
@@ -220,5 +224,15 @@
 
 .dropdown-menu:active {
     -fx-background-color: rgb(211, 211, 211);
+}
 
+/* Target the divider inside a SplitPane */
+.split-pane .split-pane-divider {
+    -fx-background-color: rgb(39, 95, 39); /* Change color */
+    -fx-padding: 0 1px 0 1px;      /* Controls thickness (width/height) */
+}
+
+/* Optional: Color change on hover */
+.split-pane .split-pane-divider:hover {
+    -fx-background-color: rgb(30, 71, 30);
 }

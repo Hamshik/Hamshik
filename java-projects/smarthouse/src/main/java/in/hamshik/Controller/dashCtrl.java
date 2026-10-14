@@ -7,16 +7,15 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
-public class DashController extends Controller {
+public class dashCtrl extends Controller {
     @FXML private Pane board;
     @FXML private StackPane modalOverlay;
     @FXML public SplitPane root;
 
     private CardManager cardManager;
 
-    @FXML 
-    protected void initialize() {
-        super.initialize(); // Injects shared layout and binds shared elements automatically
+    @FXML protected void initialize() {
+        super.initialize(); // Automatically runs parent initialize with this screen's injected items
         cardManager = new CardManager(board);
     }
 

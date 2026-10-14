@@ -6,15 +6,17 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<SplitPane fx:id="root" dividerPositions="0.2746431757359501" prefHeight="756.0" prefWidth="823.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.hamshik.Controller.Controller">
+<SplitPane fx:id="root" dividerPositions="0.21120186697782964" prefHeight="756.0" prefWidth="859.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.hamshik.Controller.Controller">
    <items>
-      <!-- Placeholder for Sidebar -->
-      <AnchorPane fx:id="sidebarContainer" />
+      <fx:include fx:id="sidebar" source="commonFxml/sidebar.fxml" />
       
       <AnchorPane fx:id="pageContent" styleClass="app-root">
          <children>
-            <!-- Placeholder for Topbar -->
-            <AnchorPane fx:id="topbarContainer" layoutX="12.0" layoutY="11.0" />
+            <AnchorPane fx:id="topbarContainer" prefHeight="56.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="12.0">
+               <children>
+                  <fx:include fx:id="topbar" source="commonFxml/topbar.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+               </children>
+            </AnchorPane>
             
             <Text layoutY="211.0" styleClass="welcome-text" text="Welcome!" textAlignment="CENTER" wrappingWidth="607.0">
                <font>

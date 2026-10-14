@@ -10,83 +10,47 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 import in.hamshik.Controller.*;
+import in.hamshik.Helpers.FXMLPipeline;
 
 public class App extends Application {
     private static Node homePage;
     private static Node dashboardPage;
     private static Node devicePage;
 
-    public static Controller homeController;
-    public static DeviceMngController deviceMngController;
-    public static DashController dashController;
+    protected static Controller homeCtrl;
+    protected static deviceMngCtrl deviceMngCtrl;
+    protected static dashCtrl dashCtrl;
+    public static FXMLPipeline fxmlPipeline;
 
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader homeLoader = createFXMLLoader("main.fxml");
         homePage = homeLoader.load();
-        homeController = homeLoader.getController();
+        homeCtrl = homeLoader.getController();
         
         FXMLLoader dashboardLoader = createFXMLLoader("dashboard.fxml");
         dashboardPage = dashboardLoader.load();
-        dashController = dashboardLoader.getController();
+        dashCtrl = dashboardLoader.getController();
         
         FXMLLoader deviceLoader = createFXMLLoader("deviceMg.fxml");
         devicePage = deviceLoader.load();
-        deviceMngController = deviceLoader.getController();
+        deviceMngCtrl = deviceLoader.getController();
         
         StackPane pageHost = new StackPane(homePage, dashboardPage, devicePage);
-        showHome();
         stage.setScene(new Scene(pageHost));
         stage.setTitle("IoT Dashboard");
         stage.setMinWidth(600);
         stage.setMinHeight(500);
         stage.show();
-        
-        homeController.addSplitDividerListener(homeController.root);
-        homeController.addSplitDividerListener(dashController.root);
-        homeController.addSplitDividerListener(deviceMngController.root);
+        fxmlPipeline = new FXMLPipeline(homePage, dashboardPage, devicePage);
+        fxmlPipeline.showHome();
+        fxmlPipeline.addSplitDividerListener(homeCtrl.root);
+        fxmlPipeline.addSplitDividerListener(dashCtrl.root);
+        fxmlPipeline.addSplitDividerListener(deviceMngCtrl.root);
     }
 
     @Override
-    public void stop() {
-        if (deviceMngController != null) {
-            deviceMngController.dispose();
-        }
-    }
-
-    public static void showHome() {
-        showPage(homePage, Controller.NavigationItem.HOME);
-    }
-
-    public static void showDashboard() {
-        showPage(dashboardPage, Controller.NavigationItem.DASHBOARD);
-    }
-
-    public static void showDevices() {
-        showPage(devicePage, Controller.NavigationItem.DEVICES);
-    }
-
-    private static void showPage(Node activePage, Controller.NavigationItem activeItem) {
-        if (homePage == null || dashboardPage == null || devicePage == null
-                || homeController == null || dashController == null || deviceMngController == null) {
-            throw new IllegalStateException("Application pages have not been loaded.");
-        }
-
-        setManagedVisibleTo(activePage == homePage, homePage);
-        setManagedVisibleTo(activePage == dashboardPage,dashboardPage);
-        setManagedVisibleTo(activePage == devicePage, devicePage);
-
-        homeController.setActiveNavigation(activeItem);
-        dashController.setActiveNavigation(activeItem);
-        deviceMngController.setActiveNavigation(activeItem);
-    }
-
-    public static void setManagedVisibleTo(boolean val, Node... nodes){
-        for(var n : nodes){
-            n.setManaged(val);
-            n.setVisible(val);
-        }
-    }
+    public void stop() { deviceMngCtrl.dispose(); }
 
     private static FXMLLoader createFXMLLoader(String fileName) {
         java.net.URL resource = App.class.getResource("/in/hamshik/" + fileName);

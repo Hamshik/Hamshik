@@ -8,10 +8,10 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.SVGPath?>
 
-<AnchorPane prefWidth="595.0" styleClass="topbar" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.hamshik.Controller.TopBarContoller">
+<AnchorPane prefWidth="595.0" prefHeight="56.0" minWidth="200.0" maxWidth="Infinity" styleClass="topbar" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.hamshik.Controller.TopBarController">
    <children>
-      <Label fx:id="titleLabel" layoutY="-15.0" prefHeight="49.0" prefWidth="169.0" style="-fx-padding: 2em;" styleClass="topbar-title" text="DashBoard" />
-      <Button fx:id="wifiBut" mnemonicParsing="false" styleClass="disconnect-btn" text="Disconnected" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="12.0">
+      <Label fx:id="titleLabel" text=" " styleClass="topbar-title" AnchorPane.leftAnchor="18.0" AnchorPane.topAnchor="10.0" AnchorPane.bottomAnchor="10.0" />
+      <Button fx:id="wifiBut" text="Disconnected" styleClass="disconnect-btn" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="12.0" AnchorPane.bottomAnchor="12.0">
          <graphic>
             <Group>
                <children>
