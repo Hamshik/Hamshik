@@ -84,7 +84,9 @@ final class MdnsDeviceDiscovery {
                 String hostName = info.getName().replace(".local", "");
 
                 String ip = extractIpAddress(info);
-                if (ip != null) {
+                if (ip != null &&
+                    (EspVerifier.verifyAndParseEsp(hostName, 80) 
+                    || EspVerifier.verifyAndParseEsp(hostName, 8266))) {
                     registry.addOrUpdateDevice(hostName, ip, info.getPort(), "mDNS");
                 }
             }

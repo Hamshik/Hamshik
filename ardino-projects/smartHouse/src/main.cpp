@@ -2,19 +2,28 @@
 #include <ESPmDNS.h> // Required so Java can find it via mDNS!
 
 // --- REPLACE WITH YOUR HOME ROUTER CREDENTIALS ---
-const char *ssid = "INNOVATION HUB";
-const char *password = "prsc$123";
+const char *ssid = nullptr;
+const char *password = nullptr;
 const char *hostName = "Hamshik";
 
 // Set web server port number to 80
 WiFiServer server(80);
 
-// Variable to store the HTTP request
-String header;
-
 // Most ESP32 DevKits use GPIO 2 for the onboard blue LED
 const int ledPin = 2;
-String ledState = "OFF";
+
+void sendJsonResponse(WiFiClient &client, const char *status, const char *body)
+{
+  client.print("HTTP/1.1 ");
+  client.println(status);
+  client.println("Content-Type: application/json");
+  client.print("Content-Length: ");
+  client.println(strlen(body));
+  client.println("Connection: close");
+  client.println();
+  client.print(body);
+  client.stop();
+}
 
 void setup()
 {
@@ -28,11 +37,24 @@ void setup()
   Serial.print("Connecting to "); Serial.println(ssid);
 
   WiFi.setHostname(hostName);
+
+  WiFi.onEvent([](WiFiEvent_t event, WiFiEventInfo_t info) {
+    if (event == ARDUINO_EVENT_WIFI_STA_DISCONNECTED) {
+      Serial.printf("Disconnect reason: %u\n",
+                    info.wifi_sta_disconnected.reason);
+    }
+  });
   WiFi.begin(ssid, password);
 
-  while (WiFi.status() != WL_CONNECTED) {
+  const unsigned long start = millis();
+  while (WiFi.status() != WL_CONNECTED && millis() - start < 20000) {
     delay(500);
     Serial.print(".");
+  }
+
+  if (WiFi.status() != WL_CONNECTED) {
+    Serial.printf("\nWi-Fi failed; status=%d\n", WiFi.status());
+    return;
   }
 
   // Print local IP address
@@ -55,30 +77,40 @@ void setup()
   Serial.println("Web server started.");
 }
 
-void loop(){
+void loop()
+{
   WiFiClient client = server.available();
+  if (!client)
+    return;
 
-  if (client) {
-    Serial.println("New Client Connected.");
-    String clientData = "";
+  Serial.println("New Client Connected.");
+  client.setTimeout(2000);
 
-    while (client.connected()) {
-      if (client.available()){
-        char c = client.read();
-        header += c;
-      }
-    }
+  String requestLine = client.readStringUntil('\n');
+  requestLine.trim();
 
-    // --- CHECK WHAT THE CLIENT ASKED FOR ---
-    if (header.indexOf("GET /ack") >= 0)
-    {
-      // The Java app explicitly asked for verification/acknowledgment
-      Serial.println("Sending ACK to client...");
-      client.println("HTTP/1.1 200 OK");
-      client.println("Content-Type: application/json");
-      client.println("Connection: close");
-      client.println();
-      client.println(("{\"name\":\"" + std::string(hostName) + "\"\"device\": \"esp32-devkit\", \"status\": \"ready\"}").c_str());
-    }
+  int pathStart = requestLine.indexOf(' ');
+  int pathEnd = pathStart < 0 ? -1 : requestLine.indexOf(' ', pathStart + 1);
+  if (pathStart < 0 || pathEnd < 0) {
+    sendJsonResponse(client, "400 Bad Request", "{\"status\":\"error\"}");
+    return;
+  }
+
+  String path = requestLine.substring(pathStart + 1, pathEnd);
+  int queryStart = path.indexOf('?');
+  if (queryStart >= 0) {
+    path = path.substring(0, queryStart);
+  }
+
+  if (path == "/ack") {
+    Serial.println("Sending ACK to client...");
+    sendJsonResponse(client, "200 OK",
+                     "{\"status\":\"ready\",\"device\":\"esp32\",\"message\":\"ESP32 is ready\"}");
+  } else if (path == "/data") {
+    Serial.println("Received data request from Java client.");
+    sendJsonResponse(client, "200 OK",
+                     "{\"status\":\"received\",\"device\":\"esp32\",\"message\":\"Data received\"}");
+  } else {
+    sendJsonResponse(client, "404 Not Found", "{\"status\":\"not_found\"}");
   }
 }

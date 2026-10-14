@@ -3,30 +3,41 @@ package in.hamshik.WifiHandler;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 public class WifiSender {
 
     public static void sendDataToESP32(String ip, String message) {
+        HttpURLConnection conn = null;
         try {
-            // Construct the URL with the query parameter
-            String urlString = "http://" + ip + "/data?msg=" + message.replace(" ", "%20");
-            URL url = new URL(urlString);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            String encodedMessage = URLEncoder.encode(message, StandardCharsets.UTF_8)
+                    .replace("+", "%20");
+            URL url = URI.create("http://" + ip + "/data?msg=" + encodedMessage).toURL();
+            conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
+            conn.setConnectTimeout(3000);
+            conn.setReadTimeout(3000);
 
-            // Read the response from the ESP32
-            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String inputLine;
-            StringBuilder response = new StringBuilder();
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
+            int status = conn.getResponseCode();
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(
+                    status >= 400 ? conn.getErrorStream() : conn.getInputStream(),
+                    StandardCharsets.UTF_8))) {
+                StringBuilder response = new StringBuilder();
+                String inputLine;
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                System.out.println("ESP32 HTTP " + status + ": " + response);
             }
-            in.close();
-
-            System.out.println("Response from ESP32: " + response.toString());
         } catch (Exception e) {
             System.out.println("Communication failed: " + e.getMessage());
+        } finally {
+            if (conn != null) {
+                conn.disconnect();
+            }
         }
     }
 }

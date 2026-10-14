@@ -60,14 +60,14 @@ public class AppResponder {
             collapsed = wantCollapsed;
             if (collapsed) {
                 // icon-rail mode
-                setManagedVisibleTo(false, logoText, sidebarFooter);
+                App.fxmlPipeline.setManagedVisibleTo(false, logoText, sidebarFooter);
                 setNav(sideHomeBut, "⌂", 40);
                 setNav(sideDashBut, "▦", 40);
                 setNav(sideDeviceBut, "◉", 40);
                 setNav(sideThingsBut, "⚙", 40);
             } else {
                 // full sidebar mode
-                setManagedVisibleTo(true, sidebarFooter, logoText);
+                App.fxmlPipeline.setManagedVisibleTo(true, sidebarFooter, logoText);
                 setNav(sideHomeBut, "⌂   Home", 120);
                 setNav(sideDashBut, "▦   Dashboard", 120);
                 setNav(sideDeviceBut, "◉   Devices", 120);
@@ -80,13 +80,6 @@ public class AppResponder {
         }
 
         sidebar.setPrefWidth(sidebarWidth);
-    }
-
-    private void setManagedVisibleTo(boolean visible, Node... nodes) {
-        for (Node node : nodes) {
-            node.setManaged(visible);
-            node.setVisible(visible);
-        }
     }
 
     private void setNav(Button btn, String text, double prefWidth) {
