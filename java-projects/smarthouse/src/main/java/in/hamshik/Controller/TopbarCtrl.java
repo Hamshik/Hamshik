@@ -1,14 +1,15 @@
 package in.hamshik.Controller;
+import in.hamshik.App;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
-public class TopBarController extends SharedUIComponents implements SharableUI {
+public class TopbarCtrl extends SharedUIComponents implements SharableUI {
     @FXML Button wifiBut;
     @FXML Label titleLabel;
 
     @FXML void initialize() {
-        wifiBut.setOnAction(e -> fxmlPipeline.wifiShow());
+        wifiBut.setOnAction(e -> App.fxmlPipeline.wifiShow());
     }
 
     public void initializeUIComponents(SharedUIComponents components){

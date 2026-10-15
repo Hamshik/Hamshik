@@ -1,5 +1,6 @@
 package in.hamshik.Controller;
 
+import in.hamshik.App;
 import in.hamshik.DNSHandler.Esp32WebSocketClient;
 import in.hamshik.DNSHandler.Esp32WebSocketClient.DeviceListener;
 import in.hamshik.WifiHandler.WifiDisplayer;
@@ -9,7 +10,7 @@ import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.VBox;
 
-public class deviceMngCtrl extends Controller {
+public class DeviceMngCtrl extends Controller {
     @FXML
     private ProgressIndicator loadingSpinner;
     @FXML
@@ -25,7 +26,6 @@ public class deviceMngCtrl extends Controller {
         super.initialize(); // Uses this screen's own fields (wifiBut, root, etc.)
         wifiBut.setOnAction(e -> wifiShow());
         wifiDisplayer = new WifiDisplayer(
-            root,
             loadingSpinner,
             statusLabel,
             deviceListContainer,
@@ -37,7 +37,7 @@ public class deviceMngCtrl extends Controller {
             },
             () -> {
                 System.out.println("ESP32 Disconnected");
-                setWifiButtonConnected(false);
+                App.fxmlPipeline.setWifiButtonConnected(false);
                 if (wifiBut != null)
                     wifiBut.setText("Disconnected");
                 Esp32WebSocketClient.disconnect();
@@ -48,11 +48,6 @@ public class deviceMngCtrl extends Controller {
     public void dispose() {
         wifiDisplayer.dispose();
         Esp32WebSocketClient.disconnect();
-    }
-
-    void setWifiButtonConnected(boolean connected) {
-        wifiBut.getStyleClass().removeAll("connected-btn", "disconnected-btn");
-        wifiBut.getStyleClass().add(connected ? "connected-btn" : "disconnected-btn");
     }
 
     @FXML
@@ -70,8 +65,8 @@ public class deviceMngCtrl extends Controller {
 
             @Override
             public void onConnected() {
-                setWifiButtonConnected(true);
-                wifiBut.setText(wifiDisplayer.getConnectedDeviceName());
+                App.fxmlPipeline.setWifiButtonConnected(true);
+                App.fxmlPipeline.setWifiButText(wifiDisplayer.getConnectedDeviceName());
                 loadingSpinner.setVisible(false);
             }
 
@@ -79,8 +74,8 @@ public class deviceMngCtrl extends Controller {
             public void onFailedConnection(){
                 loadingSpinner.setVisible(false);
                 wifiDisplayer.disconnect();
-                setWifiButtonConnected(false);
-                wifiBut.setText("Disconnected");
+                App.fxmlPipeline.setWifiButtonConnected(false);
+                App.fxmlPipeline.setWifiButText("Disconnected");
                 statusLabel.setText("Connection timed out. Check the ESP32 and try again.");
             }
 
@@ -88,8 +83,8 @@ public class deviceMngCtrl extends Controller {
             public void onDisconnectedCallback() {
                 loadingSpinner.setVisible(false);
                 wifiDisplayer.disconnect();
-                setWifiButtonConnected(false);
-                wifiBut.setText("Disconnected");
+                App.fxmlPipeline.setWifiButtonConnected(false);
+                App.fxmlPipeline.setWifiButText("Disconnected");
                 statusLabel.setText("ESP32 connection lost.");
             }
         };

@@ -3,90 +3,122 @@ package in.hamshik.Helpers;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.application.Platform;
-import javafx.scene.control.ComboBox;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.Tooltip;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 /**
- * Manages IoT sensor cards on the dashboard "board" (Pane).
- * Each card is decorated with an Arduino Uno style PCB graphic.
+ * Manages IoT variable cards on the dashboard "board" (Pane).
+ * Cards are loaded from modern-card.fxml — no UI code here.
  */
 public class CardManager {
-    private final Pane board;
-    private final List<VBox> removedCards = new ArrayList<>();
-
-    private static final double CARD_W = 230;
+    public final Pane board;
+    private final List<DeviceInfo> removedCards = new ArrayList<>();
+    public record Range(int from, int to) {}
+    public record DeviceInfo(String sensorName, String dataTy, 
+        String varName, String permissions, Range range){}
 
     public CardManager(Pane board) {
         this.board = board;
-        
     }
 
-    /* ================= Card creation ================= */
-    public VBox createIoTSensorCard() {
-        VBox card = new VBox(10);
-        card.getStyleClass().add("card");
-        card.setPrefWidth(CARD_W);
-
-        card.getChildren().addAll(
-                createSensorDropdown()
-        );
+    public VBox addCard(DeviceInfo info){
+        VBox card = createCard(info);
+        positionCard(card);
+        board.getChildren().add(card);
         return card;
     }
 
-    /* ================= Functional parts ================= */
-    private ComboBox<String> createSensorDropdown() {
-        ComboBox<String> sensorNameCombo = new ComboBox<>();
-        sensorNameCombo.getItems().addAll("DHT11 (Temp/Hum)", "Ultrasonic (HC-SR04)", "BMP280 (Pressure)",
-                "MQ-2 (Gas)");
-        sensorNameCombo.setPromptText("Select Sensor");
-        sensorNameCombo.setMaxWidth(Double.MAX_VALUE);
-        sensorNameCombo.getStyleClass().add("dropdown-menu");
-        return sensorNameCombo;
-    }
-    /* ================= Board management ================= */
+    private VBox createCard(DeviceInfo info) {
+        VBox card = new VBox(14);
+        card.getStyleClass().add("card");
+        card.setPrefWidth(340);
+        card.setPadding(new Insets(16));
 
-    public void addNewCard() {
-        VBox newCard = createIoTSensorCard();
-        addCard(newCard);
+        var cardStylesheet = CardManager.class.getResource(
+                "/in/hamshik/styleSheets/dash-card.css");
+        if (cardStylesheet == null)
+            throw new IllegalStateException("Missing dashboard card stylesheet");
+        card.getStylesheets().add(cardStylesheet.toExternalForm());
+
+        card.getChildren().addAll(
+            createHeader(info),
+            createReadingSection(info),
+            createAccessLabel(info));
+        return card;
     }
 
-    private void addCard(VBox card) {
+    private HBox createHeader(DeviceInfo info) {
+        Label name = new Label(info.varName());
+        name.getStyleClass().add("card-heading");
+
+        Label sensor = new Label(info.sensorName());
+        sensor.getStyleClass().add("card-subheading");
+
+        VBox title = new VBox(4, name, sensor);
+        HBox.setHgrow(title, Priority.ALWAYS);
+
+        HBox header = new HBox(12, title, createEditButton());
+        header.setAlignment(Pos.CENTER_LEFT);
+        return header;
+    }
+
+    private Button createEditButton() {
+        Button editButton = new Button("Edit");
+        editButton.getStyleClass().add("ghost-btn");
+        editButton.setDisable(true);
+        editButton.setTooltip(new Tooltip("Editing will be available later"));
+        return editButton;
+    }
+
+    private HBox createReadingSection(DeviceInfo info) {
+        StackPane indicator = createPercentageIndicator();
+
+        Label readingLabel = new Label("Current value");
+        readingLabel.getStyleClass().add("field-label");
+        Label typeLabel = new Label(info.dataTy());
+        typeLabel.getStyleClass().add("card-heading");
+        VBox reading = new VBox(6, readingLabel, typeLabel);
+        reading.setAlignment(Pos.CENTER_LEFT);
+
+        HBox valueSection = new HBox(16, indicator, reading);
+        valueSection.setAlignment(Pos.CENTER_LEFT);
+        return valueSection;
+    }
+
+    private StackPane createPercentageIndicator() {
+        ProgressIndicator percentageIndicator = new ProgressIndicator(0);
+        percentageIndicator.setPrefSize(72, 72);
+        percentageIndicator.setMinSize(72, 72);
+        percentageIndicator.setMaxSize(72, 72);
+        percentageIndicator.setStyle("-fx-progress-color: #00A9A5;");
+
+        Label percentage = new Label("0");
+        percentage.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; "
+                + "-fx-text-fill: #102027;");
+        return new StackPane(percentageIndicator, percentage);
+    }
+
+    private Label createAccessLabel(DeviceInfo info) {
+        Label permissionLabel = new Label("ACCESS  " + info.permissions());
+        permissionLabel.getStyleClass().add("card-subheading");
+        return permissionLabel;
+    }
+
+    private void positionCard(VBox card) {
+        final double cardWidth = card.getPrefWidth();
+        final double cardGap = 16;
         int index = board.getChildren().size();
-
-        double x = 20 + (index * 36) % Math.max(40, board.getWidth()  - CARD_W - 40);
-        double y = 20 + (index * 36) % Math.max(40, board.getHeight() - 300);
-
-        card.setLayoutX(Math.max(10, x));
-        card.setLayoutY(Math.max(10, y));
-
-        board.getChildren().add(card);
-        DragHelper.makeDraggable(card, board);
-
-        Platform.runLater(() -> {
-            double maxX = Math.max(0, board.getWidth() - card.getWidth());
-            double maxY = Math.max(0, board.getHeight() - card.getHeight());
-            card.setLayoutX(Math.min(card.getLayoutX(), maxX));
-            card.setLayoutY(Math.min(card.getLayoutY(), maxY));
-        });
-    }
-
-    public void deleteCard(VBox card) {
-        if (board.getChildren().remove(card))
-            removedCards.add(card);
-    }
-
-    public void undoDelete() {
-        VBox restoredCard = getLastRemovedCard();
-        if (restoredCard != null)
-            addCard(restoredCard);
-    }
-
-    private VBox getLastRemovedCard() {
-        if (removedCards.isEmpty())
-            return null;
-
-        return removedCards.remove(removedCards.size() - 1);
+        int columns = Math.max(1, (int) (board.getWidth() / (cardWidth + cardGap)));
+        card.setLayoutX(16 + (index % columns) * (cardWidth + cardGap));
+        card.setLayoutY(16 + (index / columns) * 190);
     }
 }

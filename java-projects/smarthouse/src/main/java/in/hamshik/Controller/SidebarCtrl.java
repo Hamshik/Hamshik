@@ -1,18 +1,19 @@
 package in.hamshik.Controller;
+import in.hamshik.App;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
-public class SideBarController extends SharedUIComponents implements SharableUI {
+public class SidebarCtrl extends SharedUIComponents implements SharableUI {
     @FXML Button homeBtn, dashBtn, devicesBtn, thingsBtn;
     @FXML Label sidebarFooter, logo;
     @FXML VBox sideBar;
     
     @FXML void initialize(){
-        homeBtn.setOnAction(event -> fxmlPipeline.showHome());
-        dashBtn.setOnAction(event -> fxmlPipeline.showDashboard());
-        devicesBtn.setOnAction(event -> fxmlPipeline.showDevices());
+        homeBtn.setOnAction(event -> App.fxmlPipeline.showHome());
+        dashBtn.setOnAction(event -> App.fxmlPipeline.showDashboard());
+        devicesBtn.setOnAction(event -> App.fxmlPipeline.showDevices());
     }
 
     public void initializeUIComponents(SharedUIComponents components){

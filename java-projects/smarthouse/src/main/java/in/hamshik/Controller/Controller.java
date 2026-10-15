@@ -3,7 +3,6 @@ package in.hamshik.Controller;
 import in.hamshik.App;
 
 import in.hamshik.Helpers.AppResponder;
-import in.hamshik.Helpers.FXMLPipeline;
 import javafx.fxml.FXML;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
@@ -21,10 +20,9 @@ public class Controller extends SharedUIComponents {
     @FXML private AnchorPane pageContent;
     @FXML public SplitPane root;
     public AppResponder appResponder;
-    FXMLPipeline fxmlPipeline = App.fxmlPipeline;
 
-    @FXML SideBarController sidebarController;
-    @FXML TopBarController topbarController;
+    @FXML SidebarCtrl sidebarController;
+    @FXML TopbarCtrl topbarController;
 
     @FXML protected void initialize() {
         super.initialize(topbarController, sidebarController);
@@ -61,8 +59,8 @@ public class Controller extends SharedUIComponents {
     }
 
     // Navigation methods...
-    @FXML public void showHome() { fxmlPipeline.showHome(); }
-    @FXML protected void showDashboard() { fxmlPipeline.showDashboard(); }
-    @FXML protected void showDevices() { fxmlPipeline.showDevices(); }
-    @FXML void showWifi(){ fxmlPipeline.showDevices(); }
+    @FXML public void showHome() { App.fxmlPipeline.showHome(); }
+    @FXML protected void showDashboard() { App.fxmlPipeline.showDashboard(); }
+    @FXML protected void showDevices() { App.fxmlPipeline.showDevices(); }
+    @FXML void showWifi(){ App.fxmlPipeline.showDevices(); }
 }

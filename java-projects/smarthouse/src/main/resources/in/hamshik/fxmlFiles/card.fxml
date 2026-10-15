@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="cardRoot" maxHeight="-Infinity" maxWidth="351.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="351.0" styleClass="card" stylesheets="@../styleSheets/dash-card.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.hamshik.Controller.CardController">
+   <children>
+      <!-- ===== Header : icon + title + close ===== -->
+      <HBox alignment="CENTER_LEFT" spacing="12.0">
+         <children>
+            <StackPane minHeight="40.0" minWidth="40.0" styleClass="card-icon-wrap">
+               <children>
+                  <Label styleClass="card-icon" text="⚡" />
+               </children>
+            </StackPane>
+            <VBox HBox.hgrow="ALWAYS">
+               <children>
+                  <Label styleClass="card-heading" text="New Variable" />
+                  <Label styleClass="card-subheading" text="Configure the device variable" />
+               </children>
+            </VBox>
+            <Button fx:id="closeBtn" mnemonicParsing="false" onAction="#handleClose" styleClass="close-btn" text="✕" />
+         </children>
+      </HBox>
+
+      <!-- ===== Body ===== -->
+      <VBox spacing="18.0">
+         <children>
+            <!-- Sensor / Actuator -->
+            <VBox spacing="6.0">
+               <children>
+                  <Label styleClass="field-label" text="Sensor / Actuator" />
+                  <ComboBox fx:id="sensorCombo" prefHeight="42.0" prefWidth="334.0" promptText="Select the sensor or actuator" styleClass="card-combo" />
+               </children>
+            </VBox>
+
+            <!-- Permissions -->
+            <VBox spacing="6.0">
+               <children>
+                  <Label styleClass="field-label" text="Permissions" />
+                  <HBox spacing="8.0">
+                     <children>
+                        <Button fx:id="permissionRead" maxWidth="Infinity" mnemonicParsing="false" onAction="#handlePermission" styleClass="perm-btn" text="Read" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="permissionWrite" maxWidth="Infinity" mnemonicParsing="false" onAction="#handlePermission" styleClass="perm-btn" text="Write" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="permissionBoth" maxWidth="Infinity" mnemonicParsing="false" onAction="#handlePermission" styleClass="perm-btn" text="Read &amp; Write" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+
+            <!-- Variable Name -->
+            <VBox spacing="6.0">
+               <children>
+                  <Label styleClass="field-label" text="Variable Name" />
+                  <TextField fx:id="varNameField" promptText="e.g. myVariable" styleClass="field-input" />
+               </children>
+            </VBox>
+
+            <!-- Data Type -->
+            <VBox spacing="6.0">
+               <children>
+                  <Label styleClass="field-label" text="Data Type" />
+                  <GridPane hgap="8.0" vgap="8.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" />
+                        <RowConstraints minHeight="10.0" />
+                     </rowConstraints>
+                     <children>
+                        <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#handleTypes" styleClass="type-btn" text="INT" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#handleTypes" styleClass="type-btn" text="FLOAT" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#handleTypes" styleClass="type-btn" text="BOOL" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                        <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#handleTypes" styleClass="type-btn" text="STRING" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#handleTypes" styleClass="type-btn" text="CHAR" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#handleTypes" styleClass="type-btn" text="UNSIGNED" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                     </children>
+                  </GridPane>
+               </children>
+            </VBox>
+            <VBox prefHeight="60.0" prefWidth="331.0">
+               <children>
+                  <Label styleClass="field-label" text="Range" />
+                  <HBox prefHeight="35.0" prefWidth="331.0">
+                     <children>
+                        <TextField fx:id="rangeFrom" prefHeight="33.0" prefWidth="131.0" promptText="From" styleClass="field-input">
+                           <HBox.margin>
+                              <Insets right="40.0" />
+                           </HBox.margin>
+                        </TextField>
+                        <TextField fx:id="rangeTo" prefHeight="33.0" prefWidth="165.0" promptText="To" styleClass="field-input" />
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <padding>
+                        <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                     </padding>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+         <VBox.margin>
+            <Insets top="20.0" />
+         </VBox.margin>
+      </VBox>
+
+      <!-- ===== Footer actions ===== -->
+      <HBox alignment="CENTER_RIGHT" spacing="10.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#handleCancel" styleClass="ghost-btn" text="Cancel" />
+            <Button fx:id="saveBtn" mnemonicParsing="false" onAction="#handleSave" styleClass="connect-btn" text="Save Variable" />
+         </children>
+         <VBox.margin>
+            <Insets top="22.0" />
+         </VBox.margin>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
+</VBox>

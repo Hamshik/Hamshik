@@ -1,0 +1,75 @@
+/* ---------------- Sidebar ---------------- */
+.sidebar {
+    -fx-background-color: linear-gradient(to bottom, #062e33, #04242a);
+    -fx-padding: 22 10 16 10;
+    -fx-spacing: 20;
+    -fx-pref-width: 140;
+}
+
+.sidebar-logo {
+    -fx-spacing: 9;
+    -fx-alignment: center-left;
+    -fx-padding: 0 0 0 8;
+}
+
+.sidebar-logo-text {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.sidebar-nav {
+    -fx-spacing: 6;
+}
+
+.sidebar-item {
+    -fx-background-color: transparent;
+    -fx-text-fill: #93aeb3;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+    -fx-alignment: center-left;
+    -fx-padding: 10 12;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-pref-width: 120;
+}
+
+.sidebar-item:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.08);
+    -fx-text-fill: #ffffff;
+}
+
+.sidebar-item-active,
+.sidebar-item-active:hover {
+    -fx-background-color: #00878F;
+    -fx-text-fill: #ffffff;
+}
+
+.sidebar-footer {
+    -fx-text-fill: #547074;
+    -fx-font-size: 10px;
+    -fx-padding: 0 0 0 8;
+}
+
+/* ---------------- Top bar ---------------- */
+.topbar {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 10;
+    -fx-min-height: 56;
+    -fx-pref-height: 56;
+    -fx-effect: dropshadow(gaussian, rgba(16, 32, 39, 0.18), 16, 0, 0, 4);
+}
+
+.topbar-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #102027;
+}
+
+/* ---------------- Dashboard canvas ---------------- */
+.welcome-text {
+    -fx-font-size: 2.5em;
+    -fx-font-weight: bold;
+    -fx-fill: #102027;
+
+}

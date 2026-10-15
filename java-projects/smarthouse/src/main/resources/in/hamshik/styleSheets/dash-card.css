@@ -1,0 +1,234 @@
+/* ============================================================
+   Modern IoT variable card — Arduino IoT Cloud inspired
+   Palette: teal #00878F / accent #00A9A5, ink #102027,
+            slate #7a8891, canvas #f2f4f7
+   ============================================================ */
+
+/* ---------------- Card surface ---------------- */
+.card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 16;
+    -fx-border-radius: 16;
+    -fx-border-color: #e6eaee;
+    -fx-border-width: 1;
+    -fx-padding: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(16, 32, 39, 0.10), 18, 0, 0, 6);
+}
+
+.card:hover {
+    -fx-border-color: rgba(0, 169, 165, 0.45);
+    -fx-effect: dropshadow(gaussian, rgba(0, 169, 165, 0.18), 22, 0, 0, 8);
+}
+
+/* ---------------- Header ---------------- */
+.card-icon-wrap {
+    -fx-background-color: linear-gradient(to bottom right, #00A9A5, #00878F);
+    -fx-background-radius: 12;
+}
+
+.card-icon {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 18px;
+}
+
+.card-heading {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #102027;
+}
+
+.card-subheading {
+    -fx-font-size: 12px;
+    -fx-text-fill: #7a8891;
+}
+
+/* ---------------- Close button ---------------- */
+.close-btn {
+    -fx-background-color: #f3f4f6;
+    -fx-background-radius: 50em;
+    -fx-min-width: 28px;
+    -fx-min-height: 28px;
+    -fx-max-width: 28px;
+    -fx-max-height: 28px;
+    -fx-text-fill: #6b7280;
+    -fx-font-size: 12px;
+    -fx-cursor: hand;
+    -fx-padding: 0;
+}
+
+.close-btn:hover {
+    -fx-background-color: #fee2e2;
+    -fx-text-fill: #ef4444;
+}
+
+.close-btn:pressed {
+    -fx-background-color: #fecaca;
+    -fx-scale-x: 0.92;
+    -fx-scale-y: 0.92;
+}
+
+/* ---------------- Section labels ---------------- */
+.field-label {
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #7a8891;
+}
+
+/* ---------------- Combo box ---------------- */
+.card-combo {
+    -fx-background-color: #f7f9fa;
+    -fx-background-radius: 10;
+    -fx-border-color: #e2e6f0;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-padding: 8 12;
+    -fx-font-size: 13px;
+    -fx-text-fill: #102027;
+}
+
+.card-combo:hover {
+    -fx-border-color: rgba(0, 135, 143, 0.5);
+}
+
+.card-combo:focused {
+    -fx-border-color: #00878F;
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(gaussian, rgba(0, 135, 143, 0.20), 8, 0, 0, 0);
+}
+
+.card-combo .arrow-button {
+    -fx-background-color: transparent;
+}
+
+.card-combo .arrow {
+    -fx-background-color: #7a8891;
+}
+
+/* ---------------- Permission toggle ---------------- */
+.perm-btn {
+    -fx-background-color: #f7f9fa;
+    -fx-background-radius: 8;
+    -fx-border-color: #e2e6f0;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-text-fill: #7a8891;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+    -fx-padding: 7 10;
+    -fx-cursor: hand;
+}
+
+.perm-btn:hover {
+    -fx-border-color: rgba(0, 135, 143, 0.5);
+    -fx-text-fill: #00878F;
+}
+
+.perm-btn-active {
+    -fx-background-color: linear-gradient(to bottom right, #00A9A5, #00878F);
+    -fx-border-color: transparent;
+    -fx-text-fill: #ffffff;
+    -fx-effect: dropshadow(gaussian, rgba(0, 135, 143, 0.30), 8, 0, 0, 2);
+}
+
+/* ---------------- Input row ---------------- */
+.field-prefix {
+    -fx-background-color: #e9f7f7;
+    -fx-background-radius: 10 0 0 10;
+    -fx-border-color: #e2e6f0;
+    -fx-border-radius: 10 0 0 10;
+    -fx-border-width: 1 0 1 1;
+    -fx-text-fill: #00878F;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-padding: 8 6;
+}
+
+.field-input {
+    -fx-background-color: #f7f9fa;
+    -fx-background-radius: 0 10 10 0;
+    -fx-border-color: #e2e6f0;
+    -fx-border-radius: 0 10 10 0;
+    -fx-border-width: 1 1 1 0;
+    -fx-text-fill: #102027;
+    -fx-font-family: "JetBrains Mono", "Consolas", monospace;
+    -fx-font-size: 13px;
+    -fx-padding: 8 12;
+}
+
+.field-input:hover {
+    -fx-border-color: rgba(0, 135, 143, 0.5);
+}
+
+/* ---------------- Data-type chips ---------------- */
+.type-btn {
+    -fx-background-color: #f7f9fa;
+    -fx-background-radius: 20;
+    -fx-border-color: #e2e6f0;
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-text-fill: #7a8891;
+    -fx-font-size: 11px;
+    -fx-font-weight: 600;
+    -fx-padding: 7 0;
+    -fx-cursor: hand;
+}
+
+.type-btn:hover {
+    -fx-border-color: rgba(0, 135, 143, 0.6);
+    -fx-text-fill: #00878F;
+    -fx-background-color: #e9f7f7;
+}
+
+.type-btn-active {
+    -fx-background-color: #00878F;
+    -fx-border-color: transparent;
+    -fx-text-fill: #ffffff;
+    -fx-effect: dropshadow(gaussian, rgba(0, 135, 143, 0.30), 8, 0, 0, 2);
+}
+
+.type-btn-active:hover {
+    -fx-background-color: #006d74;
+    -fx-text-fill: #ffffff;
+}
+
+/* ---------------- Footer buttons ---------------- */
+.ghost-btn {
+    -fx-background-color: transparent;
+    -fx-background-radius: 20;
+    -fx-border-color: #e2e6f0;
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-text-fill: #7a8891;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+    -fx-padding: 7 18;
+    -fx-cursor: hand;
+}
+
+.ghost-btn:hover {
+    -fx-background-color: #f3f4f6;
+    -fx-text-fill: #102027;
+}
+
+/* Reuses your connect-btn pill — but scoped styling here */
+.connect-btn {
+    -fx-background-color: linear-gradient(to bottom right, #00A9A5, #00878F);
+    -fx-background-radius: 20px;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 7 20;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 135, 143, 0.35), 10, 0, 0, 3);
+}
+
+.connect-btn:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0, 135, 143, 0.5), 12, 0, 0, 4);
+    -fx-background-color: linear-gradient(to bottom right, #00878F, #006d74);
+}
+
+.connect-btn:pressed {
+    -fx-scale-x: 0.96;
+    -fx-scale-y: 0.96;
+}

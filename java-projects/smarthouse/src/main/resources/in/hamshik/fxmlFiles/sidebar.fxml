@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
-<VBox fx:id="sideBar" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" prefWidth="140.0" prefHeight="600.0" style="-fx-border-color: transparent #dfe5ea transparent transparent; -fx-border-width: 1px;" styleClass="sidebar" fx:controller="in.hamshik.Controller.SideBarController">
+<VBox fx:id="sideBar" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" prefWidth="140.0" prefHeight="600.0" style="-fx-border-color: transparent #dfe5ea transparent transparent; -fx-border-width: 1px;" styleClass="sidebar" fx:controller="in.hamshik.Controller.SidebarCtrl">
 
    <children>
       <HBox styleClass="sidebar-logo">
@@ -30,7 +30,8 @@
    </children>
 
    <stylesheets>
-      <URL value="@../main.fx.css" />
-      <URL value="@../btn-style.fx.css" />
+      <URL value="@../styleSheets/main.fx.css" />
+      <URL value="@../styleSheets/btn-style.fx.css" />
+      <URL value="@../styleSheets/top-sidebar.fx.css" />
    </stylesheets>
 </VBox>

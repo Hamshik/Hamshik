@@ -1,0 +1,55 @@
+/* ============================================================
+   Arduino IoT Cloud inspired theme
+   Palette: teal #00878F / accent #00A9A5, ink #102027, canvas #f2f4f7
+   ============================================================ */
+
+.app-root {
+    -fx-background-color: #f2f4f7;
+    -fx-font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+
+
+
+.section-title {
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+    -fx-fill: #7a8891;
+}
+
+/* Drop area — dashed soft border, white canvas */
+.board {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 16;
+    -fx-border-color: #dfe5ea;
+    -fx-border-radius: 16;
+    -fx-border-width: 1.5;
+    -fx-border-style: dashed;
+}
+
+.device-scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-border-color: rgba(0, 169, 165, 0.5);
+    -fx-border-width: 1.5px;
+    -fx-border-radius: 14;
+    -fx-border-style: dashed;
+}
+
+.board > .viewport {
+    -fx-background-color: transparent;
+}
+
+.device-scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+/* Target the divider inside a SplitPane */
+.split-pane .split-pane-divider {
+    -fx-background-color: rgb(39, 95, 39); /* Change color */
+    -fx-padding: 0 1px 0 1px;      /* Controls thickness (width/height) */
+}
+
+/* Optional: Color change on hover */
+.split-pane .split-pane-divider:hover {
+    -fx-background-color: rgb(30, 71, 30);
+}

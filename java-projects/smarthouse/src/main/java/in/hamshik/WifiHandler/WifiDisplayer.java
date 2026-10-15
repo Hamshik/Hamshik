@@ -14,21 +14,17 @@ import java.util.function.Consumer;
 
 /** Coordinates the Wi-Fi device list, connection state, and scanner lifecycle. */
 public class WifiDisplayer {
-    private final Node backgroundNode;
     private final ProgressIndicator loadingSpinner;
     private final Label statusLabel;
     private final WifiDeviceListView deviceListView;
     private final Consumer<EspDevice> onDeviceConnected;
     private final Runnable onDeviceDisconnected;
     private final WiFiScanner wifiScanner = new WiFiScanner();
-    private final GaussianBlur blurEffect = new GaussianBlur(15);
     private String connectedDeviceName;
 
-    public WifiDisplayer(Node backgroundNode,
-                         ProgressIndicator loadingSpinner, Label statusLabel,
+    public WifiDisplayer( ProgressIndicator loadingSpinner, Label statusLabel,
                          VBox deviceListContainer, Consumer<EspDevice> onDeviceConnected,
                          Runnable onDeviceDisconnected) {
-        this.backgroundNode = backgroundNode;
         this.loadingSpinner = loadingSpinner;
         this.statusLabel = statusLabel;
         this.onDeviceConnected = onDeviceConnected;
@@ -46,13 +42,11 @@ public class WifiDisplayer {
 
     /** Stops scanning while leaving the current device list visible. */
     public void hide() {
-        removeBackgroundBlur();
         loadingSpinner.setVisible(false);
         endScanning();
     }
 
     public void dispose() {
-        removeBackgroundBlur();
         endScanning();
     }
 
@@ -69,14 +63,6 @@ public class WifiDisplayer {
     public void setConnectedDevice(String name) {
         connectedDeviceName = name;
         refreshDeviceList();
-    }
-
-    public void applyBackgroundBlur() {
-        if (backgroundNode != null) backgroundNode.setEffect(blurEffect);
-    }
-
-    private void removeBackgroundBlur() {
-        if (backgroundNode != null) backgroundNode.setEffect(null);
     }
 
     private void resetDeviceListState() {

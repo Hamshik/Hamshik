@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Text?>
+
+<SplitPane fx:id="root" dividerPositions="0.21120186697782964" prefHeight="756.0" prefWidth="859.0"
+   xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1"
+   fx:controller="in.hamshik.Controller.DashCtrl">
+   <items>
+      <fx:include fx:id="sidebar" source="sidebar.fxml" />
+
+      <AnchorPane fx:id="pageContent" prefHeight="754.0" prefWidth="686.0" styleClass="app-root">
+         <children>
+            <AnchorPane minHeight="0.0" minWidth="0.0" AnchorPane.bottomAnchor="22.0"
+               AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="167.0">
+               <children>
+                  <Pane fx:id="board" minHeight="0.0" minWidth="0.0" prefHeight="0.0"
+                     prefWidth="0.0" styleClass="board" AnchorPane.bottomAnchor="0.0"
+                     AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                     AnchorPane.topAnchor="0.0" />
+               </children>
+            </AnchorPane>
+            <Text layoutX="22.0" layoutY="136.0" styleClass="section-title"
+               text="Drag &amp; Drop Here" />
+            <Button layoutX="439.0" layoutY="114.0" mnemonicParsing="false" onAction="#addNewCard"
+               prefHeight="30.0" prefWidth="140.0" styleClass="navbuts" text="＋ Add"
+               AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="114.0" />
+            <AnchorPane fx:id="topbarContainer" prefHeight="56.0" AnchorPane.leftAnchor="20.0"
+               AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="12.0">
+               <children>
+                  <fx:include fx:id="topbar" source="topbar.fxml" AnchorPane.bottomAnchor="0.0"
+                     AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                     AnchorPane.topAnchor="0.0" />
+               </children>
+            </AnchorPane>
+            <StackPane fx:id="modalOverlay" alignment="CENTER" managed="false"
+               onMouseClicked="#closeCard" styleClass="modal-overlay" visible="false"
+               AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <fx:include fx:id="cardRoot" source="card.fxml" />
+               </children>
+            </StackPane>
+         </children>
+      </AnchorPane>
+   </items>
+   <stylesheets>
+      <URL value="@../styleSheets/main.fx.css" />
+      <URL value="@../styleSheets/btn-style.fx.css" />
+      <URL value="@../styleSheets/device-card.fx.css" />
+      <URL value="@../styleSheets/top-sidebar.fx.css" />
+   </stylesheets>
+</SplitPane>
