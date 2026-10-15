@@ -1,53 +1,70 @@
 package in.hamshik.DNSHandler;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.time.Duration;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 
 public final class EspVerifier {
+    private static final System.Logger LOGGER = System.getLogger(EspVerifier.class.getName());
+    private static final int CONNECT_TIMEOUT_MILLIS = 1_000;
+    private static final int READ_TIMEOUT_MILLIS = 1_000;
+
     public record EspAckResponse(
             String status,
             String device,
-            String message) {
+            String message,
+            String hostName
+        ) {
     }
 
-    private static final HttpClient httpClient = HttpClient.newBuilder()
-            .connectTimeout(Duration.ofSeconds(2))
-            .build();
-    private static final Gson gson = new Gson();
+    private final Gson gson = new Gson();
+    public volatile EspAckResponse ack;
 
     /**
      * Pings the ESP32 /ack endpoint and verifies if it returns the correct
      * signature.
      */
-    public static boolean verifyAndParseEsp(String host, int port) {
-        String url = "http://" + host + ":" + port + "/ack";
+    public boolean verifyAndParseEsp(String host, int port) {
+        ack = null;
+        HttpURLConnection connection = null;
         try {
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(url))
-                    .GET()
-                    .build();
+            URI uri = new URI("http", null, host, port, "/ack", null, null);
+            connection = (HttpURLConnection) uri.toURL().openConnection();
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("Accept", "application/json");
+            connection.setConnectTimeout(CONNECT_TIMEOUT_MILLIS);
+            connection.setReadTimeout(READ_TIMEOUT_MILLIS);
 
-            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-            // Check if status code is HTTP 200 OK
-            if (response.statusCode() == 200) {
-                String jsonBody = response.body();
-
-                // Decode the JSON into our Java record
-                EspAckResponse ack = gson.fromJson(jsonBody, EspAckResponse.class);
-
-                // Strict validation: Ensure it's actually an ESP32 and not a home router
-                if (ack != null && "esp32".equalsIgnoreCase(ack.device())) {
-                    System.out.println("Successfully verified ESP32! Message: " + ack.message());
-                    return true;
-                }
+            int statusCode = connection.getResponseCode();
+            if (statusCode != HttpURLConnection.HTTP_OK) {
+                LOGGER.log(System.Logger.Level.DEBUG,
+                        "ESP verification returned HTTP {0} from {1}:{2}",
+                        statusCode, host, port);
+                return false;
             }
-        } catch (Exception e) {
-            // Fails silently if the port is closed or it's a regular router web page
+
+            String responseBody = new String(connection.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+            EspAckResponse parsedAck = gson.fromJson(responseBody, EspAckResponse.class);
+            if (parsedAck == null || parsedAck.device() == null
+                    || !"esp32".equalsIgnoreCase(parsedAck.device().strip())) {
+                LOGGER.log(System.Logger.Level.DEBUG,
+                        "ESP verification returned an unexpected response from {0}:{1}",
+                        host, port);
+                return false;
+            }
+            ack = parsedAck;
+            return true;
+        } catch (IOException | URISyntaxException | IllegalArgumentException e) {
+            LOGGER.log(System.Logger.Level.DEBUG, "Unable to verify ESP at " + host + ":" + port, e);
+        } catch (JsonParseException e) {
+            LOGGER.log(System.Logger.Level.WARNING, "ESP returned invalid /ack JSON from " + host + ":" + port, e);
+        } finally {
+            if (connection != null) connection.disconnect();
         }
         return false;
     }

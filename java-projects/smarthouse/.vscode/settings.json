@@ -7,5 +7,6 @@
 
   // Reduce Maven/Gradle cache footprint if applicable
   "java.maven.downloadSources": false,
-  "java.configuration.updateBuildConfiguration": "interactive"
+  "java.configuration.updateBuildConfiguration": "interactive",
+  "java.debug.settings.onBuildFailureProceed": true
 }

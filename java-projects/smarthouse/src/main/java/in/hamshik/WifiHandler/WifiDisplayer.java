@@ -95,6 +95,12 @@ public class WifiDisplayer {
                         loadingSpinner.setVisible(false);
                     }
                     deviceListView.render(devices, connectedDeviceName);
+                }), name -> Platform.runLater(() -> {
+                    if (connectedDeviceName != null && name.equalsIgnoreCase(connectedDeviceName)) {
+                        disconnect();
+                    } else {
+                        refreshDeviceList();
+                    }
                 }));
     }
 
