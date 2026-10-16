@@ -23,7 +23,7 @@ void IoTServer::handleWebSocketMessage(uint8_t* data, size_t len) {
 }
 
 void IoTServer::onWebSocketEvent(AsyncWebSocket* server, AsyncWebSocketClient* client, AwsEventType type, void* arg,
-                                   uint8_t* data, size_t len) {
+                                 uint8_t* data, size_t len) {
   switch (type) {
     case WS_EVT_CONNECT:
       Serial.printf("[%u] Connected from %s\n", client->id(), client->remoteIP().toString().c_str());
@@ -66,6 +66,19 @@ void IoTServer::serverSetup() {
   ws.onEvent([this](AsyncWebSocket* server, AsyncWebSocketClient* client, AwsEventType type, void* arg, uint8_t* data,
                     size_t len) { this->onWebSocketEvent(server, client, type, arg, data, len); });
 
+  server.on("/data", HTTP_GET, [](AsyncWebServerRequest* request) {
+    String message = "";
+
+    // Check if the query parameter "msg" exists and extract it
+    if (request->hasParam("msg")) {
+      message = request->getParam("msg")->value();
+      Serial.println("Received message from Java: " + message);
+    }
+
+    // Always send a response back so the client connection closes cleanly
+    request->send(200, "text/plain", "ESP32 received: " + message);
+  });
+
   server.addHandler(&ws);
 }
 
@@ -88,7 +101,7 @@ void IoTServer::begin() {
   else {
     Serial.println("mDNS responder started: http://" + hostName + ".local");
     MDNS.addService("http", "tcp", PORT);
-    MDNS.addServiceTxt("http", "tcp", "path", ROOT_PATH); // Advertise the path
+    MDNS.addServiceTxt("http", "tcp", "path", ROOT_PATH);  // Advertise the path
   }
   serverSetup();
   server.begin();

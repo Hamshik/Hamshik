@@ -8,14 +8,16 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
+import in.hamshik.DNSHandler.WiFiScanner.EspDevice;
+
 public class WifiSender {
 
-    public static void sendDataToESP32(String ip, String message) {
+    public static void sendDataToESP32(EspDevice device, String message) {
         HttpURLConnection conn = null;
         try {
             String encodedMessage = URLEncoder.encode(message, StandardCharsets.UTF_8)
                     .replace("+", "%20");
-            URL url = URI.create("http://" + ip + "/data?msg=" + encodedMessage).toURL();
+            URL url = URI.create("http://" + device.name() + ".local/data?msg=" + encodedMessage).toURL();
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setConnectTimeout(3000);

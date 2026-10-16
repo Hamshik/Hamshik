@@ -5,6 +5,7 @@ import org.java_websocket.drafts.Draft_6455;
 import org.java_websocket.handshake.ServerHandshake;
 
 import in.hamshik.DNSHandler.WiFiScanner.EspDevice;
+import in.hamshik.WifiHandler.WifiSender;
 
 import java.net.URI;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -36,11 +37,13 @@ public class Esp32WebSocketClient extends WebSocketClient {
     private final DeviceListener onDeviceListener;
     private final AtomicBoolean completionNotified = new AtomicBoolean();
     private final AtomicBoolean connected = new AtomicBoolean();
+    private final EspDevice deviceConnectedOn;
     private volatile ScheduledFuture<?> connectionTimeout;
 
-    public Esp32WebSocketClient(URI serverUri, DeviceListener onDeviceListener) {
+    public Esp32WebSocketClient(URI serverUri, DeviceListener onDeviceListener, EspDevice connectedOn) {
         super(serverUri, new Draft_6455(), null, (int) CONNECT_TIMEOUT_MILLIS);
         this.onDeviceListener = onDeviceListener;
+        this.deviceConnectedOn = connectedOn;
         setDaemon(true);
         setConnectionLostTimeout(1);
     }
@@ -60,6 +63,7 @@ public class Esp32WebSocketClient extends WebSocketClient {
         }
         System.out.println("Connected to ESP32 WebSocket!");
         notifyListener(DeviceListener::onConnected);
+        WifiSender.sendDataToESP32(deviceConnectedOn, "{ 'status' : 'hello esp, fom java' }");
     }
 
     @Override
@@ -124,7 +128,7 @@ public class Esp32WebSocketClient extends WebSocketClient {
         Esp32WebSocketClient wsClient = null;
         try {
             URI wsUri = new URI("ws", null, device.host(), device.port(), device.path(), null, null);
-            wsClient = new Esp32WebSocketClient(wsUri, onDeviceListener);
+            wsClient = new Esp32WebSocketClient(wsUri, onDeviceListener, device);
             Esp32WebSocketClient previousClient = ACTIVE_CLIENT.getAndSet(wsClient);
             if (previousClient != null) previousClient.close();
 
