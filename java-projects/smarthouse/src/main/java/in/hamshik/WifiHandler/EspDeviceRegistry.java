@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 import in.hamshik.DNSHandler.*;
+import in.hamshik.DNSHandler.WiFiScanner.EspDevice;
 public final class EspDeviceRegistry {
     private final List<WiFiScanner.EspDevice> devices = new CopyOnWriteArrayList<>();
     private Consumer<List<WiFiScanner.EspDevice>> changeListener;
@@ -22,9 +23,9 @@ public final class EspDeviceRegistry {
         return new ArrayList<>(devices);
     }
 
-    public void addOrUpdateDevice(String name, String host, int port, String type) {
-        devices.removeIf(existing -> existing.host().equals(host));
-        devices.add(new WiFiScanner.EspDevice(name, host, port, type));
+    public void addOrUpdateDevice(EspDevice device) {
+        devices.removeIf(existing -> existing.host().equals(device.host()));
+        devices.add(device);
         notifyListener();
     }
 

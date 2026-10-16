@@ -1,0 +1,21 @@
+# Use a compact, K&R-inspired style
+BasedOnStyle: Google
+
+# Keep opening braces on the same line (saves 1 line per function, if-statement, and loop)
+BreakBeforeBraces: Attach
+
+# Allow short blocks, functions, and loops to stay on a single line
+AllowShortFunctionsOnASingleLine: All
+AllowShortIfStatementsOnASingleLine: WithoutElse
+AllowShortLoopsOnASingleLine: true
+AllowShortCaseLabelsOnASingleLine: true
+
+# Allow simple blocks on a single line
+AllowShortBlocksOnASingleLine: Empty
+
+# Increase column width so lines don't wrap unnecessarily (default is often 80)
+ColumnLimit: 120
+
+# Compact pointer/reference alignment
+DerivePointerAlignment: false
+PointerAlignment: Left

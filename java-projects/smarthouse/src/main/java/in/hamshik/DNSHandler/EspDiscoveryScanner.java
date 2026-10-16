@@ -4,6 +4,9 @@ import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceEvent;
 import javax.jmdns.ServiceInfo;
 import javax.jmdns.ServiceListener;
+
+import in.hamshik.DNSHandler.WiFiScanner.EspDevice;
+
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.SocketException;
@@ -16,7 +19,7 @@ public class EspDiscoveryScanner {
 
     @FunctionalInterface
     public interface DeviceFoundCallback {
-        void onDeviceFound(String name, String host, int port);
+        void onDeviceFound(EspDevice device);
 
         default void onDeviceRemoved(String name) {}
     }
@@ -98,7 +101,8 @@ public class EspDiscoveryScanner {
                 if (addresses == null || addresses.length == 0) return;
 
                 String name = info.getName().replace(".local", "");
-                callback.onDeviceFound(name, addresses[0], info.getPort());
+                callback.onDeviceFound(new EspDevice(name, addresses[0],
+                    info.getPort(), "mDNS", info.getPropertyString("path")));
             }
         };
     }

@@ -4,10 +4,8 @@ import in.hamshik.DNSHandler.*;
 import in.hamshik.DNSHandler.WiFiScanner.EspDevice;
 
 import javafx.application.Platform;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
-import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.VBox;
 
 import java.util.function.Consumer;

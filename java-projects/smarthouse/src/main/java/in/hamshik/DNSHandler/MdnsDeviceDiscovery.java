@@ -1,5 +1,6 @@
 package in.hamshik.DNSHandler;
 
+import in.hamshik.DNSHandler.WiFiScanner.EspDevice;
 import in.hamshik.WifiHandler.EspDeviceRegistry;
 
 import java.util.Objects;
@@ -17,8 +18,8 @@ final class MdnsDeviceDiscovery {
         Objects.requireNonNull(onDeviceRemoved, "onDeviceRemoved");
         this.scanner = new EspDiscoveryScanner(new EspDiscoveryScanner.DeviceFoundCallback() {
             @Override
-            public void onDeviceFound(String name, String host, int port) {
-                handleDeviceFound(name, host, port);
+            public void onDeviceFound(EspDevice device) {
+                handleDeviceFound(device);
             }
 
             @Override
@@ -37,9 +38,9 @@ final class MdnsDeviceDiscovery {
         scanner.stopInternal();
     }
 
-    private void handleDeviceFound(String name, String host, int port) {
-        if (!isEspDevice(host, port)) return;
-        registry.addOrUpdateDevice(name, host, port, "mDNS");
+    private void handleDeviceFound(EspDevice device) {
+        if (!isEspDevice(device.host(), device.port())) return;
+        registry.addOrUpdateDevice(device);
     }
 
     private boolean isEspDevice(String host, int port) {

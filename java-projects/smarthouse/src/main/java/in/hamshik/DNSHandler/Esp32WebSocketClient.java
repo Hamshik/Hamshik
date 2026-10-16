@@ -25,7 +25,7 @@ public class Esp32WebSocketClient extends WebSocketClient {
     }
 
     private static final AtomicReference<Esp32WebSocketClient> ACTIVE_CLIENT = new AtomicReference<>();
-    private static final long CONNECT_TIMEOUT_MILLIS = 800;
+    private static final long CONNECT_TIMEOUT_MILLIS = 5000;
     private static final ScheduledExecutorService CONNECT_TIMEOUTS =
             Executors.newSingleThreadScheduledExecutor(task -> {
                 Thread thread = new Thread(task, "esp32-connect-timeout");
@@ -123,7 +123,7 @@ public class Esp32WebSocketClient extends WebSocketClient {
     public static void connect(EspDevice device, DeviceListener onDeviceListener) {
         Esp32WebSocketClient wsClient = null;
         try {
-            URI wsUri = new URI("ws", null, device.host(), 81, "/", null, null);
+            URI wsUri = new URI("ws", null, device.host(), device.port(), device.path(), null, null);
             wsClient = new Esp32WebSocketClient(wsUri, onDeviceListener);
             Esp32WebSocketClient previousClient = ACTIVE_CLIENT.getAndSet(wsClient);
             if (previousClient != null) previousClient.close();
