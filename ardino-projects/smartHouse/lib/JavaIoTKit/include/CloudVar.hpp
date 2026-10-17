@@ -15,7 +15,7 @@ class CloudVariable {
   void set(U newValue);
   const String getName() const;
 
-  static const CloudVariable getVarObj(const String name);
+  static const CloudVariable& getVarObj(const String name);
 };
 
 #define T template <typename U>

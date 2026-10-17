@@ -60,7 +60,8 @@ public final class EspVerifier {
             ack = parsedAck;
             return true;
         } catch (IOException | URISyntaxException | IllegalArgumentException e) {
-            LOGGER.log(System.Logger.Level.DEBUG, "Unable to verify ESP at " + host + ":" + port, e);
+            System.err.println("Unable to verify ESP at " + host + ":" + port);
+            e.printStackTrace();
         } catch (JsonParseException e) {
             LOGGER.log(System.Logger.Level.WARNING, "ESP returned invalid /ack JSON from " + host + ":" + port, e);
         } finally {

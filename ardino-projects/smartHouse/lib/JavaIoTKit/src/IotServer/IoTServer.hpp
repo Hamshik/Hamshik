@@ -1,4 +1,6 @@
 #pragma once
+
+
 #include <AsyncWebSocket.h>
 
 // Forward declaration to avoid circular include issues
@@ -7,7 +9,7 @@ class JavaIoTKit;
 class IoTServer
 {
     const String ROOT_PATH = "/ws";
-    const byte PORT = 80;
+    const uint8_t PORT = 80;
     AsyncWebServer server{PORT};
     AsyncWebSocket ws{ROOT_PATH};
     JavaIoTKit& parentKit; // Reference back to the main kit

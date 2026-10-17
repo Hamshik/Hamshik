@@ -84,7 +84,7 @@ void IoTServer::serverSetup() {
 
 void IoTServer::begin() {
   WiFi.begin(ssid, password);
-  WiFi.setSleep(false);  // Keeps Wi-Fi radio fully awake for Linux ARP/ping
+  WiFi.setSleep(false);
 
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
@@ -92,17 +92,17 @@ void IoTServer::begin() {
   }
 
   Serial.println("\nWiFi connected.");
-  Serial.print("IP address: ");
+  Serial.print("IP address: http://");
   Serial.println(WiFi.localIP());
 
-  // Initialize mDNS
-  if (!MDNS.begin(hostName))
-    Serial.println("Error setting up MDNS responder!");
-  else {
-    Serial.println("mDNS responder started: http://" + hostName + ".local");
+  if (!MDNS.begin(hostName)) {
+    Serial.println("Error setting up mDNS responder!");
+  } else {
     MDNS.addService("http", "tcp", PORT);
-    MDNS.addServiceTxt("http", "tcp", "path", ROOT_PATH);  // Advertise the path
+    MDNS.addServiceTxt("http", "tcp", "path", ROOT_PATH);
+    Serial.println("mDNS responder started: http://" + hostName + ".local");
   }
+
   serverSetup();
   server.begin();
 }
