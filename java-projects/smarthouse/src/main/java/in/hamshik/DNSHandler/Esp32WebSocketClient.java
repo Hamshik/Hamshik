@@ -4,7 +4,10 @@ import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft_6455;
 import org.java_websocket.handshake.ServerHandshake;
 
+import com.google.gson.JsonObject;
+
 import in.hamshik.DNSHandler.WiFiScanner.EspDevice;
+import in.hamshik.Helpers.CloudRequest;
 import in.hamshik.WifiHandler.WifiSender;
 
 import java.net.URI;
@@ -26,7 +29,7 @@ public class Esp32WebSocketClient extends WebSocketClient {
     }
 
     private static final AtomicReference<Esp32WebSocketClient> ACTIVE_CLIENT = new AtomicReference<>();
-    private static final long CONNECT_TIMEOUT_MILLIS = 800;
+    private static final long CONNECT_TIMEOUT_MILLIS = 10_000;
     private static final ScheduledExecutorService CONNECT_TIMEOUTS =
             Executors.newSingleThreadScheduledExecutor(task -> {
                 Thread thread = new Thread(task, "esp32-connect-timeout");
@@ -45,7 +48,7 @@ public class Esp32WebSocketClient extends WebSocketClient {
         this.onDeviceListener = onDeviceListener;
         this.deviceConnectedOn = connectedOn;
         setDaemon(true);
-        setConnectionLostTimeout(1);
+        setConnectionLostTimeout((int) CONNECT_TIMEOUT_MILLIS);
     }
 
     @Override
@@ -63,7 +66,8 @@ public class Esp32WebSocketClient extends WebSocketClient {
         }
         System.out.println("Connected to ESP32 WebSocket!");
         notifyListener(DeviceListener::onConnected);
-        WifiSender.sendDataToESP32(deviceConnectedOn, "{ 'status' : 'hello esp, fom java' }");
+        JsonObject request = CloudRequest.setVar("temperature", 1000);
+        WifiSender.sendDataToESP32(deviceConnectedOn, request.toString());
     }
 
     @Override

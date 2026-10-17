@@ -1,5 +1,6 @@
 #include "IoTServer.hpp"
 
+#include <ArduinoJson.h>
 #include <AsyncTCP.h>
 #include <ESPAsyncWebServer.h>
 #include <ESPmDNS.h>
@@ -7,7 +8,12 @@
 
 #include <string>
 
+#include "ArduinoJson/Deserialization/DeserializationError.hpp"
+#include "ArduinoJson/Document/JsonDocument.hpp"
+#include "ArduinoJson/Json/JsonSerializer.hpp"
+#include "HardwareSerial.h"
 #include "JavaIoTKit.hpp"
+#include "VarRegister/Cloud.hpp"
 
 // Initialize the parent reference properly
 IoTServer::IoTServer(JavaIoTKit& kit)
@@ -69,14 +75,23 @@ void IoTServer::serverSetup() {
   server.on("/data", HTTP_GET, [](AsyncWebServerRequest* request) {
     String message = "";
 
-    // Check if the query parameter "msg" exists and extract it
     if (request->hasParam("msg")) {
       message = request->getParam("msg")->value();
       Serial.println("Received message from Java: " + message);
-    }
+      JsonDocument req;
+      DeserializationError error = deserializeJson(req, message);
 
-    // Always send a response back so the client connection closes cleanly
-    request->send(200, "text/plain", "ESP32 received: " + message);
+      if (error) {
+        request->send(400, "text/plain", error.c_str());
+        return;
+      }
+
+      auto response = CloudHandler::dispatchReq(req);
+      String json;
+      serializeJson(response, json);
+      request->send(200, "application/json", json);
+      return;
+    }
   });
 
   server.addHandler(&ws);

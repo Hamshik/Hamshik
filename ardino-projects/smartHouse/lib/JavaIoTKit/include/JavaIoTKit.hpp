@@ -4,9 +4,9 @@
 class IoTServer;  // Forward declaration
 
 class JavaIoTKit {
-  String ssid;
-  String password;
-  String hostName;
+  String ssid = "";
+  String password = "";
+  String hostName = "";
   IoTServer& ioTServer;
 
  public:
