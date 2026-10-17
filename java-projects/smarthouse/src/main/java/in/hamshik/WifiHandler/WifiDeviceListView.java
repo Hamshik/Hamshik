@@ -28,22 +28,27 @@ final class WifiDeviceListView {
 
     void clear() { deviceListContainer.getChildren().clear(); }
 
-    void render(List<EspDevice> devices, String connectedDeviceName) {
+    void render(List<EspDevice> devices, String connectingDeviceName, String connectedDeviceName) {
         deviceListContainer.getChildren().clear();
-        statusLabel.setText(devices.isEmpty()
-                ? "Scanning... No devices found yet."
-                : "Found " + devices.size() + " device(s):");
+        statusLabel.setText(connectingDeviceName != null
+                ? "Connecting to " + connectingDeviceName + "..."
+                : connectedDeviceName != null
+                ? "Connected to " + connectedDeviceName
+                : devices.isEmpty()
+                        ? "Scanning... No devices found yet."
+                        : "Found " + devices.size() + " device(s):");
         for (EspDevice device : devices) {
+            boolean connecting = device.name().equals(connectingDeviceName);
             boolean connected = device.name().equals(connectedDeviceName);
-            deviceListContainer.getChildren().add(createDeviceCard(device, connected));
+            deviceListContainer.getChildren().add(createDeviceCard(device, connecting, connected));
         }
     }
 
-    private HBox createDeviceCard(EspDevice device, boolean connected) {
+    private HBox createDeviceCard(EspDevice device, boolean connecting, boolean connected) {
         HBox card = new HBox(10);
         card.getStyleClass().add("device-card");
         card.setAlignment(Pos.CENTER_LEFT);
-        card.getChildren().addAll(createDeviceInfo(device), createActionButton(device, connected));
+        card.getChildren().addAll(createDeviceInfo(device), createActionButton(device, connecting, connected));
         return card;
     }
 
@@ -52,18 +57,22 @@ final class WifiDeviceListView {
         HBox.setHgrow(info, Priority.ALWAYS);
         Label name = new Label(device.name());
         name.getStyleClass().add("device-name");
-        Label address = new Label(device.host() + ":" + device.port() + " • " + device.type());
+        name.setWrapText(true);
+        Label address = new Label("Host: " + device.name() + " • IP: "
+                + device.host() + ":" + device.port() + " • " + device.type());
         address.getStyleClass().add("device-host");
+        address.setWrapText(true);
         info.getChildren().addAll(name, address);
         return info;
     }
 
-    private Button createActionButton(EspDevice device, boolean connected) {
-        Button button = new Button(connected ? "Disconnect" : "Connect");
+    private Button createActionButton(EspDevice device, boolean connecting, boolean connected) {
+        Button button = new Button(connecting ? "Connecting..." : connected ? "Disconnect" : "Connect");
         button.getStyleClass().add(connected ? "disconnect-btn" : "connect-btn");
+        button.setDisable(connecting);
         button.setOnAction(event -> {
             if (connected) onDisconnect.accept(device);
-            else onConnect.accept(device);
+            else if (!connecting) onConnect.accept(device);
         });
         return button;
     }

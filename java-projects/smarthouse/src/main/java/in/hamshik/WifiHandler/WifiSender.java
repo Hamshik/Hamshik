@@ -17,7 +17,7 @@ public class WifiSender {
         try {
             String encodedMessage = URLEncoder.encode(message, StandardCharsets.UTF_8)
                     .replace("+", "%20");
-            URL url = URI.create("http://" + device.name() + ".local/data?msg=" + encodedMessage).toURL();
+            URL url = URI.create("http://" + device.host() + "/data?msg=" + encodedMessage).toURL();
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setConnectTimeout(3000);

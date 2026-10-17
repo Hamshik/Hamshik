@@ -4,18 +4,18 @@
 class IoTServer;  // Forward declaration
 
 class JavaIoTKit {
-  String ssid = "";
-  String password = "";
-  String hostName = "";
+  String ssid;
+  String password;
+  String hostName;
   IoTServer& ioTServer;
 
  public:
-  JavaIoTKit(String, String, String);
+  JavaIoTKit(String ssid, String password, String hostName);
 
   // Getter methods if IoTServer needs access to protected fields
-  String getSsid() const { return ssid; }
-  String getPassword() const { return password; }
-  String getHostName() const { return hostName; }
+  const String& getSsid() const { return ssid; }
+  const String& getPassword() const { return password; }
+  const String& getHostName() const { return hostName; }
 
   void begin();
   void loop();  

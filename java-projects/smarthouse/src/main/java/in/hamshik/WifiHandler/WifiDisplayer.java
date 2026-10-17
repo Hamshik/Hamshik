@@ -9,6 +9,8 @@ import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.VBox;
 
 import java.util.function.Consumer;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Coordinates the Wi-Fi device list, connection state, and scanner lifecycle. */
 public class WifiDisplayer {
@@ -19,6 +21,9 @@ public class WifiDisplayer {
     private final Runnable onDeviceDisconnected;
     private final WiFiScanner wifiScanner = new WiFiScanner();
     private String connectedDeviceName;
+    private String connectingDeviceName;
+    private EspDevice manualDevice;
+    private List<EspDevice> discoveredDevices = List.of();
 
     public WifiDisplayer( ProgressIndicator loadingSpinner, Label statusLabel,
                          VBox deviceListContainer, Consumer<EspDevice> onDeviceConnected,
@@ -49,18 +54,45 @@ public class WifiDisplayer {
     }
 
     public void disconnect() {
-        if (connectedDeviceName == null) return;
+        if (connectedDeviceName == null && connectingDeviceName == null) return;
         connectedDeviceName = null;
+        connectingDeviceName = null;
         if (onDeviceDisconnected != null) onDeviceDisconnected.run();
+        refreshDeviceList();
+    }
+
+    /** Marks the pending connection as established and refreshes its card action. */
+    public void markConnected() {
+        connectedDeviceName = connectingDeviceName;
+        connectingDeviceName = null;
+        refreshDeviceList();
+    }
+
+    /** Clears the pending state after a failed connection attempt. */
+    public void connectionFailed() {
+        connectedDeviceName = null;
+        connectingDeviceName = null;
         refreshDeviceList();
     }
 
     public boolean isConnected() { return connectedDeviceName != null; }
     public String getConnectedDeviceName() { return connectedDeviceName; }
+    public String getConnectingDeviceName() { return connectingDeviceName; }
 
     public void setConnectedDevice(String name) {
         connectedDeviceName = name;
+        connectingDeviceName = null;
         refreshDeviceList();
+    }
+
+    /** Connects to a manually entered device and keeps it visible in the device list. */
+    public void connectManually(EspDevice device) {
+        manualDevice = device;
+        connectingDeviceName = device.name();
+        connectedDeviceName = null;
+        if (onDeviceConnected != null) onDeviceConnected.accept(device);
+        refreshDeviceList();
+        hide();
     }
 
     private void resetDeviceListState() {
@@ -78,7 +110,8 @@ public class WifiDisplayer {
                     } else {
                         loadingSpinner.setVisible(false);
                     }
-                    deviceListView.render(devices, connectedDeviceName);
+                    discoveredDevices = devices;
+                    renderDevices();
                 }), name -> Platform.runLater(() -> {
                     if (connectedDeviceName != null && name.equalsIgnoreCase(connectedDeviceName)) {
                         disconnect();
@@ -91,11 +124,22 @@ public class WifiDisplayer {
     private void endScanning() { wifiScanner.stopScanning(); }
 
     private void refreshDeviceList() {
-        deviceListView.render(wifiScanner.getDevices(), connectedDeviceName);
+        discoveredDevices = wifiScanner.getDevices();
+        renderDevices();
+    }
+
+    private void renderDevices() {
+        List<EspDevice> devices = new ArrayList<>(discoveredDevices);
+        if (manualDevice != null && devices.stream().noneMatch(device ->
+                device.host().equalsIgnoreCase(manualDevice.host()) && device.port() == manualDevice.port())) {
+            devices.add(manualDevice);
+        }
+        deviceListView.render(devices, connectingDeviceName, connectedDeviceName);
     }
 
     private void handleDeviceConnection(EspDevice device) {
-        connectedDeviceName = device.name();
+        connectingDeviceName = device.name();
+        connectedDeviceName = null;
         if (onDeviceConnected != null) onDeviceConnected.accept(device);
         refreshDeviceList();
         hide();

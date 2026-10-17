@@ -29,7 +29,7 @@ public class Esp32WebSocketClient extends WebSocketClient {
     }
 
     private static final AtomicReference<Esp32WebSocketClient> ACTIVE_CLIENT = new AtomicReference<>();
-    private static final long CONNECT_TIMEOUT_MILLIS = 10_000;
+    private static final long CONNECT_TIMEOUT_MILLIS = 5_000;
     private static final ScheduledExecutorService CONNECT_TIMEOUTS =
             Executors.newSingleThreadScheduledExecutor(task -> {
                 Thread thread = new Thread(task, "esp32-connect-timeout");

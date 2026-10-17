@@ -8,6 +8,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.SplitPane;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 public class DeviceMngCtrl extends Controller {
@@ -19,12 +21,19 @@ public class DeviceMngCtrl extends Controller {
     public SplitPane root;
     @FXML
     private VBox deviceListContainer;
+    @FXML private StackPane modalOverlay;
+    @FXML private ManualConnectionCardCtrl cardRootController;
 
     private WifiDisplayer wifiDisplayer;
 
     @FXML protected void initialize() {
         super.initialize(); // Uses this screen's own fields (wifiBut, root, etc.)
         wifiBut.setOnAction(e -> wifiShow());
+        cardRootController.setOnConnect(device -> {
+            statusLabel.setText("Connecting to " + device.host() + "...");
+            wifiDisplayer.connectManually(device);
+        });
+        cardRootController.setOnDismiss(this::closeManualConnection);
         wifiDisplayer = new WifiDisplayer(
             loadingSpinner,
             statusLabel,
@@ -55,25 +64,46 @@ public class DeviceMngCtrl extends Controller {
         wifiDisplayer.show();
     }
 
+    @FXML
+    private void showManualConnection() {
+        wifiDisplayer.hide();
+        statusLabel.setText("Enter the ESP32 IP address to connect manually.");
+        modalOverlay.setManaged(true);
+        modalOverlay.setVisible(true);
+    }
+
+    private void closeManualConnection() {
+        modalOverlay.setVisible(false);
+        modalOverlay.setManaged(false);
+    }
+
+    @FXML
+    private void closeCard(MouseEvent event) {
+        if (event.getTarget() == modalOverlay) closeManualConnection();
+    }
+
     DeviceListener getDeviceListener(){
         return new Esp32WebSocketClient.DeviceListener() {
             @Override
             public void onConnectingState(){
                 wifiBut.setText("Connecting");
                 loadingSpinner.setVisible(true);
+                statusLabel.setText("Connecting to " + wifiDisplayer.getConnectingDeviceName() + "...");
             }
 
             @Override
             public void onConnected() {
+                wifiDisplayer.markConnected();
                 App.fxmlPipeline.setWifiButtonConnected(true);
                 App.fxmlPipeline.setWifiButText(wifiDisplayer.getConnectedDeviceName());
                 loadingSpinner.setVisible(false);
+                statusLabel.setText("Connected to " + wifiDisplayer.getConnectedDeviceName());
             }
 
             @Override 
             public void onFailedConnection(){
                 loadingSpinner.setVisible(false);
-                wifiDisplayer.disconnect();
+                wifiDisplayer.connectionFailed();
                 App.fxmlPipeline.setWifiButtonConnected(false);
                 App.fxmlPipeline.setWifiButText("Disconnected");
                 statusLabel.setText("Connection timed out. Check the ESP32 and try again.");
