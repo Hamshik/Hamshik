@@ -8,10 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
-<VBox fx:controller="in.hamshik.Controller.ManualConnectionCardCtrl" maxHeight="-Infinity"
-   maxWidth="363.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="293.0" prefWidth="363.0"
-   styleClass="card" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="363.0" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#onKeyPressed" prefHeight="293.0" prefWidth="363.0" styleClass="card" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.hamshik.Controller.ManualConnectionCardCtrl">
    <children>
       <Label styleClass="card-subheading" text="Host Name &amp; IP Adress">
          <VBox.margin>
@@ -20,15 +17,12 @@
       </Label>
       <HBox prefHeight="46.0" prefWidth="339.0">
          <children>
-            <TextField fx:id="ipField" alignment="CENTER" prefHeight="37.0" prefWidth="161.0"
-               promptText="Enter the IP address" styleClass="device-card" text="192.168.0.XXXX"
-               HBox.hgrow="SOMETIMES">
+            <TextField fx:id="ipField" alignment="CENTER" prefHeight="37.0" prefWidth="161.0" promptText="Enter the IP address" styleClass="device-card" text="192.168.0.XXXX" HBox.hgrow="SOMETIMES">
                <HBox.margin>
                   <Insets right="2.0" />
                </HBox.margin>
             </TextField>
-            <TextField fx:id="hostNameField" alignment="CENTER" prefHeight="37.0" prefWidth="161.0"
-               promptText="Host name (optional)" styleClass="device-card" />
+            <TextField fx:id="hostNameField" alignment="CENTER" prefHeight="37.0" prefWidth="161.0" promptText="Host name (optional)" styleClass="device-card" />
          </children>
       </HBox>
       <Label styleClass="card-subheading" text="Port &amp; NetWork types">
@@ -38,15 +32,12 @@
       </Label>
       <HBox prefHeight="46.0" prefWidth="339.0">
          <children>
-            <TextField fx:id="portField" alignment="CENTER" prefHeight="37.0" prefWidth="161.0"
-               promptText="Enter the port number" styleClass="device-card" text="80"
-               HBox.hgrow="SOMETIMES">
+            <TextField fx:id="portField" alignment="CENTER" prefHeight="37.0" prefWidth="161.0" promptText="Enter the port number" styleClass="device-card" text="80" HBox.hgrow="SOMETIMES">
                <HBox.margin>
                   <Insets right="2.0" />
                </HBox.margin>
             </TextField>
-            <TextField fx:id="networkTypeField" alignment="CENTER" prefHeight="37.0"
-               prefWidth="161.0" promptText="Network type" styleClass="device-card" text="subnet" />
+            <TextField fx:id="networkTypeField" alignment="CENTER" prefHeight="37.0" prefWidth="161.0" promptText="Network type" styleClass="device-card" text="subnet" />
          </children>
       </HBox>
       <Label styleClass="card-subheading" text="Root Path &amp; Connection Timeout">
@@ -56,18 +47,15 @@
       </Label>
       <HBox prefHeight="46.0" prefWidth="339.0">
          <children>
-            <TextField fx:id="pathField" alignment="CENTER" prefHeight="37.0" prefWidth="161.0"
-               promptText="WebSocket path" styleClass="device-card" text="/ws"
-               HBox.hgrow="SOMETIMES">
+            <TextField fx:id="pathField" alignment="CENTER" prefHeight="37.0" prefWidth="161.0" promptText="WebSocket path" styleClass="device-card" text="/ws" HBox.hgrow="SOMETIMES">
                <HBox.margin>
                   <Insets right="2.0" />
                </HBox.margin>
             </TextField>
-            <TextField fx:id="timeoutField" alignment="CENTER" prefHeight="37.0" prefWidth="161.0"
-               promptText="Timeout (sec.)" styleClass="device-card" text="5" />
+            <TextField fx:id="timeoutField" alignment="CENTER" prefHeight="37.0" prefWidth="161.0" promptText="Timeout (sec.)" styleClass="device-card" text="5" />
          </children>
       </HBox>
-      <Label fx:id="connectionError" wrapText="true" styleClass="card-subheading" text=" " />
+      <Label fx:id="connectionError" styleClass="card-subheading" text=" " wrapText="true" />
       <HBox alignment="CENTER_RIGHT" prefHeight="46.0" prefWidth="339.0">
          <children>
             <Button mnemonicParsing="false" onAction="#cancel" styleClass="ghost-btn" text="Cancel">
@@ -75,8 +63,7 @@
                   <Insets right="5.0" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" onAction="#connect" styleClass="connect-btn"
-               text="Connect" />
+            <Button mnemonicParsing="false" onAction="#connect" styleClass="connect-btn" text="Connect" />
          </children>
       </HBox>
    </children>

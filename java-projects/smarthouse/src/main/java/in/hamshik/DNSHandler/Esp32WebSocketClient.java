@@ -66,7 +66,7 @@ public class Esp32WebSocketClient extends WebSocketClient {
         }
         System.out.println("Connected to ESP32 WebSocket!");
         notifyListener(DeviceListener::onConnected);
-        JsonObject request = CloudRequest.setVar("temperature", 1000);
+        JsonObject request = CloudRequest.getAllVar();
         WifiSender.sendDataToESP32(deviceConnectedOn, request.toString());
     }
 

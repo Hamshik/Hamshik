@@ -6,7 +6,7 @@
 
 #include "CloudVar.hpp"
 
-enum ReqTy { GET_VAR, SET_VAR, SEND_ALL_VAR };
+enum ReqTy { GET_VAR = 0, SET_VAR, SEND_ALL_VAR };
 
 class CloudHandler {
  public:

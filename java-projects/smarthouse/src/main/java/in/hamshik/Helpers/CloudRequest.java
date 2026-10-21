@@ -4,8 +4,8 @@ import com.google.gson.JsonObject;
 
 enum ReqTy {
     GET_VAR(0),
-    SEND_ALL_VAR(1),
-    SET_VAR(2);
+    SET_VAR(1),
+    GET_ALL_VAR(2);
 
     private final int value;
 
@@ -52,5 +52,11 @@ public final class CloudRequest {
         }
 
         return request;
+    }
+
+    public static JsonObject getAllVar(){
+        JsonObject json = new JsonObject();
+        json.addProperty("msg", ReqTy.GET_ALL_VAR.value());
+        return json;
     }
 }

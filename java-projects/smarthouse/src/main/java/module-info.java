@@ -7,6 +7,7 @@ module in.hamshik {
     requires com.google.gson;
     requires java.net.http;
     requires org.java_websocket;
+    requires java.desktop;
 
     // Grant Gson reflection access to your package containing the record
     opens in.hamshik.DNSHandler to com.google.gson;

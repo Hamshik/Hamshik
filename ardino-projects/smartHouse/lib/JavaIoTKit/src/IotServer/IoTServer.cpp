@@ -110,9 +110,9 @@ void IoTServer::begin() {
   Serial.print("IP address: http://");
   Serial.println(WiFi.localIP());
 
-  if (!MDNS.begin(hostName)) {
+  if (!MDNS.begin(hostName)) 
     Serial.println("Error setting up mDNS responder!");
-  } else {
+  else {
     MDNS.addService("http", "tcp", PORT);
     MDNS.addServiceTxt("http", "tcp", "path", ROOT_PATH);
     Serial.println("mDNS responder started: http://" + hostName + ".local");

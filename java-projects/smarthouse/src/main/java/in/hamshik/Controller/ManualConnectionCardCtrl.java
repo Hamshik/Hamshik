@@ -4,9 +4,13 @@ import in.hamshik.DNSHandler.WiFiScanner.EspDevice;
 import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.util.function.Consumer;
+
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCode;
 
 /** Form for connecting to an ESP32 by its manually entered network address. */
 public class ManualConnectionCardCtrl {
@@ -72,6 +76,14 @@ public class ManualConnectionCardCtrl {
         pathField.setText("/ws");
         connectionError.setText(" ");
         if (onDismiss != null) onDismiss.run();
+    }
+
+    @FXML void onKeyPressed(KeyEvent keycode){
+        switch(keycode.getCode()){
+            case KeyCode.ENTER -> connect();
+            case KeyCode.ESCAPE -> cancel();
+            default -> {}
+        }
     }
 
     private boolean isIpAddress(String host) {
