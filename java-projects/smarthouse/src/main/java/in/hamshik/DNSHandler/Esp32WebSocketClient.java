@@ -11,6 +11,7 @@ import in.hamshik.Helpers.CloudRequest;
 import in.hamshik.WifiHandler.WifiSender;
 
 import java.net.URI;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.Executors;
@@ -26,6 +27,7 @@ public class Esp32WebSocketClient extends WebSocketClient {
         void onConnectingState();
         void onFailedConnection();
         default void onConnected() {}
+        default void onVariablesReceived(JsonObject response) {}
     }
 
     private static final AtomicReference<Esp32WebSocketClient> ACTIVE_CLIENT = new AtomicReference<>();
@@ -67,7 +69,12 @@ public class Esp32WebSocketClient extends WebSocketClient {
         System.out.println("Connected to ESP32 WebSocket!");
         notifyListener(DeviceListener::onConnected);
         JsonObject request = CloudRequest.getAllVar();
-        WifiSender.sendDataToESP32(deviceConnectedOn, request.toString());
+        CompletableFuture
+                .supplyAsync(() -> WifiSender.sendDataToESP32(deviceConnectedOn, request.toString()))
+                .thenAccept(response -> {
+                    if (response != null && ACTIVE_CLIENT.get() == this && connected.get())
+                        notifyListener(listener -> listener.onVariablesReceived(response));
+                });
     }
 
     @Override

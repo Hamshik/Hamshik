@@ -8,11 +8,14 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import in.hamshik.DNSHandler.WiFiScanner.EspDevice;
 
 public class WifiSender {
 
-    public static void sendDataToESP32(EspDevice device, String message) {
+    public static JsonObject sendDataToESP32(EspDevice device, String message) {
         HttpURLConnection conn = null;
         try {
             String encodedMessage = URLEncoder.encode(message, StandardCharsets.UTF_8)
@@ -32,10 +35,11 @@ public class WifiSender {
                 while ((inputLine = in.readLine()) != null) {
                     response.append(inputLine);
                 }
-                System.out.println("ESP32 HTTP " + status + ": " + response);
+                return JsonParser.parseString(response.toString()).getAsJsonObject();
             }
         } catch (Exception e) {
             System.out.println("Communication failed: " + e.getMessage());
+            return null;
         } finally {
             if (conn != null) {
                 conn.disconnect();

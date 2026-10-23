@@ -9,6 +9,7 @@
             "name": "App",
             "request": "launch",
             "mainClass": "in.hamshik/in.hamshik.App",
+            "vmArgs": "--add-exports=javafx.base/com.sun.javafx.event=org.controlsfx.controls",
             "projectName": "smarthouse"
         }
     ]

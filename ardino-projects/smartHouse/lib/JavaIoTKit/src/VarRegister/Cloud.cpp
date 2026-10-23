@@ -5,6 +5,8 @@
 #include <stdexcept>
 #include <utility>
 
+#include "ArduinoJson/Array/JsonArray.hpp"
+#include "ArduinoJson/Object/JsonObject.hpp"
 #include "CloudVar.hpp"
 
 void registerCloudVar(const std::string& name, CloudVarBase* variable) {
@@ -83,7 +85,6 @@ JsonDocument CloudHandler::dispatchReq(JsonDocument& json) {
       for (const auto& [name, variable] : CloudHandler::variables()) {
         variable->toJson(vars, name.c_str());
       }
-      Serial.println("Sended all the vars!");
       return response;
     }
 

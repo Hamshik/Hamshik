@@ -19,7 +19,7 @@ public class App extends Application {
 
     protected static Controller homeCtrl;
     protected static DeviceMngCtrl deviceMngCtrl;
-    protected static DashCtrl dashCtrl;
+    public static DashCtrl dashCtrl;
     public static FXMLPipeline fxmlPipeline;
 
     @Override
@@ -37,7 +37,11 @@ public class App extends Application {
         deviceMngCtrl = deviceLoader.getController();
         
         StackPane pageHost = new StackPane(homePage, dashboardPage, devicePage);
-        stage.setScene(new Scene(pageHost));
+        Scene scene = new Scene(pageHost);
+        scene.getStylesheets().add(App.class
+                .getResource("/in/hamshik/styleSheets/autocomplete.css")
+                .toExternalForm());
+        stage.setScene(scene);
         stage.setTitle("IoT Dashboard");
         stage.setMinWidth(600);
         stage.setMinHeight(500);

@@ -3,6 +3,7 @@ package in.hamshik.Helpers;
 import java.util.ArrayList;
 import java.util.List;
 
+import in.hamshik.Controller.CardController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -25,6 +26,7 @@ public class CardManager {
     public record Range(int from, int to) {}
     public record DeviceInfo(String sensorName, String dataTy, 
         String varName, String permissions, Range range){}
+    public CardController cardCtrl;
 
     public CardManager(Pane board) {
         this.board = board;
@@ -48,7 +50,6 @@ public class CardManager {
         if (cardStylesheet == null)
             throw new IllegalStateException("Missing dashboard card stylesheet");
         card.getStylesheets().add(cardStylesheet.toExternalForm());
-
         card.getChildren().addAll(
             createHeader(info),
             createReadingSection(info),

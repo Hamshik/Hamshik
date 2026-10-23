@@ -8,6 +8,7 @@ module in.hamshik {
     requires java.net.http;
     requires org.java_websocket;
     requires java.desktop;
+    requires org.controlsfx.controls;
 
     // Grant Gson reflection access to your package containing the record
     opens in.hamshik.DNSHandler to com.google.gson;

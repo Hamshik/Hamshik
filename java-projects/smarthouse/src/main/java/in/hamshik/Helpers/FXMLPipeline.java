@@ -15,7 +15,6 @@ public class FXMLPipeline extends App {
     private boolean syncingDividerPos = false;
     private double sidebarWidth = 140.0;
     Controller[] ctrls = { dashCtrl, deviceMngCtrl, homeCtrl };
-
     public static final double WIDTH_MIN = 73;
     public static final double WIDTH_MAX = 141.321;
 

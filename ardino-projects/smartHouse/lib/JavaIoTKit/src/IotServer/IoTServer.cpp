@@ -90,6 +90,7 @@ void IoTServer::serverSetup() {
       String json;
       serializeJson(response, json);
       request->send(200, "application/json", json);
+      Serial.printf("Seneded the var json: %s\n", json.c_str());
       return;
     }
   });

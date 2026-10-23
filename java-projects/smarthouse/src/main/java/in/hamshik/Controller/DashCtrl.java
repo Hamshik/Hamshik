@@ -7,6 +7,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import java.util.Collection;
 
 public class DashCtrl extends Controller {
     @FXML private Pane board;
@@ -31,6 +32,10 @@ public class DashCtrl extends Controller {
     private void closeAddCardPopup() {
         modalOverlay.setVisible(false);
         modalOverlay.setManaged(false);
+    }
+
+    public void setVariableNames(Collection<String> names) {
+        cardRootController.setVariableNames(names);
     }
 
     @FXML
