@@ -82,7 +82,7 @@ public class Esp32WebSocketClient extends WebSocketClient {
 
     @Override
     public void onMessage(String message) {
-        System.out.println("Received: " + message);
+        System.out.println("Recieved: " + message);
         try {
             JsonElement root = JsonParser.parseString(message);
             if (root.isJsonObject()) {

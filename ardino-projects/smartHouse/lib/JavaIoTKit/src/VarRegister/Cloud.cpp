@@ -84,7 +84,9 @@ JsonDocument CloudHandler::dispatchReq(JsonDocument& json) {
       JsonObject vars = response["Variables"].to<JsonObject>();
 
       for (const auto& [name, variable] : CloudHandler::variables()) {
-        variable->toJson(vars, name.c_str());
+        JsonObject obj = vars[name].to<JsonObject>();
+        obj["Permissions"] = variable->permissionMod();
+        obj["datatypes"]   = variable->type();
       }
       return response;
     }

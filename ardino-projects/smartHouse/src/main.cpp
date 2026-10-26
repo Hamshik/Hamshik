@@ -2,7 +2,7 @@
 #include <CloudVar.hpp>
 
 JavaIoTKit ioTKit("Anugraha", "Coolvinu6395", "Hamshik");
-CloudVar<int> temp("temperature", 100);
+CloudVar<int> temp("temperature", 100, Permission::RO);
 
 void setup() {
   Serial.begin(115200);

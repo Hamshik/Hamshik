@@ -19,8 +19,6 @@ public class CardHolder {
     private final DeviceInfo info;
     private final VBox cardRoot;
     private final Label valueLabel;
-    private final ProgressIndicator indicator;
-    private final Label percentageLabel;
 
     // Observable Properties
     private final DoubleProperty numericValue = new SimpleDoubleProperty(0.0);
@@ -31,8 +29,6 @@ public class CardHolder {
         this.info = info;
         this.cardRoot = cardRoot;
         this.valueLabel = valueLabel;
-        this.indicator = indicator;
-        this.percentageLabel = percentageLabel;
 
         // 1. Reactive UI Binding: bind the Label's text to displayValue property
         this.valueLabel.textProperty().bind(displayValue);

@@ -10,7 +10,10 @@ import in.hamshik.App;
 import in.hamshik.Controller.CardCtrl.WifiCardCtrl;
 import in.hamshik.DNSHandler.Esp32WebSocketClient;
 import in.hamshik.DNSHandler.Esp32WebSocketClient.DeviceListener;
+import in.hamshik.Helpers.VarHelpers.Variable;
 import in.hamshik.WifiHandler.WifiDisplayer;
+import in.hamshik.Helpers.VarHelpers.*;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
@@ -114,7 +117,7 @@ public class DeviceMngCtrl extends Controller {
 
             @Override
             public void onVariablesReceived(JsonObject response) {
-                List<String> names = readVariableNames(response);
+                List<Variable> names = readVariableNames(response);
                 App.dashCtrl.setVariableNames(names);
                 System.out.println("Loaded " + names.size() + " ESP32 variable names.");
                 updateInitialVariableValues(response);
@@ -149,7 +152,7 @@ public class DeviceMngCtrl extends Controller {
         };
     }
 
-    private List<String> readVariableNames(JsonObject response) {
+    private List<Variable> readVariableNames(JsonObject response) {
         if (response == null)
             return List.of();
 
@@ -166,10 +169,22 @@ public class DeviceMngCtrl extends Controller {
         if (variables == null)
             return List.of();
 
-        List<String> names = new ArrayList<>();
-        for (var variable : variables.entrySet()) 
-            names.add(variable.getKey());
-        
+        List<Variable> names = new ArrayList<>();
+        for (var variable : variables.entrySet()) {
+            if (!variable.getValue().isJsonObject()) continue;
+            var valObj = variable.getValue().getAsJsonObject();
+            var typeEl = valObj.get("datatypes");
+            var permEl = valObj.get("Permissions");
+            if (typeEl == null || permEl == null) continue;
+            int typeIdx = typeEl.getAsInt();
+            int permIdx = permEl.getAsInt();
+            if (typeIdx < 0 || typeIdx >= Type.values().length) continue;
+            if (permIdx < 0 || permIdx >= Permissions.values().length) continue;
+            names.add(new Variable(variable.getKey(),
+                    Type.values()[typeIdx],
+                    Permissions.values()[permIdx]));
+        }
+
         return names;
     }
 

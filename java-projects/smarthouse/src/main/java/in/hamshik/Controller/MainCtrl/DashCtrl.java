@@ -3,6 +3,7 @@ package in.hamshik.Controller.MainCtrl;
 import in.hamshik.Controller.CardCtrl.CardCtrl;
 import in.hamshik.Controller.CardCtrl.CardShowerCtrl;
 import in.hamshik.Helpers.CardManager;
+import in.hamshik.Helpers.VarHelpers.Variable;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -61,7 +62,7 @@ public class DashCtrl extends Controller {
         cardRootController.resetToNew();
     }
 
-    public void setVariableNames(Collection<String> names) {
+    public void setVariableNames(Collection<Variable> names) {
         cardRootController.setVariableNames(names);
     }
 
