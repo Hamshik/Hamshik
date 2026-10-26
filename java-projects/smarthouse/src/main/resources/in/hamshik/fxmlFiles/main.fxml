@@ -6,7 +6,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<SplitPane fx:id="root" dividerPositions="0.21120186697782964" prefHeight="756.0" prefWidth="859.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.hamshik.Controller.Controller">
+<SplitPane fx:id="root" dividerPositions="0.21120186697782964" prefHeight="756.0" prefWidth="859.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.hamshik.Controller.MainCtrl.Controller">
    <items>
       <fx:include fx:id="sidebar" source="sidebar.fxml" />
       

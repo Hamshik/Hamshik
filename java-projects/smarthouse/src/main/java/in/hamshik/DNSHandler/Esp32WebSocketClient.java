@@ -4,7 +4,9 @@ import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft_6455;
 import org.java_websocket.handshake.ServerHandshake;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import in.hamshik.DNSHandler.WiFiScanner.EspDevice;
 import in.hamshik.Helpers.CloudRequest;
@@ -28,6 +30,7 @@ public class Esp32WebSocketClient extends WebSocketClient {
         void onFailedConnection();
         default void onConnected() {}
         default void onVariablesReceived(JsonObject response) {}
+        default void onVariableUpdated(String varName, JsonElement value) {}
     }
 
     private static final AtomicReference<Esp32WebSocketClient> ACTIVE_CLIENT = new AtomicReference<>();
@@ -80,6 +83,19 @@ public class Esp32WebSocketClient extends WebSocketClient {
     @Override
     public void onMessage(String message) {
         System.out.println("Received: " + message);
+        try {
+            JsonElement root = JsonParser.parseString(message);
+            if (root.isJsonObject()) {
+                JsonObject json = root.getAsJsonObject();
+                if (json.has("VarName") && json.has("Value")) {
+                    String varName = json.get("VarName").getAsString();
+                    JsonElement val = json.get("Value");
+                    notifyListener(listener -> listener.onVariableUpdated(varName, val));
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Error parsing WebSocket message: " + e.getMessage());
+        }
     }
 
     @Override

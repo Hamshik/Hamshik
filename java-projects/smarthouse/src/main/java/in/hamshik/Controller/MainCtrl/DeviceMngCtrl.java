@@ -1,13 +1,13 @@
-package in.hamshik.Controller;
+package in.hamshik.Controller.MainCtrl;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import in.hamshik.App;
+import in.hamshik.Controller.CardCtrl.WifiCardCtrl;
 import in.hamshik.DNSHandler.Esp32WebSocketClient;
 import in.hamshik.DNSHandler.Esp32WebSocketClient.DeviceListener;
 import in.hamshik.WifiHandler.WifiDisplayer;
@@ -31,7 +31,7 @@ public class DeviceMngCtrl extends Controller {
     @FXML
     private StackPane modalOverlay;
     @FXML
-    private ManualConnectionCardCtrl cardRootController;
+    private WifiCardCtrl cardRootController;
 
     private WifiDisplayer wifiDisplayer;
 
@@ -117,6 +117,14 @@ public class DeviceMngCtrl extends Controller {
                 List<String> names = readVariableNames(response);
                 App.dashCtrl.setVariableNames(names);
                 System.out.println("Loaded " + names.size() + " ESP32 variable names.");
+                updateInitialVariableValues(response);
+            }
+
+            @Override
+            public void onVariableUpdated(String varName, JsonElement value) {
+                if (App.dashCtrl != null) {
+                    App.dashCtrl.updateVariable(varName, value);
+                }
             }
 
             @Override
@@ -163,5 +171,26 @@ public class DeviceMngCtrl extends Controller {
             names.add(variable.getKey());
         
         return names;
+    }
+
+    private void updateInitialVariableValues(JsonObject response) {
+        if (response == null || App.dashCtrl == null)
+            return;
+
+        JsonObject variables = null;
+        for (var entry : response.entrySet()) {
+            if (entry.getKey().equalsIgnoreCase("Variables")
+                    && entry.getValue().isJsonObject()) {
+                variables = entry.getValue().getAsJsonObject();
+                break;
+            }
+        }
+
+        if (variables == null)
+            return;
+
+        for (var entry : variables.entrySet()) {
+            App.dashCtrl.updateVariable(entry.getKey(), entry.getValue());
+        }
     }
 }

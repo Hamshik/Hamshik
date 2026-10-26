@@ -14,6 +14,8 @@ module in.hamshik {
     opens in.hamshik.DNSHandler to com.google.gson;
 
     opens in.hamshik to javafx.fxml;
-    opens in.hamshik.Controller to javafx.fxml;
+    opens in.hamshik.Controller.MainCtrl to javafx.fxml;
+    opens in.hamshik.Controller.Shared to javafx.fxml;
+    opens in.hamshik.Controller.CardCtrl to javafx.fxml;
     exports in.hamshik;
 }

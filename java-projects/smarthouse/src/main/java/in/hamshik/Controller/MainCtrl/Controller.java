@@ -1,7 +1,9 @@
-package in.hamshik.Controller;
+package in.hamshik.Controller.MainCtrl;
 
 import in.hamshik.App;
-
+import in.hamshik.Controller.Shared.SharedUIComponents;
+import in.hamshik.Controller.Shared.SidebarCtrl;
+import in.hamshik.Controller.Shared.TopbarCtrl;
 import in.hamshik.Helpers.AppResponder;
 import javafx.fxml.FXML;
 import javafx.scene.control.SplitPane;

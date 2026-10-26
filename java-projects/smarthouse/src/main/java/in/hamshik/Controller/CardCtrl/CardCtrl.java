@@ -1,4 +1,4 @@
-package in.hamshik.Controller;
+package in.hamshik.Controller.CardCtrl;
 
 import java.util.Collection;
 import java.util.List;
@@ -11,23 +11,25 @@ import in.hamshik.Helpers.CardManager.Range;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import org.controlsfx.control.textfield.TextFields;
 
 /**
- * Controller for the modern IoT variable card (modern-card.fxml).
- * Handles close / permission toggle / data-type chip selection / save & cancel.
+ * Controller for the modern IoT variable card (card.fxml).
+ * Handles create, edit, close, permission toggle, data-type chip selection, save & cancel.
  */
-public class CardController {
+public class CardCtrl {
 
     @FXML
     private VBox cardRoot;
     @FXML
+    private Label cardTitleLabel;
+    @FXML
     private Button closeBtn;
     @FXML
-    private ComboBox<String> sensorCombo;
+    private TextField sensorField;
     @FXML
     private Button permissionRead;
     @FXML
@@ -36,6 +38,11 @@ public class CardController {
     private Button permissionBoth;
     @FXML
     private TextField varNameField, rangeFrom, rangeTo;
+    @FXML
+    private Button saveBtn;
+
+    /** Tracks the card currently being edited, or null if creating a new card. */
+    private CardShowerCtrl currentEditingCard = null;
 
     /** Called by CardManager when the card is deleted (undo support). */
     private Consumer<VBox> onClose;
@@ -66,14 +73,69 @@ public class CardController {
         completion.setVisibleRowCount(5);
         completion.setPrefWidth(varNameField.getPrefWidth());
 
-        sensorCombo.getItems().addAll(
-                "DHT11 (Temp/Hum)",
-                "Ultrasonic (HC-SR04)",
-                "BMP280 (Pressure)",
-                "MQ-2 (Gas)");
-
         // sets the default to Read/Write
         setActive(permissionBoth, permissionRead, permissionWrite);
+    }
+
+    public void startEdit(CardShowerCtrl card) {
+        if (card == null || card.getInfo() == null) return;
+        this.currentEditingCard = card;
+
+        DeviceInfo info = card.getInfo();
+        sensorField.setText(info.sensorName());
+        varNameField.setText(info.varName());
+        rangeFrom.setText(String.valueOf(info.range().from()));
+        rangeTo.setText(String.valueOf(info.range().to()));
+
+        // Set permission button
+        if ("Read".equalsIgnoreCase(info.permissions())) {
+            setActive(permissionRead, permissionWrite, permissionBoth);
+        } else if ("Write".equalsIgnoreCase(info.permissions())) {
+            setActive(permissionWrite, permissionRead, permissionBoth);
+        } else {
+            setActive(permissionBoth, permissionRead, permissionWrite);
+        }
+
+        // Set type button
+        selectType(info.dataTy());
+
+        if (cardTitleLabel != null) cardTitleLabel.setText("Edit Variable");
+        if (saveBtn != null) saveBtn.setText("Update Variable");
+    }
+
+    public void resetToNew() {
+        this.currentEditingCard = null;
+        sensorField.clear();
+        varNameField.clear();
+        rangeFrom.clear();
+        rangeTo.clear();
+        setActive(permissionBoth, permissionRead, permissionWrite);
+        clearTypeSelection();
+        if (cardTitleLabel != null) cardTitleLabel.setText("New Variable");
+        if (saveBtn != null) saveBtn.setText("Save Variable");
+    }
+
+    private void selectType(String type) {
+        if (type == null) return;
+        for (var node : cardRoot.lookupAll(".type-btn")) {
+            if (node instanceof Button b) {
+                if (b.getText().equalsIgnoreCase(type)) {
+                    if (!b.getStyleClass().contains("type-btn-active")) {
+                        b.getStyleClass().add("type-btn-active");
+                    }
+                } else {
+                    b.getStyleClass().remove("type-btn-active");
+                }
+            }
+        }
+    }
+
+    private void clearTypeSelection() {
+        for (var node : cardRoot.lookupAll(".type-btn")) {
+            if (node instanceof Button b) {
+                b.getStyleClass().remove("type-btn-active");
+            }
+        }
     }
 
     /* ================= FXML handlers ================= */
@@ -107,7 +169,7 @@ public class CardController {
     @FXML
     private void handleSave(ActionEvent e) {
         String type = activeText((Button) cardRoot.lookup(".type-btn-active"));
-        String sensorTy = sensorCombo.getValue();
+        String sensorTy = sensorField.getText();
         String varName = varNameField.getText();
         String rangeFromVal = rangeFrom.getText();
         String rangeToVal = rangeTo.getText();
@@ -121,12 +183,24 @@ public class CardController {
         try {
             int rangeFromIntVal = Integer.parseInt(rangeFromVal);
             int rangeToIntVal = Integer.parseInt(rangeToVal);
+            DeviceInfo newInfo = new DeviceInfo(sensorTy, type, varName,
+                    activeText(permissionBoth, permissionRead, permissionWrite),
+                    new Range(rangeFromIntVal, rangeToIntVal));
+
             var cardMg = App.fxmlPipeline.getDashCtrl().cardManager;
-            DragHelper.makeDraggable(cardMg.addCard(
-                    new DeviceInfo(sensorTy, type, varName,
-                            activeText(permissionBoth, permissionRead, permissionWrite),
-                            new Range(rangeFromIntVal, rangeToIntVal))),
-                    cardMg.board);
+
+            if (currentEditingCard != null) {
+                // Edit existing card in-place
+                currentEditingCard.setup(newInfo);
+                if (cardMg != null) {
+                    cardMg.reapplyCachedValue(currentEditingCard);
+                }
+                currentEditingCard = null;
+            } else {
+                // Add new card
+                DragHelper.makeDraggable(cardMg.addCard(newInfo), cardMg.board);
+            }
+
             handleCancel(e);
         } catch (NumberFormatException _) {
             return;
@@ -135,12 +209,9 @@ public class CardController {
 
     @FXML
     public void handleCancel(ActionEvent e) {
-        sensorCombo.getSelectionModel().clearSelection();
-        varNameField.clear();
-        setActive(permissionBoth, permissionRead, permissionWrite);
+        resetToNew();
         if (onDismiss != null)
             onDismiss.run();
-        // re-select default chip if desired, or leave as-is
     }
 
     /* ================= Wiring API ================= */

@@ -1,4 +1,4 @@
-package in.hamshik.Controller;
+package in.hamshik.Controller.CardCtrl;
 
 import in.hamshik.DNSHandler.WiFiScanner.EspDevice;
 import java.net.Inet6Address;
@@ -12,7 +12,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyCode;
 
 /** Form for connecting to an ESP32 by its manually entered network address. */
-public class ManualConnectionCardCtrl {
+public class WifiCardCtrl {
     @FXML private TextField ipField;
     @FXML private TextField hostNameField;
     @FXML private TextField portField;

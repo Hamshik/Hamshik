@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-import in.hamshik.Controller.*;
+import in.hamshik.Controller.MainCtrl.*;
 import in.hamshik.Helpers.FXMLPipeline;
 
 public class App extends Application {

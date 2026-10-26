@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="363.0" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#onKeyPressed" prefHeight="293.0" prefWidth="363.0" styleClass="card" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.hamshik.Controller.ManualConnectionCardCtrl">
+<VBox maxHeight="-Infinity" maxWidth="363.0" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#onKeyPressed" prefHeight="293.0" prefWidth="363.0" styleClass="card" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.hamshik.Controller.CardCtrl.WifiCardCtrl">
    <children>
       <Label styleClass="card-subheading" text="Host Name &amp; IP Adress">
          <VBox.margin>

@@ -1,7 +1,8 @@
 package in.hamshik.Helpers;
 
 import in.hamshik.App;
-import in.hamshik.Controller.*;
+import in.hamshik.Controller.MainCtrl.Controller.*;
+import in.hamshik.Controller.MainCtrl.*;
 import javafx.scene.Node;
 import javafx.scene.control.SplitPane;
 
@@ -25,18 +26,18 @@ public class FXMLPipeline extends App {
     }
 
     public void showHome() {
-        showPage(homePage, Controller.NavigationItem.HOME);
+        showPage(homePage, NavigationItem.HOME);
     }
 
     public void showDashboard() {
-        showPage(dashboardPage, Controller.NavigationItem.DASHBOARD);
+        showPage(dashboardPage, NavigationItem.DASHBOARD);
     }
 
     public void showDevices() {
-        showPage(devicePage, Controller.NavigationItem.DEVICES);
+        showPage(devicePage, NavigationItem.DEVICES);
     }
 
-    private void showPage(Node activePage, Controller.NavigationItem activeItem) {
+    private void showPage(Node activePage, NavigationItem activeItem) {
         if (homePage == null || dashboardPage == null || devicePage == null
                 || homeCtrl == null || dashCtrl == null || deviceMngCtrl == null) {
             throw new IllegalStateException("Application pages have not been loaded.");

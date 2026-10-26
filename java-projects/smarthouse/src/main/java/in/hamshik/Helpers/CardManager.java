@@ -1,125 +1,162 @@
 package in.hamshik.Helpers;
 
+import java.io.IOException;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import in.hamshik.Controller.CardController;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressIndicator;
-import javafx.scene.control.Tooltip;
-import javafx.scene.layout.HBox;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
+
+import in.hamshik.App;
+import in.hamshik.Controller.CardCtrl.CardCtrl;
+import in.hamshik.Controller.CardCtrl.CardShowerCtrl;
+import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 /**
  * Manages IoT variable cards on the dashboard "board" (Pane).
- * Cards are loaded from modern-card.fxml — no UI code here.
+ * Cards are loaded from cardShower.fxml.
  */
 public class CardManager {
     public final Pane board;
     private final List<DeviceInfo> removedCards = new ArrayList<>();
+    private final List<CardShowerCtrl> cardControllers = new ArrayList<>();
+    private final Map<String, JsonElement> cachedValues = new HashMap<>();
+
     public record Range(int from, int to) {}
     public record DeviceInfo(String sensorName, String dataTy, 
         String varName, String permissions, Range range){}
-    public CardController cardCtrl;
+    public record RemovedCardEntry(DeviceInfo info, double layoutX, double layoutY) {}
+
+    private final Deque<RemovedCardEntry> undoStack = new ArrayDeque<>();
+    private Runnable onUndoStateChanged;
+
+    public CardCtrl cardCtrl;
 
     public CardManager(Pane board) {
         this.board = board;
     }
 
-    public VBox addCard(DeviceInfo info){
-        VBox card = createCard(info);
-        positionCard(card);
-        board.getChildren().add(card);
-        return card;
+    public VBox addCard(DeviceInfo info) {
+        try {
+            FXMLLoader loader = App.createFXMLLoader("fxmlFiles/cardShower.fxml");
+            VBox card = loader.load();
+            CardShowerCtrl controller = loader.getController();
+            controller.setup(info);
+            controller.setOnDelete(this::removeCard);
+            controller.setOnEdit(ctrl -> {
+                if (App.dashCtrl != null) {
+                    App.dashCtrl.openEditCardPopup(ctrl);
+                }
+            });
+
+            cardControllers.add(controller);
+
+            // Populate with last known cached value if available
+            JsonElement cached = cachedValues.get(info.varName().trim().toLowerCase());
+            if (cached != null) {
+                controller.updateValue(cached);
+            }
+
+            positionCard(card);
+            board.getChildren().add(card);
+            return card;
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load cardShower.fxml", e);
+        }
     }
 
-    private VBox createCard(DeviceInfo info) {
-        VBox card = new VBox(14);
-        card.getStyleClass().add("card");
-        card.setPrefWidth(340);
-        card.setPadding(new Insets(16));
+    public void removeCard(CardShowerCtrl controller) {
+        if (controller == null) return;
+        double x = controller.getCardRoot().getLayoutX();
+        double y = controller.getCardRoot().getLayoutY();
+        undoStack.push(new RemovedCardEntry(controller.getInfo(), x, y));
 
-        var cardStylesheet = CardManager.class.getResource(
-                "/in/hamshik/styleSheets/dash-card.css");
-        if (cardStylesheet == null)
-            throw new IllegalStateException("Missing dashboard card stylesheet");
-        card.getStylesheets().add(cardStylesheet.toExternalForm());
-        card.getChildren().addAll(
-            createHeader(info),
-            createReadingSection(info),
-            createAccessLabel(info));
-        return card;
+        board.getChildren().remove(controller.getCardRoot());
+        cardControllers.remove(controller);
+        if (controller.getInfo() != null) {
+            removedCards.add(controller.getInfo());
+        }
+
+        if (onUndoStateChanged != null) {
+            onUndoStateChanged.run();
+        }
     }
 
-    private HBox createHeader(DeviceInfo info) {
-        Label name = new Label(info.varName());
-        name.getStyleClass().add("card-heading");
+    public void undo() {
+        if (undoStack.isEmpty()) return;
+        RemovedCardEntry entry = undoStack.pop();
+        VBox card = addCard(entry.info());
+        card.setLayoutX(entry.layoutX());
+        card.setLayoutY(entry.layoutY());
+        DragHelper.makeDraggable(card, board);
 
-        Label sensor = new Label(info.sensorName());
-        sensor.getStyleClass().add("card-subheading");
-
-        VBox title = new VBox(4, name, sensor);
-        HBox.setHgrow(title, Priority.ALWAYS);
-
-        HBox header = new HBox(12, title, createEditButton());
-        header.setAlignment(Pos.CENTER_LEFT);
-        return header;
+        if (onUndoStateChanged != null) {
+            onUndoStateChanged.run();
+        }
     }
 
-    private Button createEditButton() {
-        Button editButton = new Button("Edit");
-        editButton.getStyleClass().add("ghost-btn");
-        editButton.setDisable(true);
-        editButton.setTooltip(new Tooltip("Editing will be available later"));
-        return editButton;
+    public boolean canUndo() {
+        return !undoStack.isEmpty();
     }
 
-    private HBox createReadingSection(DeviceInfo info) {
-        StackPane indicator = createPercentageIndicator();
-
-        Label readingLabel = new Label("Current value");
-        readingLabel.getStyleClass().add("field-label");
-        Label typeLabel = new Label(info.dataTy());
-        typeLabel.getStyleClass().add("card-heading");
-        VBox reading = new VBox(6, readingLabel, typeLabel);
-        reading.setAlignment(Pos.CENTER_LEFT);
-
-        HBox valueSection = new HBox(16, indicator, reading);
-        valueSection.setAlignment(Pos.CENTER_LEFT);
-        return valueSection;
+    public void setOnUndoStateChanged(Runnable onUndoStateChanged) {
+        this.onUndoStateChanged = onUndoStateChanged;
     }
 
-    private StackPane createPercentageIndicator() {
-        ProgressIndicator percentageIndicator = new ProgressIndicator(0);
-        percentageIndicator.setPrefSize(72, 72);
-        percentageIndicator.setMinSize(72, 72);
-        percentageIndicator.setMaxSize(72, 72);
-        percentageIndicator.setStyle("-fx-progress-color: #00A9A5;");
-
-        Label percentage = new Label("0");
-        percentage.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; "
-                + "-fx-text-fill: #102027;");
-        return new StackPane(percentageIndicator, percentage);
+    public void reapplyCachedValue(CardShowerCtrl controller) {
+        if (controller == null || controller.getInfo() == null) return;
+        JsonElement cached = cachedValues.get(controller.getInfo().varName().trim().toLowerCase());
+        if (cached != null) {
+            controller.updateValue(cached);
+        }
     }
 
-    private Label createAccessLabel(DeviceInfo info) {
-        Label permissionLabel = new Label("ACCESS  " + info.permissions());
-        permissionLabel.getStyleClass().add("card-subheading");
-        return permissionLabel;
+    public void updateVariable(String varName, JsonElement value) {
+        if (varName == null) return;
+        cachedValues.put(varName.trim().toLowerCase(), value);
+
+        Runnable task = () -> {
+            for (CardShowerCtrl controller : cardControllers) {
+                if (controller.getInfo() != null
+                        && controller.getInfo().varName().trim().equalsIgnoreCase(varName.trim())) {
+                    controller.updateValue(value);
+                }
+            }
+        };
+
+        if (Platform.isFxApplicationThread()) {
+            task.run();
+        } else {
+            Platform.runLater(task);
+        }
+    }
+
+    public void updateVariable(String varName, double value) {
+        updateVariable(varName, new JsonPrimitive(value));
+    }
+
+    public List<DeviceInfo> getRemovedCards() {
+        return removedCards;
+    }
+
+    public List<CardShowerCtrl> getCardControllers() {
+        return cardControllers;
     }
 
     private void positionCard(VBox card) {
-        final double cardWidth = card.getPrefWidth();
+        final double cardWidth = card.getPrefWidth() > 0 ? card.getPrefWidth() : 340;
         final double cardGap = 16;
         int index = board.getChildren().size();
         int columns = Math.max(1, (int) (board.getWidth() / (cardWidth + cardGap)));
         card.setLayoutX(16 + (index % columns) * (cardWidth + cardGap));
         card.setLayoutY(16 + (index / columns) * 190);
     }
+
 }
