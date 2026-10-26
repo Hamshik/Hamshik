@@ -10,4 +10,8 @@ void setup() {
   Serial.println("Async Web & WebSocket server started on port 80.");
 }
 
-void loop() { ioTKit.loop(); }
+void loop() {
+  ioTKit.loop();
+  temp++;
+  delay(1000);
+}

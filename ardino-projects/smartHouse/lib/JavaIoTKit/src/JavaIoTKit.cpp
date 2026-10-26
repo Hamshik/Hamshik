@@ -3,6 +3,6 @@
 #include "IotServer/IoTServer.hpp"
 
 JavaIoTKit::JavaIoTKit(String ssid, String password, String hostName)
-    : hostName(hostName), password(password), ssid(ssid), ioTServer(*new IoTServer(*this)) {}
+    : ssid(ssid), password(password), hostName(hostName), ioTServer(*new IoTServer(*this)) {}
 void JavaIoTKit::begin() { ioTServer.begin(); }
 void JavaIoTKit::loop() { ioTServer.loop(); }

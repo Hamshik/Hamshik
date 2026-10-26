@@ -2,6 +2,7 @@
 
 
 #include <AsyncWebSocket.h>
+#include "CloudVar.hpp"
 
 // Forward declaration to avoid circular include issues
 class JavaIoTKit;
@@ -19,9 +20,9 @@ class IoTServer
 
     void handleWebSocketMessage(uint8_t *data, size_t len);
     void onWebSocketEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len);
-
 public:
     IoTServer(JavaIoTKit& kit);
+    void publish(const CloudVarBase& val);
     void serverSetup();
     void begin();
     void loop();

@@ -9,8 +9,22 @@
 #include "ArduinoJson/Object/JsonObject.hpp"
 #include "CloudVar.hpp"
 
+static std::function<void(const CloudVarBase&)>& cloudChangeCallback() {
+  static std::function<void(const CloudVarBase&)> callback;
+  return callback;
+}
+
 void registerCloudVar(const std::string& name, CloudVarBase* variable) {
-  CloudHandler::variables().emplace(name, variable);
+  auto [it, inserted] = CloudHandler::variables().emplace(name, variable);
+  if (inserted) it->second->setChangeCallback(cloudChangeCallback());
+}
+
+void CloudHandler::setChangeCallback(std::function<void(const CloudVarBase&)> callback) {
+  cloudChangeCallback() = std::move(callback);
+  for (auto& [name, variable] : variables()) {
+    (void)name;
+    variable->setChangeCallback(cloudChangeCallback());
+  }
 }
 
 JsonDocument CloudHandler::dispatchReq(JsonDocument& json) {
@@ -60,19 +74,6 @@ JsonDocument CloudHandler::dispatchReq(JsonDocument& json) {
       response["msg"] = ReqTy::SET_VAR;
       response["VarName"] = name.c_str();
       response["Value"] = json["Value"];
-      std::string name1 = (json["VarName"] | String("")).c_str();
-      auto it1 = CloudHandler::variables().find(name1);
-
-      if (it1 == CloudHandler::variables().end()) {
-        response["error"] = "Variable not found";
-        return response;
-      }
-
-      if (!it1->second->fromJson(json["Value"])) {
-        response["error"] = "Invalid value";
-        return response;
-      }
-
       Serial.println("Updated the val seccusefully: ");
       return response;
     }

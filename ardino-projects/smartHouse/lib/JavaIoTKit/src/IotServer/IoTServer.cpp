@@ -6,11 +6,14 @@
 #include <ESPmDNS.h>
 #include <WiFi.h>
 
+#include <cstddef>
 #include <string>
 
 #include "ArduinoJson/Deserialization/DeserializationError.hpp"
 #include "ArduinoJson/Document/JsonDocument.hpp"
 #include "ArduinoJson/Json/JsonSerializer.hpp"
+#include "ArduinoJson/Object/JsonObject.hpp"
+#include "CloudVar.hpp"
 #include "HardwareSerial.h"
 #include "JavaIoTKit.hpp"
 #include "VarRegister/Cloud.hpp"
@@ -121,6 +124,18 @@ void IoTServer::begin() {
 
   serverSetup();
   server.begin();
+  CloudHandler::setChangeCallback([this](const CloudVarBase& variable) { publish(variable); });
 }
 
 void IoTServer::loop() { ws.cleanupClients(); }
+
+void IoTServer::publish(const CloudVarBase& val) {
+  JsonDocument doc;
+  doc["msg"] = ReqTy::SET_VAR;
+  doc["VarName"] = val.getName().c_str();
+  JsonObject obj = doc.as<JsonObject>();
+  val.toJson(obj, "Value");
+  String json;
+  serializeJson(doc, json);
+  ws.textAll(json);
+}

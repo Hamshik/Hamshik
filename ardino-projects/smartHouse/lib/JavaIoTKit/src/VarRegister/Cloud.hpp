@@ -3,6 +3,7 @@
 
 #include <unordered_map>
 #include <string>
+#include <functional>
 
 #include "CloudVar.hpp"
 
@@ -24,5 +25,6 @@ class CloudHandler {
 
   static void set(CloudVarBase& newValue, std::string name);
   static const CloudVarBase& get(std::string name);
+  static void setChangeCallback(std::function<void(const CloudVarBase&)> callback);
 
 };
