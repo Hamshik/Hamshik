@@ -4,6 +4,7 @@
 #include <AsyncTCP.h>
 #include <ESPAsyncWebServer.h>
 #include <ESPmDNS.h>
+#include <Update.h>
 #include <WiFi.h>
 
 #include <cstddef>
@@ -13,6 +14,7 @@
 #include "ArduinoJson/Document/JsonDocument.hpp"
 #include "ArduinoJson/Json/JsonSerializer.hpp"
 #include "ArduinoJson/Object/JsonObject.hpp"
+#include "AsyncWebSocket.h"
 #include "CloudVar.hpp"
 #include "HardwareSerial.h"
 #include "JavaIoTKit.hpp"
@@ -39,11 +41,21 @@ void IoTServer::onWebSocketEvent(AsyncWebSocket* server, AsyncWebSocketClient* c
       client->text("{\"status\":\"connected\",\"message\":\"Hello from ESP32 WebSocket\"}");
       break;
 
-    case WS_EVT_DISCONNECT: Serial.printf("[%u] Disconnected!\n", client->id()); break;
+    case WS_EVT_DISCONNECT:
+      if (otaClient == client && otaUpdateStarted) {
+        Update.abort();
+        otaClient = nullptr;
+        totalBytesReceived = 0;
+        otaUpdateStarted = false;
+      }
+      Serial.printf("[%u] Disconnected!\n", client->id());
+      break;
 
     case WS_EVT_DATA: {
       AwsFrameInfo* info = reinterpret_cast<AwsFrameInfo*>(arg);
-      if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT) {
+      if (info->message_opcode == WS_BINARY || info->message_opcode == WS_CONTINUATION)
+        writeBin(arg, data, len, client);
+      else if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT) {
         Serial.printf("[%u] Received text: %.*s\n", client->id(), (int)len, data);
         handleWebSocketMessage(data, len);
       }
@@ -114,7 +126,7 @@ void IoTServer::begin() {
   Serial.print("IP address: http://");
   Serial.println(WiFi.localIP());
 
-  if (!MDNS.begin(hostName)) 
+  if (!MDNS.begin(hostName))
     Serial.println("Error setting up mDNS responder!");
   else {
     MDNS.addService("http", "tcp", PORT);

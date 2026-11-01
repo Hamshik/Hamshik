@@ -47,4 +47,5 @@ public class WiFiScanner {
     public List<EspDevice> getDevices() {
         return registry.snapshot();
     }
+
 }

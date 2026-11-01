@@ -58,3 +58,36 @@
     -fx-border-color: rgba(156, 19, 19, 0.849);
     -fx-border-style: dashed;
 }
+
+.firmware-page {
+    -fx-background-color: linear-gradient(to bottom right, #eef6f7, #f7f8fa);
+}
+
+.firmware-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 18;
+    -fx-padding: 32;
+    -fx-effect: dropshadow(gaussian, rgba(16, 32, 39, 0.12), 22, 0, 0, 6);
+}
+
+.firmware-title {
+    -fx-font-size: 23px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #102027;
+}
+
+.firmware-description {
+    -fx-font-size: 13px;
+    -fx-text-fill: #718087;
+}
+
+.firmware-field-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #34474e;
+}
+
+.firmware-status {
+    -fx-font-size: 12px;
+    -fx-text-fill: #52666d;
+}

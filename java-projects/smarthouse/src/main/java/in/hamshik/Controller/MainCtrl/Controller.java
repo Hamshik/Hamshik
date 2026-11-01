@@ -6,16 +6,26 @@ import in.hamshik.Controller.Shared.SidebarCtrl;
 import in.hamshik.Controller.Shared.TopbarCtrl;
 import in.hamshik.Helpers.AppResponder;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
+
+import java.util.Map;
 
 public class Controller extends SharedUIComponents {
 
     public enum NavigationItem {
-        HOME,
-        DASHBOARD,
-        DEVICES,
-        THINGS
+        HOME("Home"),
+        DASHBOARD("DashBoard"),
+        DEVICES("Device Manager"),
+        THINGS("Things"),
+        FILE_MNG("File Manager");
+
+        private final String title;
+
+        NavigationItem(String title) {
+            this.title = title;
+        }
     }
     
     @FXML private AnchorPane sidebarContainer, topbarContainer;
@@ -35,29 +45,18 @@ public class Controller extends SharedUIComponents {
     public void setActiveNavTitle(NavigationItem item) {
         if (homeBtn == null || titleLabel == null)  throw new NullPointerException(homeBtn == null ? "HomeBtn is null" : "titleLable is null");
 
-        homeBtn.getStyleClass().remove("sidebar-item-active");
-        dashBtn.getStyleClass().remove("sidebar-item-active");
-        devicesBtn.getStyleClass().remove("sidebar-item-active");
-        thingsBtn.getStyleClass().remove("sidebar-item-active");
+        Map<NavigationItem, Button> navigationButtons = Map.of(
+                NavigationItem.HOME, homeBtn,
+                NavigationItem.DASHBOARD, dashBtn,
+                NavigationItem.DEVICES, devicesBtn,
+                NavigationItem.THINGS, thingsBtn,
+                NavigationItem.FILE_MNG, fileMngBtn);
 
-        switch (item) {
-            case HOME -> {
-                homeBtn.getStyleClass().add("sidebar-item-active");
-                if (titleLabel != null) titleLabel.setText("Home");
-            }
-            case DASHBOARD -> {
-                dashBtn.getStyleClass().add("sidebar-item-active");
-                if (titleLabel != null) titleLabel.setText("DashBoard");
-            }
-            case DEVICES -> {
-                devicesBtn.getStyleClass().add("sidebar-item-active");
-                if (titleLabel != null) titleLabel.setText("Device Manager");
-            }
-            case THINGS -> {
-                thingsBtn.getStyleClass().add("sidebar-item-active");
-                if (titleLabel != null) titleLabel.setText("Things");
-            }
-        }
+        for (Button button : navigationButtons.values())
+            button.getStyleClass().remove("sidebar-item-active");
+
+        navigationButtons.get(item).getStyleClass().add("sidebar-item-active");
+        titleLabel.setText(item.title);
     }
 
     // Navigation methods...

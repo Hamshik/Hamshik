@@ -10,6 +10,7 @@ import in.hamshik.App;
 import in.hamshik.Controller.CardCtrl.WifiCardCtrl;
 import in.hamshik.DNSHandler.Esp32WebSocketClient;
 import in.hamshik.DNSHandler.Esp32WebSocketClient.DeviceListener;
+import in.hamshik.DNSHandler.WiFiScanner.EspDevice;
 import in.hamshik.WifiHandler.WifiDisplayer;
 import in.hamshik.Helpers.VarHelpers.*;
 
@@ -34,6 +35,7 @@ public class DeviceMngCtrl extends Controller {
     private StackPane modalOverlay;
     @FXML
     private WifiCardCtrl cardRootController;
+    public EspDevice activeDevice;
 
     private WifiDisplayer wifiDisplayer;
 
@@ -55,6 +57,7 @@ public class DeviceMngCtrl extends Controller {
                     if (wifiBut != null)
                         wifiBut.setText(device.name());
                     Esp32WebSocketClient.connect(device, getDeviceListener());
+                    activeDevice = device;
                 },
                 () -> {
                     System.out.println("ESP32 Disconnected");

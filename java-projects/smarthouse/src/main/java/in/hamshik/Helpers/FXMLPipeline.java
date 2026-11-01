@@ -7,23 +7,25 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 
+import java.util.List;
+
 public class FXMLPipeline extends App {
-    private Node homePage;
-    private Node dashboardPage;
-    private Node devicePage;
+    private Node homePage, dashboardPage, devicePage, fileMngPage;
     private Controller homeCtrl = App.homeCtrl;
     private DashCtrl dashCtrl = App.dashCtrl;
     private DeviceMngCtrl deviceMngCtrl = App.deviceMngCtrl;
+    private FileMngCtrl fileMngCtrl = App.fileMngCtrl;
     private boolean syncingDividerPos = false;
     private double sidebarWidth = 140.0;
-    Controller[] ctrls = { dashCtrl, deviceMngCtrl, homeCtrl };
+    Controller[] ctrls = { dashCtrl, deviceMngCtrl, homeCtrl, fileMngCtrl };
     public static final double WIDTH_MIN = 73;
     public static final double WIDTH_MAX = 141.321;
 
-    public FXMLPipeline(Node homePage, Node dashboardPage, Node devicePage) {
+    public FXMLPipeline(Node homePage, Node dashboardPage, Node devicePage, Node fileMngPage) {
         this.homePage = homePage;
         this.dashboardPage = dashboardPage;
         this.devicePage = devicePage;
+        this.fileMngPage = fileMngPage;
     }
 
     public void showHome() {
@@ -38,15 +40,18 @@ public class FXMLPipeline extends App {
         showPage(devicePage, NavigationItem.DEVICES);
     }
 
+    public void showFileMng(){
+        showPage(fileMngPage, NavigationItem.FILE_MNG);
+    }
+
     private void showPage(Node activePage, NavigationItem activeItem) {
         if (homePage == null || dashboardPage == null || devicePage == null
                 || homeCtrl == null || dashCtrl == null || deviceMngCtrl == null) {
             throw new IllegalStateException("Application pages have not been loaded.");
         }
 
-        setManagedVisibleTo(activePage == homePage, homePage);
-        setManagedVisibleTo(activePage == dashboardPage, dashboardPage);
-        setManagedVisibleTo(activePage == devicePage, devicePage);
+        for (Node page : List.of(homePage, dashboardPage, devicePage, fileMngPage))
+            setManagedVisibleTo(page == activePage, page);
 
         for (var ctrl : ctrls)
             ctrl.setActiveNavTitle(activeItem);
@@ -132,5 +137,9 @@ public class FXMLPipeline extends App {
                 node.getStyleClass().remove("error");
             }
         }
+    }
+
+    public void addSplitDividerListener(){
+        for(var controller : ctrls) fxmlPipeline.addSplitDividerListener(controller.root);
     }
 }

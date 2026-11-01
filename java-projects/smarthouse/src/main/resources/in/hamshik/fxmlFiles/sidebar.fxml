@@ -3,26 +3,26 @@
 <?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
-<VBox fx:id="sideBar" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" prefWidth="140.0" prefHeight="600.0" style="-fx-border-color: transparent #dfe5ea transparent transparent; -fx-border-width: 1px;" styleClass="sidebar" fx:controller="in.hamshik.Controller.Shared.SidebarCtrl">
+<VBox fx:id="sideBar" prefHeight="600.0" prefWidth="140.0" style="-fx-border-color: transparent #dfe5ea transparent transparent; -fx-border-width: 1px;" styleClass="sidebar" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.hamshik.Controller.Shared.SidebarCtrl">
 
    <children>
       <HBox styleClass="sidebar-logo">
           <children>
-              <Circle fill="#00A9A5" radius="7.0"/>
-              <Label fx:id="logo" styleClass="sidebar-logo-text" text="IoT Cloud"/>
+              <Circle fill="#00A9A5" radius="7.0" />
+              <Label fx:id="logo" styleClass="sidebar-logo-text" text="IoT Cloud" />
           </children>
       </HBox>
       <VBox styleClass="sidebar-nav">
            <children>
-               <Button fx:id="homeBtn" mnemonicParsing="false" styleClass="sidebar-item" text="⌂   Home"/>
-               <Button fx:id="dashBtn" mnemonicParsing="false" styleClass="sidebar-item" text="▦   Dashboard"/>
-               <Button fx:id="devicesBtn" mnemonicParsing="false" styleClass="sidebar-item" text="◉   Devices"/>
-               <Button fx:id="thingsBtn" mnemonicParsing="false" styleClass="sidebar-item" text="⚙   Things"/>
+               <Button fx:id="homeBtn" mnemonicParsing="false" styleClass="sidebar-item" text="⌂   Home" />
+            <Button fx:id="fileMngBtn" mnemonicParsing="false" styleClass="sidebar-item" text="🗀   File" />
+               <Button fx:id="dashBtn" mnemonicParsing="false" styleClass="sidebar-item" text="▦   Dashboard" />
+               <Button fx:id="devicesBtn" mnemonicParsing="false" styleClass="sidebar-item" text="◉   Devices" />
+               <Button fx:id="thingsBtn" mnemonicParsing="false" styleClass="sidebar-item" text="⛭   Things" />
            </children>
       </VBox>
       <HBox VBox.vgrow="ALWAYS" />

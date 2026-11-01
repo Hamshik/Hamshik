@@ -16,9 +16,11 @@ public class App extends Application {
     private static Node homePage;
     private static Node dashboardPage;
     private static Node devicePage;
+    private static Node fileMngPage;
 
     protected static Controller homeCtrl;
-    protected static DeviceMngCtrl deviceMngCtrl;
+    protected static FileMngCtrl fileMngCtrl;
+    public static DeviceMngCtrl deviceMngCtrl;
     public static DashCtrl dashCtrl;
     public static FXMLPipeline fxmlPipeline;
 
@@ -35,18 +37,20 @@ public class App extends Application {
         FXMLLoader deviceLoader = createFXMLLoader("fxmlFiles/deviceMg.fxml");
         devicePage = deviceLoader.load();
         deviceMngCtrl = deviceLoader.getController();
+
+        FXMLLoader fileMngLoader = createFXMLLoader("fxmlFiles/fileMng.fxml");
+        fileMngPage = fileMngLoader.load();
+        fileMngCtrl = fileMngLoader.getController();
         
-        StackPane pageHost = new StackPane(homePage, dashboardPage, devicePage);
+        StackPane pageHost = new StackPane(homePage, dashboardPage, devicePage, fileMngPage);
         Scene scene = new Scene(pageHost);
         stage.setScene(scene);
         stage.setTitle("IoT Dashboard");
         stage.setMinWidth(600);
         stage.setMinHeight(500);
-        fxmlPipeline = new FXMLPipeline(homePage, dashboardPage, devicePage);
+        fxmlPipeline = new FXMLPipeline(homePage, dashboardPage, devicePage, fileMngPage);
         fxmlPipeline.showHome();
-        fxmlPipeline.addSplitDividerListener(homeCtrl.root);
-        fxmlPipeline.addSplitDividerListener(dashCtrl.root);
-        fxmlPipeline.addSplitDividerListener(deviceMngCtrl.root);
+        fxmlPipeline.addSplitDividerListener();
         stage.show();
     }
 
