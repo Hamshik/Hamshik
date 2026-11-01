@@ -23,7 +23,7 @@ class CloudVarBase {
   virtual ~CloudVarBase() = default;
 
   virtual const std::string& getName() const = 0;
-  virtual void toJson(JsonObject& dst, const String& key) const = 0;
+  virtual void setValJson(JsonObject& dst, const String& key) const = 0;
   virtual bool fromJson(JsonVariantConst src) = 0;
   virtual Permission permissionMod() const = 0;
   virtual Type type() const = 0 ;
@@ -117,7 +117,7 @@ _T class CloudVar : public CloudVarBase {
 
   const std::string& getName() const override { return name; }
 
-  void toJson(JsonObject& dst, const String& key) const override { dst[key].set(value.get()); }
+  void setValJson(JsonObject& dst, const String& key) const override { dst[key].set(value.get()); }
 
   bool fromJson(JsonVariantConst src) override {
     if (!src.is<T>()) return false;

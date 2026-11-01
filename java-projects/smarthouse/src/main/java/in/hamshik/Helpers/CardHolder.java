@@ -61,9 +61,9 @@ public class CardHolder {
             if (prim.isNumber()) {
                 double val = prim.getAsDouble();
                 numericValue.set(val);
-                if ("FLOAT".equalsIgnoreCase(info.dataTy())) {
+                if ("FLOAT".equalsIgnoreCase(info.var().type().toString())) {
                     displayValue.set(String.format("%.2f", val));
-                } else if ("INT".equalsIgnoreCase(info.dataTy()) || "UNSIGNED".equalsIgnoreCase(info.dataTy())) {
+                } else if ("INT".equalsIgnoreCase(info.var().type().toString()) || "UNSIGNED".equalsIgnoreCase(info.var().type().toString())) {
                     displayValue.set(String.valueOf(prim.getAsLong()));
                 } else {
                     displayValue.set(prim.getAsString());

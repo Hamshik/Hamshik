@@ -24,6 +24,8 @@ import java.util.function.Consumer;
 
 public class Esp32WebSocketClient extends WebSocketClient {
 
+    private static final int CONNECTION_LOST_TIMEOUT_SECONDS = 5_000;
+
     public interface DeviceListener {
         void onDisconnectedCallback();
         void onConnectingState();
@@ -34,7 +36,6 @@ public class Esp32WebSocketClient extends WebSocketClient {
     }
 
     private static final AtomicReference<Esp32WebSocketClient> ACTIVE_CLIENT = new AtomicReference<>();
-    private static final long CONNECT_TIMEOUT_MILLIS = 5_000;
     private static final ScheduledExecutorService CONNECT_TIMEOUTS =
             Executors.newSingleThreadScheduledExecutor(task -> {
                 Thread thread = new Thread(task, "esp32-connect-timeout");
@@ -46,14 +47,16 @@ public class Esp32WebSocketClient extends WebSocketClient {
     private final AtomicBoolean completionNotified = new AtomicBoolean();
     private final AtomicBoolean connected = new AtomicBoolean();
     private final EspDevice deviceConnectedOn;
+    private final int connectTimeoutMillis;
     private volatile ScheduledFuture<?> connectionTimeout;
 
     public Esp32WebSocketClient(URI serverUri, DeviceListener onDeviceListener, EspDevice connectedOn) {
-        super(serverUri, new Draft_6455(), null, (int) CONNECT_TIMEOUT_MILLIS);
+        super(serverUri, new Draft_6455(), null, connectedOn.timeoutSeconds() * 1_000);
         this.onDeviceListener = onDeviceListener;
         this.deviceConnectedOn = connectedOn;
+        this.connectTimeoutMillis = connectedOn.timeoutSeconds() * 1_000;
         setDaemon(true);
-        setConnectionLostTimeout((int) CONNECT_TIMEOUT_MILLIS);
+        setConnectionLostTimeout(CONNECTION_LOST_TIMEOUT_SECONDS);
     }
 
     @Override
@@ -82,7 +85,6 @@ public class Esp32WebSocketClient extends WebSocketClient {
 
     @Override
     public void onMessage(String message) {
-        System.out.println("Recieved: " + message);
         try {
             JsonElement root = JsonParser.parseString(message);
             if (root.isJsonObject()) {
@@ -119,11 +121,11 @@ public class Esp32WebSocketClient extends WebSocketClient {
         connectionTimeout = CONNECT_TIMEOUTS.schedule(() -> {
             if (!connected.get() && ACTIVE_CLIENT.compareAndSet(this, null)) {
                 System.err.println("WebSocket connection timed out after "
-                        + CONNECT_TIMEOUT_MILLIS + " ms: " + getURI());
+                        + connectTimeoutMillis + " ms: " + getURI());
                 notifyCompletion();
                 close();
             }
-        }, CONNECT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
+        }, deviceConnectedOn.timeoutSeconds(), TimeUnit.SECONDS);
     }
 
     private void cancelConnectionTimeout() {

@@ -38,9 +38,6 @@ public class App extends Application {
         
         StackPane pageHost = new StackPane(homePage, dashboardPage, devicePage);
         Scene scene = new Scene(pageHost);
-        scene.getStylesheets().add(App.class
-                .getResource("/in/hamshik/styleSheets/autocomplete.css")
-                .toExternalForm());
         stage.setScene(scene);
         stage.setTitle("IoT Dashboard");
         stage.setMinWidth(600);

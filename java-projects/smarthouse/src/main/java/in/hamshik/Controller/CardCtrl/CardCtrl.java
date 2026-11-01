@@ -1,6 +1,5 @@
 package in.hamshik.Controller.CardCtrl;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +33,7 @@ public class CardCtrl {
     @FXML private TextField varNameField, rangeFrom, rangeTo;
     @FXML private Button typeInfoLabel, permissionInfoLabel;
     @FXML private Button saveBtn;
+    @FXML private Label errLabel;
 
     /** Tracks the card currently being edited, or null if creating a new card. */
     private CardShowerCtrl currentEditingCard = null;
@@ -42,25 +42,22 @@ public class CardCtrl {
     private Runnable onDismiss;
 
     /** Full list of variables received from the ESP. */
-    private HashMap<String, Variable> variableData;
-    private Collection<String> variableNames = new ArrayList<>();
+    private HashMap<String, Variable> variableData = new HashMap<>();
     /** The Variable that was resolved from the autocomplete selection. */
     private String selectedVariable = null;
 
     public void setVariableNames(Collection<Variable> names) {
-        variableData = names == null ? new HashMap<>() : convertToHash(names.stream()
+        convertToHash(names == null ? null : names.stream()
                 .filter(v -> v != null && !v.name().isBlank())
                 .distinct()
                 .toList());
     }
 
-    private HashMap<String, Variable> convertToHash(Collection<Variable> names) {
-        HashMap<String, Variable> map = new HashMap<>();
-        for(var name : names){
-            map.put(name.name(), name);
-            variableNames.add(name.name());
-        }
-        return map;
+    private void convertToHash(Collection<Variable> names) {
+        variableData.clear();
+        if (names == null) return;
+        for(var name : names)
+            variableData.put(name.name(), name);
     }
 
     @FXML
@@ -69,9 +66,9 @@ public class CardCtrl {
             String query = request.getUserText() == null
                     ? ""
                     : request.getUserText().trim().toLowerCase();
-            if (query.isEmpty())
+            if (query.isEmpty() || variableData.keySet() == null)
                 return List.of();
-            return variableNames.stream()
+            return variableData.keySet().stream()
                     .filter(v -> v.toLowerCase().contains(query)).toList();
         });
         completion.setVisibleRowCount(5);
@@ -84,6 +81,12 @@ public class CardCtrl {
             applyVariable(v);
         });
 
+        varNameField.textProperty().addListener((obs, oldValue, newValue) -> {
+            String value = newValue == null ? "" : newValue.trim();
+            if (selectedVariable != null && !selectedVariable.equalsIgnoreCase(value))
+                clearVariableInfo();
+        });
+
         // Also try to resolve when user finishes typing manually (focus lost / Enter)
         varNameField.focusedProperty().addListener((obs, wasFocused, isFocused) -> {
             if (!isFocused) resolveVariableByName(varNameField.getText());
@@ -92,8 +95,8 @@ public class CardCtrl {
 
     /** Resolves type/permission from the variable list by matching name. */
     private void resolveVariableByName(String name) {
-        if (name == null || name.isBlank()) return;
-        variableNames.stream()
+        if (name == null || name.isBlank() || variableData.keySet() == null) return;
+        variableData.keySet().stream()
                 .filter(v -> v.equalsIgnoreCase(name.trim()))
                 .findFirst()
                 .ifPresent(this::applyVariable);
@@ -122,12 +125,12 @@ public class CardCtrl {
 
         DeviceInfo info = card.getInfo();
         sensorField.setText(info.sensorName());
-        varNameField.setText(info.varName());
+        varNameField.setText(info.var().name());
         rangeFrom.setText(String.valueOf(info.range().from()));
         rangeTo.setText(String.valueOf(info.range().to()));
 
         // Re-resolve variable metadata from ESP list
-        resolveVariableByName(info.varName());
+        resolveVariableByName(info.var().name());
 
         if (cardTitleLabel != null) cardTitleLabel.setText("Edit Variable");
         if (saveBtn != null) saveBtn.setText("Update Variable");
@@ -135,6 +138,7 @@ public class CardCtrl {
 
     public void resetToNew() {
         this.currentEditingCard = null;
+        App.fxmlPipeline.showError(null, false, errLabel, varNameField, rangeFrom, rangeTo, sensorField);
         sensorField.clear();
         varNameField.clear();
         rangeFrom.clear();
@@ -156,46 +160,64 @@ public class CardCtrl {
 
     @FXML
     private void handleSave(ActionEvent e) {
-        String sensorTy    = sensorField.getText();
-        String varName     = varNameField.getText();
-        String rangeFromVal = rangeFrom.getText();
-        String rangeToVal   = rangeTo.getText();
+        App.fxmlPipeline.showError(null, false, errLabel, sensorField, varNameField,
+                rangeFrom, rangeTo);
 
-        // Require a resolved variable (so type + permission come from ESP)
-        if (selectedVariable == null) {
-            resolveVariableByName(varName);
-        }
+        String sensorName = sensorField.getText().trim();
+        String variableName = varNameField.getText().trim();
+        String rangeFromVal = rangeFrom.getText().trim();
+        String rangeToVal = rangeTo.getText().trim();
 
-        if (selectedVariable == null ||
-                sensorTy == null || sensorTy.isBlank() ||
-                varName  == null || varName.isBlank()  ||
-                rangeFromVal == null || rangeFromVal.isBlank() ||
-                rangeToVal   == null || rangeToVal.isBlank())
+        if (sensorName.isEmpty() || variableName.isEmpty()
+                || rangeFromVal.isEmpty() || rangeToVal.isEmpty()) {
+            App.fxmlPipeline.showError("Complete all required fields.", true, errLabel,
+                    sensorName.isEmpty() ? sensorField : null,
+                    variableName.isEmpty() ? varNameField : null,
+                    rangeFromVal.isEmpty() ? rangeFrom : null,
+                    rangeToVal.isEmpty() ? rangeTo : null);
             return;
-
-        try {
-            int from = Integer.parseInt(rangeFromVal);
-            int to   = Integer.parseInt(rangeToVal);
-
-            // Convert ESP enums → the string labels CardShowerCtrl / CardHolder use
-            String typeName = variableData.get(selectedVariable).type().displayName();    // "INT", "FLOAT", …
-            String permName = variableData.get(selectedVariable).permission().displayName(); // "Read Only", …
-
-            DeviceInfo newInfo = new DeviceInfo(sensorTy, typeName, varName, permName, new Range(from, to));
-
-            var cardMg = App.fxmlPipeline.getDashCtrl().cardManager;
-
-            if (currentEditingCard != null) {
-                currentEditingCard.setup(newInfo);
-                if (cardMg != null) cardMg.reapplyCachedValue(currentEditingCard);
-                currentEditingCard = null;
-            } else {
-                DragHelper.makeDraggable(cardMg.addCard(newInfo), cardMg.board);
-            }
-
-            handleCancel(e);
-        } catch (NumberFormatException ignored) {
         }
+
+        selectedVariable = null;
+        resolveVariableByName(variableName);
+        if (selectedVariable == null) {
+            App.fxmlPipeline.showError("Select a variable available on the connected device.",
+                    true, errLabel, varNameField);
+            return;
+        }
+
+        final int from;
+        try {
+            from = Integer.parseInt(rangeFromVal);
+        } catch (NumberFormatException ex) {
+            App.fxmlPipeline.showError("Minimum range value must be a whole number.", true,
+                    errLabel, rangeFrom);
+            return;
+        }
+
+        final int to;
+        try {
+            to = Integer.parseInt(rangeToVal);
+        } catch (NumberFormatException ex) {
+            App.fxmlPipeline.showError("Maximum range value must be a whole number.", true,
+                    errLabel, rangeTo);
+            return;
+        }
+
+        DeviceInfo newInfo = new DeviceInfo(sensorName, variableData.get(selectedVariable),
+                new Range(from, to));
+
+        var cardMg = App.fxmlPipeline.getDashCtrl().cardManager;
+
+        if (currentEditingCard != null) {
+            currentEditingCard.setup(newInfo);
+            if (cardMg != null) cardMg.reapplyCachedValue(currentEditingCard);
+            currentEditingCard = null;
+        } else {
+            DragHelper.makeDraggable(cardMg.addCard(newInfo), cardMg.board);
+        }
+
+        handleCancel(e);
     }
 
     @FXML
@@ -213,4 +235,5 @@ public class CardCtrl {
     public void setOnDismiss(Runnable onDismiss) {
         this.onDismiss = onDismiss;
     }
+
 }

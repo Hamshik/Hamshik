@@ -17,6 +17,13 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 169, 165, 0.15), 8, 0, 0, 2);
 }
 
+.device-card.error,
+.device-card.error:hover {
+    -fx-border-color: rgba(156, 19, 19, 0.849);
+    -fx-border-style: dashed;
+    -fx-border-width: 1;
+}
+
 .device-name {
     -fx-font-size: 13px;
     -fx-font-weight: bold;

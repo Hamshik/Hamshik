@@ -53,3 +53,8 @@
 .split-pane .split-pane-divider:hover {
     -fx-background-color: rgb(30, 71, 30);
 }
+
+.error {
+    -fx-border-color: rgba(156, 19, 19, 0.849);
+    -fx-border-style: dashed;
+}

@@ -160,6 +160,17 @@
     -fx-border-color: rgba(0, 135, 143, 0.5);
 }
 
+.field-input.error,
+.field-input.error:hover {
+    -fx-border-color: rgba(156, 19, 19, 0.849);
+    -fx-border-style: dashed;
+    -fx-border-width: 1;
+}
+
+.error-message {
+    -fx-text-fill: #9c1313;
+}
+
 /* ---------------- Data-type chips ---------------- */
 .type-btn {
     -fx-background-color: #f7f9fa;

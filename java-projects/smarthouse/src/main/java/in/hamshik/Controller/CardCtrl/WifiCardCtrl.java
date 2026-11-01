@@ -1,8 +1,10 @@
 package in.hamshik.Controller.CardCtrl;
 
 import in.hamshik.DNSHandler.WiFiScanner.EspDevice;
+import in.hamshik.App;
 import java.net.Inet6Address;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.function.Consumer;
 
 import javafx.fxml.FXML;
@@ -18,50 +20,65 @@ public class WifiCardCtrl {
     @FXML private TextField portField;
     @FXML private TextField networkTypeField;
     @FXML private TextField pathField;
+    @FXML private TextField timeoutField;
     @FXML private Label connectionError;
 
     private Consumer<EspDevice> onConnect;
     private Runnable onDismiss;
 
-    boolean verifyFeilds(String... fields){
-        for(var field: fields)
-            if(field == null || field.isEmpty()) {
-                showError("Pls Fill the feilds");
-                return false;
-            }
-        return true;
-    }
     @FXML
     private void connect() {
-        String host = ipField.getText();
-        String name = hostNameField.getText();
-        String type = networkTypeField.getText();
-        String path = pathField.getText();
+        clearErrors();
+        String host = ipField.getText().trim();
+        String name = hostNameField.getText().trim();
+        String type = networkTypeField.getText().trim();
+        String path = pathField.getText().trim();
+        String portText = portField.getText().trim();
+        String timeoutText = timeoutField.getText().trim();
 
-        if(!verifyFeilds(host, name, type, path)) return;
-
-        final int port;
-
-        try {
-            port = Integer.parseInt(portField.getText().strip());
-        } catch (NumberFormatException e) {
-            showError("Enter a valid port number (1–65535).");
+        if (host.isEmpty()) {
+            showError("Enter the ESP32 IP address.", ipField);
             return;
         }
         if (!isIpAddress(host)) {
-            showError("Enter a valid IPv4 or IPv6 address.");
+            showError("Enter a valid IPv4 or IPv6 address.", ipField);
+            return;
+        }
+        if (type.isEmpty()) {
+            showError("Enter the network type.", networkTypeField);
+            return;
+        }
+
+        final int port;
+        try {
+            port = Integer.parseInt(portText);
+        } catch (NumberFormatException ex) {
+            showError("Port must be a whole number from 1 to 65535.", portField);
             return;
         }
         if (port < 1 || port > 65535) {
-            showError("Enter a valid port number (1–65535).");
+            showError("Port must be a whole number from 1 to 65535.", portField);
             return;
         }
+
+        final int timeoutSeconds;
+        try {
+            timeoutSeconds = Integer.parseInt(timeoutText);
+        } catch (NumberFormatException ex) {
+            showError("Timeout must be a whole number from 1 to 300 seconds.", timeoutField);
+            return;
+        }
+        if (timeoutSeconds < 1 || timeoutSeconds > 300) {
+            showError("Timeout must be a whole number from 1 to 300 seconds.", timeoutField);
+            return;
+        }
+
         if (path.isEmpty()) path = "/ws";
         if (!path.startsWith("/")) path = "/" + path;
-        connectionError.setText(" ");
 
         if (onConnect != null) {
-            onConnect.accept(new EspDevice(name, host, port, type, path));
+            onConnect.accept(new EspDevice(name.isEmpty() ? host : name, host, port, type, path,
+                    timeoutSeconds));
         }
         if (onDismiss != null) onDismiss.run();
     }
@@ -73,7 +90,8 @@ public class WifiCardCtrl {
         portField.setText("80");
         networkTypeField.setText("subnet");
         pathField.setText("/ws");
-        connectionError.setText(" ");
+        timeoutField.setText("5");
+        clearErrors();
         if (onDismiss != null) onDismiss.run();
     }
 
@@ -102,13 +120,18 @@ public class WifiCardCtrl {
         if (!host.contains(":")) return false;
         try {
             return InetAddress.getByName(host) instanceof Inet6Address;
-        } catch (Exception e) {
+        } catch (UnknownHostException e) {
             return false;
         }
     }
 
-    private void showError(String message) {
-        connectionError.setText(message);
+    private void showError(String message, TextField field) {
+        App.fxmlPipeline.showError(message, true, connectionError, field);
+    }
+
+    private void clearErrors() {
+        App.fxmlPipeline.showError(null, false, connectionError, ipField, hostNameField,
+                portField, networkTypeField, pathField, timeoutField);
     }
 
     public void setOnConnect(Consumer<EspDevice> onConnect) { this.onConnect = onConnect; }

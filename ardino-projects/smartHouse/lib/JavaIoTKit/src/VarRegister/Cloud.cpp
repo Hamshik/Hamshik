@@ -50,7 +50,7 @@ JsonDocument CloudHandler::dispatchReq(JsonDocument& json) {
       response["VarName"] = name;
 
       JsonObject responseObject = response.as<JsonObject>();
-      it->second->toJson(responseObject, "Value");
+      it->second->setValJson(responseObject, "Value");
 
       return response;
     }
@@ -87,6 +87,7 @@ JsonDocument CloudHandler::dispatchReq(JsonDocument& json) {
         JsonObject obj = vars[name].to<JsonObject>();
         obj["Permissions"] = variable->permissionMod();
         obj["datatypes"]   = variable->type();
+        variable->setValJson(obj, "initValue");
       }
       return response;
     }

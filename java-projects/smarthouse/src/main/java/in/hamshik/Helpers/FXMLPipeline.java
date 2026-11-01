@@ -4,6 +4,7 @@ import in.hamshik.App;
 import in.hamshik.Controller.MainCtrl.Controller.*;
 import in.hamshik.Controller.MainCtrl.*;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 
 public class FXMLPipeline extends App {
@@ -109,4 +110,27 @@ public class FXMLPipeline extends App {
     }
 
     public DashCtrl getDashCtrl(){ return dashCtrl; }
+
+    public void showError(String msg, boolean showErr, Label errLabel, Node... errNodes) {
+        if (errLabel != null) {
+            if (!showErr) {
+                errLabel.setText("");
+                errLabel.getStyleClass().remove("error-message");
+            } else if (msg != null) {
+                errLabel.setText(msg);
+                if (!msg.isBlank() && !errLabel.getStyleClass().contains("error-message"))
+                    errLabel.getStyleClass().add("error-message");
+            }
+        }
+
+        for (var node : errNodes) {
+            if (node == null) continue;
+            if (showErr) {
+                if (!node.getStyleClass().contains("error"))
+                    node.getStyleClass().add("error");
+            } else {
+                node.getStyleClass().remove("error");
+            }
+        }
+    }
 }

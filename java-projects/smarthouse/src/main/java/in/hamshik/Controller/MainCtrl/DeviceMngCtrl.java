@@ -10,7 +10,6 @@ import in.hamshik.App;
 import in.hamshik.Controller.CardCtrl.WifiCardCtrl;
 import in.hamshik.DNSHandler.Esp32WebSocketClient;
 import in.hamshik.DNSHandler.Esp32WebSocketClient.DeviceListener;
-import in.hamshik.Helpers.VarHelpers.Variable;
 import in.hamshik.WifiHandler.WifiDisplayer;
 import in.hamshik.Helpers.VarHelpers.*;
 
@@ -136,7 +135,8 @@ public class DeviceMngCtrl extends Controller {
                 wifiDisplayer.connectionFailed();
                 App.fxmlPipeline.setWifiButtonConnected(false);
                 App.fxmlPipeline.setWifiButText("Disconnected");
-                statusLabel.setText("Connection timed out. Check the ESP32 and try again.");
+                statusLabel
+                        .setText("Couldn't connect to the ESP32. Check the address, port, and device, then try again.");
                 App.dashCtrl.setVariableNames(List.of());
             }
 
@@ -171,17 +171,29 @@ public class DeviceMngCtrl extends Controller {
 
         List<Variable> names = new ArrayList<>();
         for (var variable : variables.entrySet()) {
-            if (!variable.getValue().isJsonObject()) continue;
+            if (!variable.getValue().isJsonObject())
+                continue;
+
             var valObj = variable.getValue().getAsJsonObject();
             var typeEl = valObj.get("datatypes");
             var permEl = valObj.get("Permissions");
-            if (typeEl == null || permEl == null) continue;
+            var initVal = valObj.get("initValue");
+
+            if (typeEl == null || permEl == null || initVal == null)
+                continue;
+
             int typeIdx = typeEl.getAsInt();
             int permIdx = permEl.getAsInt();
-            if (typeIdx < 0 || typeIdx >= Type.values().length) continue;
-            if (permIdx < 0 || permIdx >= Permissions.values().length) continue;
+
+            if (typeIdx < 0 || typeIdx >= Type.values().length)
+                continue;
+            if (permIdx < 0 || permIdx >= Permissions.values().length)
+                continue;
+
+            var ty = Type.values()[typeIdx];
             names.add(new Variable(variable.getKey(),
-                    Type.values()[typeIdx],
+                    ty,
+                    getVal(ty, initVal),
                     Permissions.values()[permIdx]));
         }
 
@@ -207,5 +219,19 @@ public class DeviceMngCtrl extends Controller {
         for (var entry : variables.entrySet()) {
             App.dashCtrl.updateVariable(entry.getKey(), entry.getValue());
         }
+    }
+
+    private String getVal(Type ty, JsonElement val) {
+        switch (ty) {
+            case BOOL:
+                return val.getAsBoolean() ? "true" : "false";
+            case FLOAT:
+                return val.getAsBigDecimal().toString();
+            case INT:
+                return val.getAsBigInteger().toString();
+            case STRING:
+                return val.getAsString();
+        }
+        return null;
     }
 }

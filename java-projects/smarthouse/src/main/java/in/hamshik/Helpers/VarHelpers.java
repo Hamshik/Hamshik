@@ -24,5 +24,5 @@ public class VarHelpers {
         }
     }
 
-    public record Variable(String name, Type type, Permissions permission) {}
+    public record Variable(String name, Type type, String initVal, Permissions permission) {}
 }

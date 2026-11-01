@@ -52,7 +52,7 @@
                   <Insets right="2.0" />
                </HBox.margin>
             </TextField>
-            <TextField fx:id="timeoutField" alignment="CENTER" prefHeight="37.0" prefWidth="161.0" promptText="Timeout (sec.)" styleClass="device-card" text="5" />
+            <TextField fx:id="timeoutField" alignment="CENTER" prefHeight="37.0" prefWidth="161.0" promptText="Timeout (1–300 sec.)" styleClass="device-card" text="5" />
          </children>
       </HBox>
       <Label fx:id="connectionError" styleClass="card-subheading" text=" " wrapText="true" />
@@ -68,7 +68,7 @@
       </HBox>
    </children>
    <stylesheets>
-      <URL value="@../styleSheets/dash-card.css" />
+      <URL value="@../styleSheets/dash-card.fx.css" />
       <URL value="@../styleSheets/btn-style.fx.css" />
       <URL value="@../styleSheets/device-card.fx.css" />
       <URL value="@../styleSheets/main.fx.css" />

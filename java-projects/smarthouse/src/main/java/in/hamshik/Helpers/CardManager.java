@@ -14,6 +14,7 @@ import com.google.gson.JsonPrimitive;
 import in.hamshik.App;
 import in.hamshik.Controller.CardCtrl.CardCtrl;
 import in.hamshik.Controller.CardCtrl.CardShowerCtrl;
+import in.hamshik.Helpers.VarHelpers.Variable;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
@@ -30,8 +31,7 @@ public class CardManager {
     private final Map<String, JsonElement> cachedValues = new HashMap<>();
 
     public record Range(int from, int to) {}
-    public record DeviceInfo(String sensorName, String dataTy, 
-        String varName, String permissions, Range range){}
+    public record DeviceInfo(String sensorName, Variable var, Range range){}
     public record RemovedCardEntry(DeviceInfo info, double layoutX, double layoutY) {}
 
     private final Deque<RemovedCardEntry> undoStack = new ArrayDeque<>();
@@ -59,7 +59,7 @@ public class CardManager {
             cardControllers.add(controller);
 
             // Populate with last known cached value if available
-            JsonElement cached = cachedValues.get(info.varName().trim().toLowerCase());
+            JsonElement cached = cachedValues.get(info.var().name().trim().toLowerCase());
             if (cached != null) {
                 controller.updateValue(cached);
             }
@@ -112,7 +112,7 @@ public class CardManager {
 
     public void reapplyCachedValue(CardShowerCtrl controller) {
         if (controller == null || controller.getInfo() == null) return;
-        JsonElement cached = cachedValues.get(controller.getInfo().varName().trim().toLowerCase());
+        JsonElement cached = cachedValues.get(controller.getInfo().var().name().trim().toLowerCase());
         if (cached != null) {
             controller.updateValue(cached);
         }
@@ -125,7 +125,7 @@ public class CardManager {
         Runnable task = () -> {
             for (CardShowerCtrl controller : cardControllers) {
                 if (controller.getInfo() != null
-                        && controller.getInfo().varName().trim().equalsIgnoreCase(varName.trim())) {
+                        && controller.getInfo().var().name().trim().equalsIgnoreCase(varName.trim())) {
                     controller.updateValue(value);
                 }
             }

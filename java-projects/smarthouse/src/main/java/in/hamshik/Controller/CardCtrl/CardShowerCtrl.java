@@ -1,8 +1,10 @@
 package in.hamshik.Controller.CardCtrl;
 
+import java.math.BigInteger;
 import java.util.function.Consumer;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
 
 import in.hamshik.Helpers.CardManager.DeviceInfo;
 import javafx.beans.property.DoubleProperty;
@@ -61,10 +63,11 @@ public class CardShowerCtrl {
 
     public void setup(DeviceInfo info) {
         this.info = info;
-        varNameLabel.setText(info.varName());
+        varNameLabel.setText(info.var().name());
         sensorNameLabel.setText(info.sensorName());
-        readingLabel.setText("Current value (" + info.dataTy() + ")");
-        permissionLabel.setText("ACCESS  " + info.permissions());
+        readingLabel.setText("Current value (" + info.var().type().toString() + ")");
+        permissionLabel.setText("ACCESS  " + info.var().permission());
+        updateValue(info.var().initVal() == null ? null : new JsonPrimitive(new BigInteger(info.var().initVal())));
     }
 
     public void updateValue(JsonElement element) {
@@ -79,9 +82,9 @@ public class CardShowerCtrl {
             if (prim.isNumber()) {
                 double val = prim.getAsDouble();
                 numericValue.set(val);
-                if (info != null && "FLOAT".equalsIgnoreCase(info.dataTy())) {
+                if (info != null && "FLOAT".equalsIgnoreCase(info.var().type().toString())) {
                     displayValue.set(String.format("%.2f", val));
-                } else if (info != null && ("INT".equalsIgnoreCase(info.dataTy()) || "UNSIGNED".equalsIgnoreCase(info.dataTy()))) {
+                } else if (info != null && ("INT".equalsIgnoreCase(info.var().type().toString()) || "UNSIGNED".equalsIgnoreCase(info.var().type().toString()))) {
                     displayValue.set(String.valueOf(prim.getAsLong()));
                 } else {
                     displayValue.set(prim.getAsString());
@@ -97,8 +100,6 @@ public class CardShowerCtrl {
                     numericValue.set(Double.parseDouble(str));
                 } catch (NumberFormatException ignored) {}
             }
-        } else {
-            displayValue.set(element.toString());
         }
     }
 

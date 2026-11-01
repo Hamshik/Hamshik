@@ -134,7 +134,7 @@ void IoTServer::publish(const CloudVarBase& val) {
   doc["msg"] = ReqTy::SET_VAR;
   doc["VarName"] = val.getName().c_str();
   JsonObject obj = doc.as<JsonObject>();
-  val.toJson(obj, "Value");
+  val.setValJson(obj, "Value");
   String json;
   serializeJson(doc, json);
   ws.textAll(json);

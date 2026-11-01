@@ -54,7 +54,7 @@
       <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
    </padding>
    <stylesheets>
-      <URL value="@../styleSheets/dash-card.css" />
+      <URL value="@../styleSheets/dash-card.fx.css" />
       <URL value="@../styleSheets/btn-style.fx.css" />
    </stylesheets>
 </VBox>

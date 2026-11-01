@@ -7,7 +7,12 @@ import in.hamshik.WifiHandler.*;
 
 public class WiFiScanner {
 
-    public record EspDevice(String name, String host, int port, String type, String path) {}
+    public record EspDevice(String name, String host, int port, String type, String path,
+                            int timeoutSeconds) {
+        public EspDevice(String name, String host, int port, String type, String path) {
+            this(name, host, port, type, path, 5);
+        }
+    }
 
     private final EspDeviceRegistry registry = new EspDeviceRegistry();
     private final EspVerifier espVerifier = new EspVerifier();

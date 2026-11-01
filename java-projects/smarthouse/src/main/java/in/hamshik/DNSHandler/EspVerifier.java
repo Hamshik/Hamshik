@@ -4,7 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
@@ -59,11 +61,18 @@ public final class EspVerifier {
             }
             ack = parsedAck;
             return true;
+        } catch (SocketTimeoutException | ConnectException e) {
+            LOGGER.log(System.Logger.Level.DEBUG,
+                    "No HTTP /ack response from discovered service at {0}:{1}",
+                    host, port);
         } catch (IOException | URISyntaxException | IllegalArgumentException e) {
-            System.err.println("Unable to verify ESP at " + host + ":" + port);
-            e.printStackTrace();
+            LOGGER.log(System.Logger.Level.DEBUG,
+                    "Unable to verify discovered service at {0}:{1}: {2}",
+                    host, port, e.getMessage());
         } catch (JsonParseException e) {
-            LOGGER.log(System.Logger.Level.WARNING, "ESP returned invalid /ack JSON from " + host + ":" + port, e);
+            LOGGER.log(System.Logger.Level.DEBUG,
+                    "Discovered service returned invalid /ack JSON from {0}:{1}",
+                    host, port);
         } finally {
             if (connection != null) connection.disconnect();
         }
