@@ -46,6 +46,9 @@ public class App extends Application {
         Scene scene = new Scene(pageHost);
         stage.setScene(scene);
         stage.setTitle("IoT Dashboard");
+        scene.getStylesheets().add(App.class
+                .getResource("/in/hamshik/styleSheets/autocomplete.fx.css")
+                .toExternalForm());
         stage.setMinWidth(600);
         stage.setMinHeight(500);
         fxmlPipeline = new FXMLPipeline(homePage, dashboardPage, devicePage, fileMngPage);

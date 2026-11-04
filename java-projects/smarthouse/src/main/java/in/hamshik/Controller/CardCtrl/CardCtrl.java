@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 
 import in.hamshik.App;
 import in.hamshik.Helpers.DragHelper;
+import in.hamshik.Helpers.FXMLPipeline;
 import in.hamshik.Helpers.CardManager.*;
 import in.hamshik.Helpers.VarHelpers.Variable;
 import javafx.event.ActionEvent;
@@ -138,7 +139,7 @@ public class CardCtrl {
 
     public void resetToNew() {
         this.currentEditingCard = null;
-        App.fxmlPipeline.showError(null, false, errLabel, varNameField, rangeFrom, rangeTo, sensorField);
+        FXMLPipeline.showError(null, false, errLabel, varNameField, rangeFrom, rangeTo, sensorField);
         sensorField.clear();
         varNameField.clear();
         rangeFrom.clear();
@@ -160,7 +161,7 @@ public class CardCtrl {
 
     @FXML
     private void handleSave(ActionEvent e) {
-        App.fxmlPipeline.showError(null, false, errLabel, sensorField, varNameField,
+        FXMLPipeline.showError(null, false, errLabel, sensorField, varNameField,
                 rangeFrom, rangeTo);
 
         String sensorName = sensorField.getText().trim();
@@ -170,7 +171,7 @@ public class CardCtrl {
 
         if (sensorName.isEmpty() || variableName.isEmpty()
                 || rangeFromVal.isEmpty() || rangeToVal.isEmpty()) {
-            App.fxmlPipeline.showError("Complete all required fields.", true, errLabel,
+            FXMLPipeline.showError("Complete all required fields.", true, errLabel,
                     sensorName.isEmpty() ? sensorField : null,
                     variableName.isEmpty() ? varNameField : null,
                     rangeFromVal.isEmpty() ? rangeFrom : null,
@@ -181,7 +182,7 @@ public class CardCtrl {
         selectedVariable = null;
         resolveVariableByName(variableName);
         if (selectedVariable == null) {
-            App.fxmlPipeline.showError("Select a variable available on the connected device.",
+            FXMLPipeline.showError("Select a variable available on the connected device.",
                     true, errLabel, varNameField);
             return;
         }
@@ -190,7 +191,7 @@ public class CardCtrl {
         try {
             from = Integer.parseInt(rangeFromVal);
         } catch (NumberFormatException ex) {
-            App.fxmlPipeline.showError("Minimum range value must be a whole number.", true,
+            FXMLPipeline.showError("Minimum range value must be a whole number.", true,
                     errLabel, rangeFrom);
             return;
         }
@@ -199,7 +200,7 @@ public class CardCtrl {
         try {
             to = Integer.parseInt(rangeToVal);
         } catch (NumberFormatException ex) {
-            App.fxmlPipeline.showError("Maximum range value must be a whole number.", true,
+            FXMLPipeline.showError("Maximum range value must be a whole number.", true,
                     errLabel, rangeTo);
             return;
         }

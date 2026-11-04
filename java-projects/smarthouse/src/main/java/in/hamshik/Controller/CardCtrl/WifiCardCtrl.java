@@ -1,6 +1,7 @@
 package in.hamshik.Controller.CardCtrl;
 
 import in.hamshik.DNSHandler.WiFiScanner.EspDevice;
+import in.hamshik.Helpers.FXMLPipeline;
 import in.hamshik.App;
 import java.net.Inet6Address;
 import java.net.InetAddress;
@@ -126,11 +127,11 @@ public class WifiCardCtrl {
     }
 
     private void showError(String message, TextField field) {
-        App.fxmlPipeline.showError(message, true, connectionError, field);
+        FXMLPipeline.showError(message, true, connectionError, field);
     }
 
     private void clearErrors() {
-        App.fxmlPipeline.showError(null, false, connectionError, ipField, hostNameField,
+        FXMLPipeline.showError(null, false, connectionError, ipField, hostNameField,
                 portField, networkTypeField, pathField, timeoutField);
     }
 

@@ -57,7 +57,7 @@ public class FXMLPipeline extends App {
             ctrl.setActiveNavTitle(activeItem);
     }
 
-    public void setManagedVisibleTo(boolean val, Node... nodes) {
+    public static void setManagedVisibleTo(boolean val, Node... nodes) {
         for (var n : nodes) {
             n.setManaged(val);
             n.setVisible(val);
@@ -116,7 +116,7 @@ public class FXMLPipeline extends App {
 
     public DashCtrl getDashCtrl(){ return dashCtrl; }
 
-    public void showError(String msg, boolean showErr, Label errLabel, Node... errNodes) {
+    public static void showError(String msg, boolean showErr, Label errLabel, Node... errNodes) {
         if (errLabel != null) {
             if (!showErr) {
                 errLabel.setText("");

@@ -1,12 +1,18 @@
 package in.hamshik.Controller.CardCtrl;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.function.Consumer;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 
+import in.hamshik.App;
+import in.hamshik.Helpers.CloudRequest;
+import in.hamshik.Helpers.FXMLPipeline;
+import in.hamshik.Helpers.VarHelpers;
 import in.hamshik.Helpers.CardManager.DeviceInfo;
+import in.hamshik.WifiHandler.WifiSender;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -16,20 +22,19 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 
 public class CardShowerCtrl {
 
     @FXML private VBox cardRoot;
-    @FXML private Label varNameLabel;
-    @FXML private Label sensorNameLabel;
+    @FXML private Label varNameLabel, 
+        sensorNameLabel, percentageLabel, 
+        readingLabel, valueLabel, permissionLabel;
     @FXML private ProgressIndicator percentageIndicator;
-    @FXML private Label percentageLabel;
-    @FXML private Label readingLabel;
-    @FXML private Label valueLabel;
-    @FXML private Label permissionLabel;
-    @FXML private Button editBtn;
-    @FXML private Button deleteBtn;
+    @FXML private Button editBtn, deleteBtn;
+    @FXML private TextField setterField;
 
     private DeviceInfo info;
     private Consumer<CardShowerCtrl> onDelete;
@@ -67,7 +72,12 @@ public class CardShowerCtrl {
         sensorNameLabel.setText(info.sensorName());
         readingLabel.setText("Current value (" + info.var().type().toString() + ")");
         permissionLabel.setText("ACCESS  " + info.var().permission());
-        updateValue(info.var().initVal() == null ? null : new JsonPrimitive(new BigInteger(info.var().initVal())));
+        switch(info.var().permission()){
+            case RW ->  FXMLPipeline.setManagedVisibleTo(true, setterField, percentageIndicator, percentageLabel);
+            case RO -> FXMLPipeline.setManagedVisibleTo(true, percentageIndicator, percentageLabel);
+            case WO -> FXMLPipeline.setManagedVisibleTo(true, setterField);
+        }
+        updateValue(info.var().initVal() == null ? null : toDstTy(info.var().type(), info.var().initVal()));
     }
 
     public void updateValue(JsonElement element) {
@@ -139,5 +149,54 @@ public class CardShowerCtrl {
 
     public StringProperty displayValueProperty() {
         return displayValue;
+    }
+
+    @FXML void atEnter(KeyEvent e) {
+        switch(e.getCode()){
+            case ENTER -> CloudRequest.setVar(info.var().name(), toDstTy(info.var().type(), setterField.getText()));
+            default -> {}
+        }
+    }
+
+    private JsonPrimitive toDstTy(VarHelpers.Type type, String val){
+        switch (type) {
+            case BOOL -> {
+                if(val.equalsIgnoreCase("on") || val.equals("1") || val.equalsIgnoreCase("true")){
+                    FXMLPipeline.showError(null, false, null, setterField);
+                    return new JsonPrimitive(true);
+                }
+                else if(val.equalsIgnoreCase("off") || val.equals("0") || val.equalsIgnoreCase("false")){
+                    FXMLPipeline.showError(null, false, null, setterField);
+                    return new JsonPrimitive(false);
+                }
+                else {
+                    FXMLPipeline.showError("Type mismatch, Pls enter vaild input", true, percentageLabel, setterField);
+                    return null;
+                }
+            }
+
+            case INT -> {
+                try {
+                    BigInteger intVal = new BigInteger(val);
+                    FXMLPipeline.showError(null, false, null, setterField);
+                    return new JsonPrimitive(intVal);
+                } catch(NumberFormatException _){
+                    FXMLPipeline.showError("Type mismatch, Pls enter the vaild number", true, percentageLabel, setterField);
+                    return null;
+                }
+            }
+            case FLOAT -> {
+                try {
+                    BigDecimal fVal = new BigDecimal(val);
+                    FXMLPipeline.showError(null, false, null, setterField);
+                    return new JsonPrimitive(fVal);
+                } catch(NumberFormatException _){
+                    FXMLPipeline.showError("Type mismatch, Pls enter the vaild number", true, percentageLabel, setterField);
+                    return null;
+                }
+            }
+            default -> {}
+        }
+        return null;
     }
 }
