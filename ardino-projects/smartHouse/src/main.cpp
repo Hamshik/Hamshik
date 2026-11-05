@@ -1,9 +1,9 @@
 #include <JavaIoTKit.hpp>
 #include <CloudVar.hpp>
 
-JavaIoTKit ioTKit("Anugraha", "Coolvinu6395", "Hamshik");
+JavaIoTKit ioTKit("********", "********", "Hamshik");
 CloudVar<int> temp("temperature", 100, Permission::RO);
-CloudVar<int> ramdonSense("randSense", 1, Permission::RW);
+CloudVar<bool> ramdonSense("randSense", true, Permission::RW);
 
 void setup() {
   Serial.begin(115200);

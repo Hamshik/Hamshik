@@ -6,6 +6,7 @@
 #include <utility>
 
 #include "ArduinoJson/Array/JsonArray.hpp"
+#include "ArduinoJson/Document/JsonDocument.hpp"
 #include "ArduinoJson/Object/JsonObject.hpp"
 #include "CloudVar.hpp"
 
@@ -28,7 +29,7 @@ void CloudHandler::setChangeCallback(std::function<void(const CloudVarBase&)> ca
 }
 
 JsonDocument CloudHandler::dispatchReq(JsonDocument& json) {
-  JsonDocument response;
+  JsonDocument& response = *new JsonDocument;
 
   auto msg = json["msg"];
 
@@ -87,7 +88,6 @@ JsonDocument CloudHandler::dispatchReq(JsonDocument& json) {
         JsonObject obj = vars[name].to<JsonObject>();
         obj["Permissions"] = variable->permissionMod();
         obj["datatypes"]   = variable->type();
-        variable->setValJson(obj, "initValue");
       }
       return response;
     }

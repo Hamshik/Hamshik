@@ -121,3 +121,37 @@
     -fx-text-fill: rgb(242, 52, 52);
     -fx-border-color: rgb(242, 52, 52);
 }
+
+/* ---- Boolean toggle button ---- */
+.bool-toggle {
+    -fx-background-color: #e2e6f0;
+    -fx-background-radius: 50em;
+    -fx-border-color: transparent;
+    -fx-min-width: 68px;
+    -fx-min-height: 34px;
+    -fx-max-width: 68px;
+    -fx-max-height: 34px;
+    -fx-text-fill: #7a8891;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-padding: 0;
+}
+
+.bool-toggle:hover {
+    -fx-background-color: #d1d5db;
+}
+
+/* OFF state (not selected) */
+.bool-toggle-off {
+    -fx-background-color: #e2e6f0;
+    -fx-text-fill: #7a8891;
+}
+
+/* ON state (selected) */
+.bool-toggle-on,
+.bool-toggle:selected {
+    -fx-background-color: linear-gradient(to bottom right, #00A9A5, #00878F);
+    -fx-text-fill: #ffffff;
+    -fx-effect: dropshadow(gaussian, rgba(0, 135, 143, 0.35), 8, 0, 0, 2);
+}

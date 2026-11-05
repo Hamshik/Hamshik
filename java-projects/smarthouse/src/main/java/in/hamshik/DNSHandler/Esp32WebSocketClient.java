@@ -74,7 +74,7 @@ public class Esp32WebSocketClient extends WebSocketClient {
         }
         System.out.println("Connected to ESP32 WebSocket!");
         notifyListener(DeviceListener::onConnected);
-        JsonObject request = CloudRequest.getAllVar();
+        JsonObject request = CloudRequest.createGetAllVarJson();
         CompletableFuture
                 .supplyAsync(() -> WifiSender.sendDataToESP32(deviceConnectedOn, request.toString()))
                 .thenAccept(response -> {

@@ -7,10 +7,10 @@ import java.util.function.Consumer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 
-import in.hamshik.App;
 import in.hamshik.Helpers.CloudRequest;
 import in.hamshik.Helpers.FXMLPipeline;
 import in.hamshik.Helpers.VarHelpers;
+import in.hamshik.Controller.MainCtrl.DeviceMngCtrl;
 import in.hamshik.Helpers.CardManager.DeviceInfo;
 import in.hamshik.WifiHandler.WifiSender;
 import javafx.beans.property.DoubleProperty;
@@ -23,6 +23,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 
@@ -35,6 +36,7 @@ public class CardShowerCtrl {
     @FXML private ProgressIndicator percentageIndicator;
     @FXML private Button editBtn, deleteBtn;
     @FXML private TextField setterField;
+    @FXML private ToggleButton toggleBtn;
 
     private DeviceInfo info;
     private Consumer<CardShowerCtrl> onDelete;
@@ -72,12 +74,37 @@ public class CardShowerCtrl {
         sensorNameLabel.setText(info.sensorName());
         readingLabel.setText("Current value (" + info.var().type().toString() + ")");
         permissionLabel.setText("ACCESS  " + info.var().permission());
-        switch(info.var().permission()){
-            case RW ->  FXMLPipeline.setManagedVisibleTo(true, setterField, percentageIndicator, percentageLabel);
-            case RO -> FXMLPipeline.setManagedVisibleTo(true, percentageIndicator, percentageLabel);
-            case WO -> FXMLPipeline.setManagedVisibleTo(true, setterField);
+
+        boolean isBool = info.var().type() == VarHelpers.Type.BOOL;
+
+        switch (info.var().permission()) {
+            case RW -> {
+                if (isBool) 
+                    FXMLPipeline.setManagedVisibleTo(true, toggleBtn);
+                else 
+                    FXMLPipeline.setManagedVisibleTo(true, percentageIndicator, percentageLabel, setterField);
+            }
+            case RO -> {
+                if (isBool) {
+                    FXMLPipeline.setManagedVisibleTo(true, toggleBtn);
+                    toggleBtn.setDisable(true);
+                } else 
+                    FXMLPipeline.setManagedVisibleTo(true, percentageIndicator, percentageLabel);
+            }
+            
+            case WO -> {
+                if (isBool) 
+                    // BOOL + WO: toggle only for writing
+                    FXMLPipeline.setManagedVisibleTo(true, toggleBtn);
+                else 
+                    FXMLPipeline.setManagedVisibleTo(true, setterField);
+            }
         }
-        updateValue(info.var().initVal() == null ? null : toDstTy(info.var().type(), info.var().initVal()));
+        updateValue(toDstTy(info.var().type(),
+            DeviceMngCtrl.getVal(info.var().type(),
+                WifiSender.sendDataToESP32(info.device(),CloudRequest.createGetVarJson(info.var().name()).toString()).get("Value"))
+            )
+        );
     }
 
     public void updateValue(JsonElement element) {
@@ -103,28 +130,47 @@ public class CardShowerCtrl {
                 boolean b = prim.getAsBoolean();
                 numericValue.set(b ? 1.0 : 0.0);
                 displayValue.set(b ? "HIGH" : "LOW");
+                // Sync toggle button state without firing the action handler
+                if (toggleBtn != null && toggleBtn.isManaged()) {
+                    toggleBtn.setSelected(b);
+                    toggleBtn.setText(b ? "ON" : "OFF");
+                    toggleBtn.getStyleClass().removeAll("bool-toggle-on", "bool-toggle-off");
+                    toggleBtn.getStyleClass().add(b ? "bool-toggle-on" : "bool-toggle-off");
+                }
             } else {
                 String str = prim.getAsString();
                 displayValue.set(str);
                 try {
                     numericValue.set(Double.parseDouble(str));
-                } catch (NumberFormatException ignored) {}
+                } catch (NumberFormatException _) {}
             }
         }
     }
 
     @FXML
+    private void handleToggle(ActionEvent event) {
+        if (info == null) return;
+        boolean newState = toggleBtn.isSelected();
+        toggleBtn.setText(newState ? "ON" : "OFF");
+        toggleBtn.getStyleClass().removeAll("bool-toggle-on", "bool-toggle-off");
+        toggleBtn.getStyleClass().add(newState ? "bool-toggle-on" : "bool-toggle-off");
+        displayValue.set(newState ? "HIGH" : "LOW");
+        numericValue.set(newState ? 1.0 : 0.0);
+        WifiSender.sendDataToESP32(info.device(),
+            CloudRequest.createSetVarJson(info.var().name(), new JsonPrimitive(newState)).toString());
+    }
+
+    @FXML
     private void handleEdit(ActionEvent event) {
-        if (onEdit != null) {
+        if (onEdit != null) 
             onEdit.accept(this);
-        }
+
     }
 
     @FXML
     private void handleDelete(ActionEvent event) {
-        if (onDelete != null) {
-            onDelete.accept(this);
-        }
+        if (onDelete != null) 
+            onDelete.accept(this); 
     }
 
     public void setOnDelete(Consumer<CardShowerCtrl> onDelete) {
@@ -153,7 +199,8 @@ public class CardShowerCtrl {
 
     @FXML void atEnter(KeyEvent e) {
         switch(e.getCode()){
-            case ENTER -> CloudRequest.setVar(info.var().name(), toDstTy(info.var().type(), setterField.getText()));
+            case ENTER -> WifiSender.sendDataToESP32(info.device(), 
+                CloudRequest.createSetVarJson(info.var().name(), toDstTy(info.var().type(), setterField.getText())).toString());
             default -> {}
         }
     }

@@ -47,7 +47,7 @@ public class CardCtrl {
     /** The Variable that was resolved from the autocomplete selection. */
     private String selectedVariable = null;
 
-    public void setVariableNames(Collection<Variable> names) {
+    public void createSetVarJsoniableNames(Collection<Variable> names) {
         convertToHash(names == null ? null : names.stream()
                 .filter(v -> v != null && !v.name().isBlank())
                 .distinct()
@@ -206,7 +206,7 @@ public class CardCtrl {
         }
 
         DeviceInfo newInfo = new DeviceInfo(sensorName, variableData.get(selectedVariable),
-                new Range(from, to));
+                new Range(from, to), App.deviceMngCtrl.activeDevice);
 
         var cardMg = App.fxmlPipeline.getDashCtrl().cardManager;
 

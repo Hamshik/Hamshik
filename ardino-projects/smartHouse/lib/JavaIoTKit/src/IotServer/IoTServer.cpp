@@ -24,6 +24,34 @@
 IoTServer::IoTServer(JavaIoTKit& kit)
     : parentKit(kit), ssid(kit.getSsid()), password(kit.getPassword()), hostName(kit.getHostName()) {}
 
+// ── Private helpers ───────────────────────────────────────────────────────────
+
+auto IoTServer::jsonResponse(AsyncWebServerRequest* request, bool success, const String& message) {
+  JsonDocument doc;
+  doc["status"] = success ? "success" : "error";
+  doc["message"] = message.isEmpty() ? (success ? "ok" : "error") : message;
+  String body;
+  serializeJson(doc, body);
+  return request->beginResponse(success ? 200 : 400, "application/json", body);
+}
+
+void IoTServer::handleOtaUpload(AsyncWebServerRequest* /*request*/, const String& filename, size_t index, uint8_t* data,
+                                size_t len, bool final) {
+  if (index == 0) {
+    Serial.printf("OTA start: %s\n", filename.c_str());
+    if (!Update.begin(UPDATE_SIZE_UNKNOWN)) Update.printError(Serial);
+  }
+
+  if (Update.isRunning() && Update.write(data, len) != len) Update.printError(Serial);
+
+  if (final) {
+    if (Update.end(true))
+      Serial.printf("OTA done: %u bytes\n", index + len);
+    else
+      Update.printError(Serial);
+  }
+}
+
 void IoTServer::handleWebSocketMessage(uint8_t* data, size_t len) {
   std::string message(reinterpret_cast<char*>(data), len);
 
@@ -53,9 +81,7 @@ void IoTServer::onWebSocketEvent(AsyncWebSocket* server, AsyncWebSocketClient* c
 
     case WS_EVT_DATA: {
       AwsFrameInfo* info = reinterpret_cast<AwsFrameInfo*>(arg);
-      if (info->message_opcode == WS_BINARY || info->message_opcode == WS_CONTINUATION)
-        writeBin(arg, data, len, client);
-      else if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT) {
+      if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT) {
         Serial.printf("[%u] Received text: %.*s\n", client->id(), (int)len, data);
         handleWebSocketMessage(data, len);
       }
@@ -109,6 +135,23 @@ void IoTServer::serverSetup() {
       return;
     }
   });
+
+  // 4. HTTP OTA firmware update — POST /update with multipart/form-data field "firmware"
+  server.on(
+      "/update", HTTP_POST,
+      [this](AsyncWebServerRequest* request) {
+        bool ok = !Update.hasError();
+        auto* resp = jsonResponse(request, ok, ok ? "Update Success" : "Firmware validation failed");
+        resp->addHeader("Connection", "close");
+        request->send(resp);
+        if (ok) {
+          delay(300);
+          ESP.restart();
+        }
+      },
+      [this](AsyncWebServerRequest* request, String filename, size_t index, uint8_t* data, size_t len, bool final) {
+        handleOtaUpload(request, filename, index, data, len, final);
+      });
 
   server.addHandler(&ws);
 }

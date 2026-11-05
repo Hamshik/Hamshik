@@ -64,7 +64,7 @@ public class DeviceMngCtrl extends Controller {
                     App.fxmlPipeline.setWifiButtonConnected(false);
                     if (wifiBut != null)
                         wifiBut.setText("Disconnected");
-                    App.dashCtrl.setVariableNames(List.of());
+                    App.dashCtrl.createSetVarJsoniableNames(List.of());
                     Esp32WebSocketClient.disconnect();
                 });
     }
@@ -105,7 +105,7 @@ public class DeviceMngCtrl extends Controller {
                 wifiBut.setText("Connecting");
                 loadingSpinner.setVisible(true);
                 statusLabel.setText("Connecting to " + wifiDisplayer.getConnectingDeviceName() + "...");
-                App.dashCtrl.setVariableNames(List.of());
+                App.dashCtrl.createSetVarJsoniableNames(List.of());
             }
 
             @Override
@@ -120,7 +120,7 @@ public class DeviceMngCtrl extends Controller {
             @Override
             public void onVariablesReceived(JsonObject response) {
                 List<Variable> names = readVariableNames(response);
-                App.dashCtrl.setVariableNames(names);
+                App.dashCtrl.createSetVarJsoniableNames(names);
                 System.out.println("Loaded " + names.size() + " ESP32 variable names.");
                 updateInitialVariableValues(response);
             }
@@ -140,7 +140,7 @@ public class DeviceMngCtrl extends Controller {
                 App.fxmlPipeline.setWifiButText("Disconnected");
                 statusLabel
                         .setText("Couldn't connect to the ESP32. Check the address, port, and device, then try again.");
-                App.dashCtrl.setVariableNames(List.of());
+                App.dashCtrl.createSetVarJsoniableNames(List.of());
             }
 
             @Override
@@ -150,7 +150,7 @@ public class DeviceMngCtrl extends Controller {
                 App.fxmlPipeline.setWifiButtonConnected(false);
                 App.fxmlPipeline.setWifiButText("Disconnected");
                 statusLabel.setText("ESP32 connection lost.");
-                App.dashCtrl.setVariableNames(List.of());
+                App.dashCtrl.createSetVarJsoniableNames(List.of());
             }
         };
     }
@@ -196,7 +196,6 @@ public class DeviceMngCtrl extends Controller {
             var ty = Type.values()[typeIdx];
             names.add(new Variable(variable.getKey(),
                     ty,
-                    getVal(ty, initVal),
                     Permissions.values()[permIdx]));
         }
 
@@ -224,7 +223,7 @@ public class DeviceMngCtrl extends Controller {
         }
     }
 
-    private String getVal(Type ty, JsonElement val) {
+    public static String getVal(Type ty, JsonElement val) {
         switch (ty) {
             case BOOL:
                 return val.getAsBoolean() ? "true" : "false";

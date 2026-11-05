@@ -6,11 +6,12 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="cardRoot" prefWidth="340.0" spacing="14.0" styleClass="card" xmlns="http://javafx.com/javafx/25.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.hamshik.Controller.CardCtrl.CardShowerCtrl">
+<VBox fx:id="cardRoot" prefHeight="176.0" prefWidth="362.0" spacing="14.0" styleClass="card" xmlns="http://javafx.com/javafx/25.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.hamshik.Controller.CardCtrl.CardShowerCtrl">
    <children>
       <!-- ===== Header ===== -->
       <HBox alignment="CENTER_LEFT" spacing="12.0">
@@ -35,17 +36,20 @@
          <children>
             <StackPane maxHeight="72.0" maxWidth="72.0" minHeight="72.0" minWidth="72.0" prefHeight="72.0" prefWidth="72.0">
                <children>
-                  <ProgressIndicator fx:id="percentageIndicator" maxHeight="72.0" maxWidth="72.0" minHeight="72.0" minWidth="72.0" prefHeight="72.0" prefWidth="72.0" progress="0.0" style="-fx-progress-color: #00A9A5;" visible="false" />
-                  <Label fx:id="percentageLabel" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #102027;" text="0%" visible="false" />
+                  <!-- Shown for numeric types (INT / FLOAT / STRING) -->
+                  <ProgressIndicator fx:id="percentageIndicator" managed="false" maxHeight="72.0" maxWidth="72.0" minHeight="72.0" minWidth="72.0" prefHeight="72.0" prefWidth="72.0" progress="0.0" style="-fx-progress-color: #00A9A5;" visible="false" />
+                  <Label fx:id="percentageLabel" managed="false" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #102027;" text="0%" visible="false" />
+                  <!-- Shown only for BOOL type -->
+                  <ToggleButton fx:id="toggleBtn" managed="false" onAction="#handleToggle" styleClass="bool-toggle" text="OFF" visible="false" />
                </children>
             </StackPane>
             <VBox alignment="CENTER_LEFT" spacing="6.0">
                <children>
-                  <Label fx:id="readingLabel" styleClass="field-label" text="Current value" />
+                  <Label fx:id="readingLabel" prefHeight="14.0" prefWidth="105.0" styleClass="field-label" text="Current value" />
                   <Label fx:id="valueLabel" styleClass="card-heading" text="--" />
                </children>
             </VBox>
-            <TextField fx:id="setterField" onKeyPressed="#atEnter" prefHeight="24.0" prefWidth="128.0" styleClass="field-input" visible="false" />
+            <TextField fx:id="setterField" managed="false" onKeyPressed="#atEnter" prefHeight="24.0" prefWidth="128.0" styleClass="field-input" visible="false" />
          </children>
       </HBox>
 

@@ -16,16 +16,12 @@ public class AppResponder {
 
     private SplitPane root;
 
-    private Label logoText;
+    private Label logoText, sidebarFooter;
     private VBox sidebar;
-    private Label sidebarFooter;
-    private Button sideHomeBut;
-    private Button sideDashBut;
-    private Button sideDeviceBut;
-    private Button sideThingsBut;
+    private Button sideHomeBut, sideFileBut, sideDashBut, sideDeviceBut, sideThingsBut;
 
     public AppResponder(SplitPane root, VBox sidebar, Label logoText, Label sidebarFooter,
-        Button sideHomeBut, Button sideDashBut, Button sideDeviceBut, Button sideThingsBut) {
+        Button sideHomeBut, Button sideDashBut, Button sideDeviceBut, Button sideThingsBut, Button sideFileBut) {
         this.root = root;
         this.sidebar = sidebar;
         this.logoText = logoText;
@@ -34,6 +30,7 @@ public class AppResponder {
         this.sideDashBut = sideDashBut;
         this.sideDeviceBut = sideDeviceBut;
         this.sideThingsBut = sideThingsBut;
+        this.sideFileBut = sideFileBut;
     }
 
     /* ================= Website-like responsive layout ================= */
@@ -59,18 +56,20 @@ public class AppResponder {
             collapsed = wantCollapsed;
             if (collapsed) {
                 // icon-rail mode
-                App.fxmlPipeline.setManagedVisibleTo(false, logoText, sidebarFooter);
+                FXMLPipeline.setManagedVisibleTo(false, logoText, sidebarFooter);
                 setNav(sideHomeBut, "⌂", 40);
                 setNav(sideDashBut, "▦", 40);
                 setNav(sideDeviceBut, "◉", 40);
                 setNav(sideThingsBut, "⚙", 40);
+                setNav(sideFileBut, "🗀", 40);
             } else {
                 // full sidebar mode
-                App.fxmlPipeline.setManagedVisibleTo(true, sidebarFooter, logoText);
+                FXMLPipeline.setManagedVisibleTo(true, sidebarFooter, logoText);
                 setNav(sideHomeBut, "⌂   Home", 120);
                 setNav(sideDashBut, "▦   Dashboard", 120);
                 setNav(sideDeviceBut, "◉   Devices", 120);
                 setNav(sideThingsBut, "⚙   Things", 120);
+                setNav(sideFileBut, "🗀   File", 40);
             }
 
             if (width < COLLAPSE_AT) {

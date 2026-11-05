@@ -14,6 +14,7 @@ import com.google.gson.JsonPrimitive;
 import in.hamshik.App;
 import in.hamshik.Controller.CardCtrl.CardCtrl;
 import in.hamshik.Controller.CardCtrl.CardShowerCtrl;
+import in.hamshik.DNSHandler.WiFiScanner.EspDevice;
 import in.hamshik.Helpers.VarHelpers.Variable;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -31,7 +32,7 @@ public class CardManager {
     private final Map<String, JsonElement> cachedValues = new HashMap<>();
 
     public record Range(int from, int to) {}
-    public record DeviceInfo(String sensorName, Variable var, Range range){}
+    public record DeviceInfo(String sensorName, Variable var, Range range, EspDevice device){}
     public record RemovedCardEntry(DeviceInfo info, double layoutX, double layoutY) {}
 
     private final Deque<RemovedCardEntry> undoStack = new ArrayDeque<>();

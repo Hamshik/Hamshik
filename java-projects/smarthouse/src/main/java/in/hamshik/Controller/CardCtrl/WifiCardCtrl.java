@@ -2,7 +2,6 @@ package in.hamshik.Controller.CardCtrl;
 
 import in.hamshik.DNSHandler.WiFiScanner.EspDevice;
 import in.hamshik.Helpers.FXMLPipeline;
-import in.hamshik.App;
 import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;

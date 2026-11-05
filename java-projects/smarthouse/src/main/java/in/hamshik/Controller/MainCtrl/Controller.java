@@ -38,7 +38,7 @@ public class Controller extends SharedUIComponents {
 
     @FXML protected void initialize() {
         super.initialize(topbarController, sidebarController);
-        appResponder = new AppResponder(root, sideBar, logo, sidebarFooter, homeBtn, dashBtn, devicesBtn, thingsBtn);
+        appResponder = new AppResponder(root, sideBar, logo, sidebarFooter, homeBtn, dashBtn, devicesBtn, thingsBtn, fileMngBtn);
         appResponder.setupResponsiveLayout();
     }
 

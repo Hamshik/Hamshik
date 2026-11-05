@@ -62,8 +62,8 @@ public class DashCtrl extends Controller {
         cardRootController.resetToNew();
     }
 
-    public void setVariableNames(Collection<Variable> names) {
-        cardRootController.setVariableNames(names);
+    public void createSetVarJsoniableNames(Collection<Variable> names) {
+        cardRootController.createSetVarJsoniableNames(names);
     }
 
     public void updateVariable(String varName, JsonElement value) {

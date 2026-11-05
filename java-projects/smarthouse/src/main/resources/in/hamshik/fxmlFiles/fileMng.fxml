@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<SplitPane fx:id="root" dividerPositions="0.21120186697782964" prefHeight="756.0" prefWidth="859.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.hamshik.Controller.MainCtrl.FileMngCtrl">
+<SplitPane fx:id="root" dividerPositions="0.21120186697782964" prefHeight="756.0" prefWidth="859.0" xmlns="http://javafx.com/javafx/25.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.hamshik.Controller.MainCtrl.FileMngCtrl">
    <items>
       <fx:include fx:id="sidebar" source="sidebar.fxml" />
 
@@ -39,7 +39,7 @@
                               <HBox alignment="CENTER_LEFT" spacing="10.0">
                                  <children>
                                     <TextField fx:id="firmwarePathField" editable="false" prefHeight="40.0" promptText="Select a .bin file" styleClass="field-input" HBox.hgrow="ALWAYS" />
-                                    <Button mnemonicParsing="false" onAction="#browseFirmwareFile" prefHeight="40.0" styleClass="navbuts" text="Browse..." />
+                                    <Button mnemonicParsing="false" onAction="#browseFirmwareFile" prefHeight="40.0" prefWidth="89.0" styleClass="navbuts" text="Browse" />
                                  </children>
                               </HBox>
                            </children>
