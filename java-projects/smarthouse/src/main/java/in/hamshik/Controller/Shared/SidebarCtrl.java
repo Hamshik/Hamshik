@@ -6,7 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
 public class SidebarCtrl extends SharedUIComponents implements SharedUIComponents.SharableUI {
-    @FXML Button homeBtn, dashBtn, devicesBtn, thingsBtn, fileMngBtn;
+    @FXML Button homeBtn, dashBtn, devicesBtn, thingsBtn, fileMngBtn, codeBtn;
     @FXML Label sidebarFooter, logo;
     @FXML VBox sideBar;
     
@@ -15,6 +15,7 @@ public class SidebarCtrl extends SharedUIComponents implements SharedUIComponent
         dashBtn.setOnAction(event -> App.fxmlPipeline.showDashboard());
         devicesBtn.setOnAction(event -> App.fxmlPipeline.showDevices());
         fileMngBtn.setOnAction(event -> App.fxmlPipeline.showFileMng());
+        codeBtn.setOnAction(event -> App.fxmlPipeline.showCode());
     }
 
     public void initializeUIComponents(SharedUIComponents components){
@@ -26,6 +27,7 @@ public class SidebarCtrl extends SharedUIComponents implements SharedUIComponent
         components.logo = logo;
         components.sideBar = sideBar;
         components.fileMngBtn = fileMngBtn;
+        components.codeBtn = codeBtn;
     }
 
 }

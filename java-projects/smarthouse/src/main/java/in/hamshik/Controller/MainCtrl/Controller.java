@@ -13,19 +13,24 @@ import javafx.scene.layout.AnchorPane;
 import java.util.Map;
 
 public class Controller extends SharedUIComponents {
-
+    static byte currval = 0;
     public enum NavigationItem {
-        HOME("Home"),
-        DASHBOARD("DashBoard"),
-        DEVICES("Device Manager"),
-        THINGS("Things"),
-        FILE_MNG("File Manager");
+        HOME("Home", currval++),
+        DASHBOARD("DashBoard", currval++),
+        DEVICES("Device Manager", currval++),
+        FILE_MNG("File Manager", currval++),
+        CODE("Code", currval++),
+        THINGS("Things", (byte)-1);
 
         private final String title;
+        private final byte no;
 
-        NavigationItem(String title) {
+        NavigationItem(String title, byte no) {
             this.title = title;
+            this.no = no;
         }
+
+        public byte val() { return no; }
     }
     
     @FXML private AnchorPane sidebarContainer, topbarContainer;
@@ -50,7 +55,9 @@ public class Controller extends SharedUIComponents {
                 NavigationItem.DASHBOARD, dashBtn,
                 NavigationItem.DEVICES, devicesBtn,
                 NavigationItem.THINGS, thingsBtn,
-                NavigationItem.FILE_MNG, fileMngBtn);
+                NavigationItem.FILE_MNG, fileMngBtn,
+                NavigationItem.CODE, codeBtn
+            );
 
         for (Button button : navigationButtons.values())
             button.getStyleClass().remove("sidebar-item-active");

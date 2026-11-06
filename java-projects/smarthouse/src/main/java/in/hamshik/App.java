@@ -13,13 +13,11 @@ import in.hamshik.Controller.MainCtrl.*;
 import in.hamshik.Helpers.FXMLPipeline;
 
 public class App extends Application {
-    private static Node homePage;
-    private static Node dashboardPage;
-    private static Node devicePage;
-    private static Node fileMngPage;
+    private static Node homePage, dashboardPage, devicePage, fileMngPage, codePage;
 
     protected static Controller homeCtrl;
     protected static FileMngCtrl fileMngCtrl;
+    protected static CodeRunner codeCtrl;
     public static DeviceMngCtrl deviceMngCtrl;
     public static DashCtrl dashCtrl;
     public static FXMLPipeline fxmlPipeline;
@@ -41,8 +39,12 @@ public class App extends Application {
         FXMLLoader fileMngLoader = createFXMLLoader("fxmlFiles/fileMng.fxml");
         fileMngPage = fileMngLoader.load();
         fileMngCtrl = fileMngLoader.getController();
+
+        FXMLLoader codeLoader = createFXMLLoader("fxmlFiles/code.fxml");
+        codePage = codeLoader.load();
+        codeCtrl = codeLoader.getController();
         
-        StackPane pageHost = new StackPane(homePage, dashboardPage, devicePage, fileMngPage);
+        StackPane pageHost = new StackPane(homePage, dashboardPage, devicePage, fileMngPage, codePage);
         Scene scene = new Scene(pageHost);
         stage.setScene(scene);
         stage.setTitle("IoT Dashboard");
@@ -51,7 +53,7 @@ public class App extends Application {
                 .toExternalForm());
         stage.setMinWidth(600);
         stage.setMinHeight(500);
-        fxmlPipeline = new FXMLPipeline(homePage, dashboardPage, devicePage, fileMngPage);
+        fxmlPipeline = new FXMLPipeline(homePage, dashboardPage, devicePage, fileMngPage, codePage);
         fxmlPipeline.showHome();
         fxmlPipeline.addSplitDividerListener();
         stage.show();

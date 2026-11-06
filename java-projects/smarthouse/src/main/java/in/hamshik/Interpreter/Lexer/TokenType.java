@@ -1,0 +1,9 @@
+package in.hamshik.Interpreter.Lexer;
+
+public enum TokenType {
+    NUMBER, BOOL, STRINGS, CHARACTER, IDENTIFIER, KEYWORD,
+    PLUS, MINUS, STAR, SLASH, AMP, PIPE, XOR, NOT, MOD,
+    GT, LT, EGT, ELT, EQ, NEQ,
+    AND, OR, EOF, ASSIGN, 
+    LBRACE, RBRACE, LPAREN, RPAREN, SEMICOLON
+};

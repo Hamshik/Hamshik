@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
-<VBox fx:id="sideBar" prefHeight="600.0" prefWidth="140.0" style="-fx-border-color: transparent #dfe5ea transparent transparent; -fx-border-width: 1px;" styleClass="sidebar" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.hamshik.Controller.Shared.SidebarCtrl">
+<VBox fx:id="sideBar" prefHeight="600.0" prefWidth="140.0" style="-fx-border-color: transparent #dfe5ea transparent transparent; -fx-border-width: 1px;" styleClass="sidebar" xmlns="http://javafx.com/javafx/25.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.hamshik.Controller.Shared.SidebarCtrl">
 
    <children>
       <HBox styleClass="sidebar-logo">
@@ -19,9 +19,10 @@
       <VBox styleClass="sidebar-nav">
            <children>
                <Button fx:id="homeBtn" mnemonicParsing="false" styleClass="sidebar-item" text="⌂   Home" />
-            <Button fx:id="fileMngBtn" mnemonicParsing="false" styleClass="sidebar-item" text="🗀   File" />
                <Button fx:id="dashBtn" mnemonicParsing="false" styleClass="sidebar-item" text="▦   Dashboard" />
+            <Button fx:id="fileMngBtn" mnemonicParsing="false" styleClass="sidebar-item" text="🗀   Upload" />
                <Button fx:id="devicesBtn" mnemonicParsing="false" styleClass="sidebar-item" text="◉   Devices" />
+            <Button fx:id="codeBtn" mnemonicParsing="false" styleClass="sidebar-item" text="⛭   Code" />
                <Button fx:id="thingsBtn" mnemonicParsing="false" styleClass="sidebar-item" text="⛭   Things" />
            </children>
       </VBox>

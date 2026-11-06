@@ -11,7 +11,7 @@ public class SharedUIComponents {
         void initializeUIComponents(SharedUIComponents components);
     }
     
-    public Button homeBtn, dashBtn, devicesBtn, thingsBtn, fileMngBtn;
+    public Button homeBtn, dashBtn, devicesBtn, thingsBtn, fileMngBtn, codeBtn;
     public Label sidebarFooter, logo, titleLabel;
     public VBox sideBar;
     public Button wifiBut;
