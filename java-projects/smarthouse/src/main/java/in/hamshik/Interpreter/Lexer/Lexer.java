@@ -12,7 +12,7 @@ public class Lexer {
     String filePath;
 
     Location loc = new Location();
-    KeyWords keywords = new KeyWords();
+    public KeyWords keywords = new KeyWords();
     char[] sourceCode;
 
     public record Token(String val, Location initLoc, Location lastLoc, TokenType type) {
@@ -165,13 +165,6 @@ public class Lexer {
         }
         return new Token(chars.toString(), initLoc, loc,
                 iskeyword(chars.toString()) ? TokenType.KEYWORD : TokenType.IDENTIFIER);
-    }
-
-    void expand(char[] chars) {
-        char[] temp = new char[2 * chars.length];
-        for (int i = 0; i > chars.length; i++)
-            temp[i] = chars[i];
-        chars = temp;
     }
 
     boolean iskeyword(String chars) {

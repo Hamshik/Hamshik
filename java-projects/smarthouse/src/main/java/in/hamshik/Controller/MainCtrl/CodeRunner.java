@@ -11,6 +11,7 @@ import java.io.File;
 
 import in.hamshik.Interpreter.Lexer.Lexer;
 import in.hamshik.Interpreter.Lexer.TokenType;
+import in.hamshik.Interpreter.Parser.Parser;
 import in.hamshik.Interpreter.Lexer.Lexer.Token;
 
 public class CodeRunner extends Controller {
@@ -38,14 +39,8 @@ public class CodeRunner extends Controller {
             System.err.println("Pls fill the path");
             return;
         }
-        try {
-            Lexer lexer = new Lexer(filePathField.getText(), out);
-            for(Token next = lexer.getNextToken();
-                next.type() != TokenType.EOF;
-                next = lexer.getNextToken())
-            {
-                System.out.printf("Got toekn of: %s\nName: %s\n", next.type().name(), next.val());
-            }
+        try{
+            Parser parser = new Parser(filePathField.getText().trim(), out);
         } catch (Exception e){
             e.printStackTrace();
         }
