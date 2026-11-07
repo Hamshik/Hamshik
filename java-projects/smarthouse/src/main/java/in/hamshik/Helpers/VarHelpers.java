@@ -4,7 +4,7 @@ public class VarHelpers {
 
     // Order MUST match ESP enum: INT=0, FLOAT=1, STRING=2, BOOL=3
     public enum Type {
-        INT, FLOAT, STRING, BOOL;
+        INT, FLOAT, STRING, BOOL, ANY;
 
         /** Human-readable label used in the UI and CardHolder comparisons. */
         public String displayName() { return name(); }

@@ -233,7 +233,7 @@ public class DeviceMngCtrl extends Controller {
                 return val.getAsBigInteger().toString();
             case STRING:
                 return val.getAsString();
+            default: return null;
         }
-        return null;
     }
 }

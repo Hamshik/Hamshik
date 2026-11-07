@@ -9,10 +9,8 @@ import javafx.scene.control.TextField;
 
 import java.io.File;
 
-import in.hamshik.Interpreter.Lexer.Lexer;
-import in.hamshik.Interpreter.Lexer.TokenType;
 import in.hamshik.Interpreter.Parser.Parser;
-import in.hamshik.Interpreter.Lexer.Lexer.Token;
+import in.hamshik.Interpreter.shared.ASTNode;
 
 public class CodeRunner extends Controller {
 
@@ -40,7 +38,8 @@ public class CodeRunner extends Controller {
             return;
         }
         try{
-            Parser parser = new Parser(filePathField.getText().trim(), out);
+            Parser parser = new Parser(filePathField.getText().trim(), out, true);
+            ASTNode root = parser.startParsing();
         } catch (Exception e){
             e.printStackTrace();
         }

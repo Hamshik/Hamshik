@@ -1,5 +1,7 @@
 package in.hamshik.Interpreter.shared;
 
+import in.hamshik.Helpers.VarHelpers;
+
 /**
  * ASTKind
  */
@@ -26,3 +28,5 @@ public enum ASTKind {
     AST_CONTINUE,
     AST_BREAK,
 }
+
+record Type(VarHelpers.Type type, Type innerType){}

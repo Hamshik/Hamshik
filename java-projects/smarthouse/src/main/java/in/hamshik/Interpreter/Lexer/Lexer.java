@@ -5,23 +5,30 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import in.hamshik.Helpers.VarHelpers.Type;
 import javafx.scene.control.TextArea;
 
 public class Lexer {
     TextArea out;
     String filePath;
+    Token peekedToken;
+    public static Token currToken;
 
-    Location loc = new Location();
+    public Location loc = new Location();
     public KeyWords keywords = new KeyWords();
     char[] sourceCode;
 
     public record Token(String val, Location initLoc, Location lastLoc, TokenType type) {
+        public Token{Lexer.currToken=this;}
     }
 
     public class Location {
         int pos, col, ln = 0;
 
-        int incPosCol(){ col++; return ++pos; }
+        int incPosCol() {
+            col++;
+            return ++pos;
+        }
     }
 
     public Lexer(String path, TextArea out) throws IOException, FileNotFoundException {
@@ -31,33 +38,38 @@ public class Lexer {
             sourceCode = reader.readAllAsString().toCharArray();
         }
     }
-    
+
     public Token getNextToken() {
+        if (peekedToken != null) {
+            Token temp = peekedToken;
+            peekedToken = null;
+            currToken = temp;
+            return temp;
+        }
         if (loc.pos >= sourceCode.length)
             return new Token(null, null, loc, TokenType.EOF);
 
         var _char = sourceCode[loc.pos];
         if (isAlpha(_char))
             return idOrKeywords();
-        if(_char == '"')
+        if (_char == '"')
             return handleStrs();
-        if(_char == '\'' && peek(1) == '\'' && peek(2) == '\'')
+        if (_char == '\'' && peek(1) == '\'' && peek(2) == '\'')
             return handleComments();
-        if(_char == '\'' && peek(1) == '\'')
+        if (_char == '\'' && peek(1) == '\'')
             return handleSingleCommet();
-        if(_char == '\'')
+        if (_char == '\'')
             return handleChar();
-        if(isDigit(_char))
+        if (isDigit(_char))
             return handleDigits();
-        
+
         return handleSymbols(_char);
     }
 
-    
     private Token handleSingleCommet() {
         var _char = sourceCode[loc.pos];
         while (_char != '\n') {
-            if(loc.incPosCol() >= sourceCode.length) //consuming the single line commet & checking bounds
+            if (loc.incPosCol() >= sourceCode.length) // consuming the single line commet & checking bounds
                 break;
             _char = sourceCode[loc.pos];
         }
@@ -70,15 +82,17 @@ public class Lexer {
         var _char = sourceCode[loc.pos];
         while (isDigit(_char)) {
             chars.append(_char);
-            if(loc.incPosCol() >= sourceCode.length) break;
+            if (loc.incPosCol() >= sourceCode.length)
+                break;
             _char = sourceCode[loc.pos];
         }
         return new Token(chars.toString(), initLoc, loc, TokenType.NUMBER);
     }
 
     private char peek(int idx) {
-        if(idx >= sourceCode.length || loc.pos + idx >= sourceCode.length) return 0;
-       return sourceCode[loc.pos + idx];
+        if (idx >= sourceCode.length || loc.pos + idx >= sourceCode.length)
+            return 0;
+        return sourceCode[loc.pos + idx];
     }
 
     private Token handleSymbols(char _char) {
@@ -94,55 +108,59 @@ public class Lexer {
             case '-': return new Token(";", loc, null, TokenType.MINUS);
             case '*': return new Token(";", loc, null, TokenType.STAR);
             case '/': return new Token(";", loc, null, TokenType.SLASH);
+            case ':': return new Token(":", loc, null, TokenType.COLON);
             default: return getNextToken();
         }
     }
 
     private Token handleComments() {
         var initLoc = loc;
-        //comsuming tri-quates
-        for(int i = 0; i < 3; i++) loc.incPosCol();
-        var _char = sourceCode[loc.pos]; 
+        // comsuming tri-quates
+        for (int i = 0; i < 3; i++)
+            loc.incPosCol();
+        var _char = sourceCode[loc.pos];
         while (_char != '\'' && peek(1) != '\'' && peek(2) != '\'') {
-            if(loc.incPosCol() >= sourceCode.length){
+            if (loc.incPosCol() >= sourceCode.length) {
                 System.err.println("pls close the commet from " + initLoc.pos);
                 break;
             }
             _char = sourceCode[loc.pos];
         }
-        for(int i = 0; i < 3; i++) loc.incPosCol();
+        for (int i = 0; i < 3; i++)
+            loc.incPosCol();
         return getNextToken();
     }
 
     private Token handleChar() {
         StringBuilder chars = new StringBuilder();
         var initLoc = loc;
-        var _char = sourceCode[loc.incPosCol()]; //consuming opening-quotes
+        var _char = sourceCode[loc.incPosCol()]; // consuming opening-quotes
         while (_char != '\'') {
             chars.append(_char);
-            if(loc.incPosCol() >= sourceCode.length && sourceCode[loc.pos] != '\'') { //already consumed by 'loc.incPosCol'
+            if (loc.incPosCol() >= sourceCode.length && sourceCode[loc.pos] != '\'') { // already consumed by
+                                                                                       // 'loc.incPosCol'
                 System.err.println("Only one char is allowed");
                 break;
             }
             _char = sourceCode[loc.pos];
         }
-        loc.incPosCol(); //consuming closing-quates
+        loc.incPosCol(); // consuming closing-quates
         return new Token(chars.toString(), initLoc, loc, TokenType.CHARACTER);
     }
 
     private Token handleStrs() {
         StringBuilder chars = new StringBuilder();
         var initLoc = loc;
-        var _char = sourceCode[loc.incPosCol()];  //consuming opening-quates
+        var _char = sourceCode[loc.incPosCol()]; // consuming opening-quates
         while (_char != '"') {
-            chars.append(_char); 
-            if(_char == '\n' || loc.incPosCol() >= sourceCode.length) {
+            chars.append(_char);
+            if (_char == '\n' || loc.incPosCol() >= sourceCode.length) {
                 System.err.println("pls close the qutes");
                 break;
             }
             _char = sourceCode[loc.pos];
         }
-        loc.incPosCol();  //consuming closing-quates
+        loc.incPosCol(); // consuming closing-quates
         return new Token(chars.toString(), initLoc, loc, TokenType.STRINGS);
     }
 
@@ -160,14 +178,34 @@ public class Lexer {
         var _char = sourceCode[loc.pos];
         while (isAlpha(_char) || isDigit(_char)) {
             chars.append(_char);
-            if(loc.incPosCol() >= sourceCode.length) break;
+            if (loc.incPosCol() >= sourceCode.length)
+                break;
             _char = sourceCode[loc.pos];
         }
         return new Token(chars.toString(), initLoc, loc,
-                iskeyword(chars.toString()) ? TokenType.KEYWORD : TokenType.IDENTIFIER);
+                iskeyword(chars.toString()) ? TokenType.KEYWORD
+                        : isDatatype(chars.toString()) == null ? TokenType.IDENTIFIER : TokenType.DATATYPE);
     }
 
-    boolean iskeyword(String chars) {
+    public boolean iskeyword(String chars) {
         return keywords.keyMap.containsKey(chars);
+    }
+
+    public Type isDatatype(String type) {
+        for (var i : Type.values())
+            if (i.name().equals(type))
+                return i;
+        return null;
+    }
+
+    public Token peekToken() {
+        if (peekedToken != null)
+            return peekedToken;
+        Token temp = currToken;
+        Token token = getNextToken();
+        loc = token.initLoc();
+        peekedToken = token;
+        currToken = temp;
+        return token;
     }
 }
