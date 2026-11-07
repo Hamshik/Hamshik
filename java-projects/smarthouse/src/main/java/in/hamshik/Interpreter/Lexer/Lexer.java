@@ -4,11 +4,19 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Locale;
+import java.util.Set;
 
 import in.hamshik.Helpers.VarHelpers.Type;
 import javafx.scene.control.TextArea;
 
 public class Lexer {
+    private static final Set<String> DATATYPE_NAMES = Set.of(
+            "i8", "i16", "i32", "i64", "i128",
+            "u8", "u16", "u32", "u64", "u128",
+            "f32", "f64", "f128", "uf32", "uf64", "uf128",
+            "str", "char", "bool", "void");
+
     TextArea out;
     String filePath;
     Token peekedToken;
@@ -39,7 +47,7 @@ public class Lexer {
         }
     }
 
-    public Token getNextToken() {
+    public Token nextToken() {
         if (peekedToken != null) {
             Token temp = peekedToken;
             peekedToken = null;
@@ -63,6 +71,17 @@ public class Lexer {
         if (isDigit(_char))
             return handleDigits();
 
+        if (_char == '.' && peek(1) == '.' && peek(2) == '.') {
+            loc.incPosCol();
+            loc.incPosCol();
+            loc.incPosCol();
+            return new Token("...", null, loc, TokenType.ELLIPSIS);
+        }
+        if (_char == '&' && peek(1) == '&') {
+            loc.incPosCol();
+            loc.incPosCol();
+            return new Token("&&", null, loc, TokenType.AND);
+        }
         return handleSymbols(_char);
     }
 
@@ -73,7 +92,7 @@ public class Lexer {
                 break;
             _char = sourceCode[loc.pos];
         }
-        return getNextToken();
+        return nextToken();
     }
 
     private Token handleDigits() {
@@ -100,8 +119,12 @@ public class Lexer {
         switch (_char) {
             case '{': return new Token("{", loc, null, TokenType.LBRACE);
             case '}': return new Token("}", loc, null, TokenType.RBRACE);
+            case '[': return new Token("[", loc, null, TokenType.LBRACKET);
+            case ']': return new Token("]", loc, null, TokenType.RBRACKET);
             case '(': return new Token("(", loc, null, TokenType.LPAREN);
             case ')': return new Token(")", loc, null, TokenType.RPAREN);
+            case ',': return new Token(",", loc, null, TokenType.COMMA);
+            case '&': return new Token("&", loc, null, TokenType.AMP);
             case '=': return new Token("=", loc, null, TokenType.ASSIGN);
             case ';': return new Token(";", loc, null, TokenType.SEMICOLON);
             case '+': return new Token(";", loc, null, TokenType.PLUS);
@@ -109,7 +132,7 @@ public class Lexer {
             case '*': return new Token(";", loc, null, TokenType.STAR);
             case '/': return new Token(";", loc, null, TokenType.SLASH);
             case ':': return new Token(":", loc, null, TokenType.COLON);
-            default: return getNextToken();
+            default: return nextToken();
         }
     }
 
@@ -128,7 +151,7 @@ public class Lexer {
         }
         for (int i = 0; i < 3; i++)
             loc.incPosCol();
-        return getNextToken();
+        return nextToken();
     }
 
     private Token handleChar() {
@@ -165,7 +188,7 @@ public class Lexer {
     }
 
     boolean isAlpha(char _char) {
-        return _char >= 'A' && _char <= 'Z' || _char >= 'a' && _char <= 'z';
+        return _char >= 'A' && _char <= 'Z' || _char >= 'a' && _char <= 'z' || _char == '_';
     }
 
     boolean isDigit(char _char) {
@@ -182,9 +205,10 @@ public class Lexer {
                 break;
             _char = sourceCode[loc.pos];
         }
-        return new Token(chars.toString(), initLoc, loc,
-                iskeyword(chars.toString()) ? TokenType.KEYWORD
-                        : isDatatype(chars.toString()) == null ? TokenType.IDENTIFIER : TokenType.DATATYPE);
+        String value = chars.toString();
+        return new Token(value, initLoc, loc,
+                DATATYPE_NAMES.contains(value.toLowerCase(Locale.ROOT)) ? TokenType.DATATYPE
+                        : iskeyword(value) ? TokenType.KEYWORD : TokenType.IDENTIFIER);
     }
 
     public boolean iskeyword(String chars) {
@@ -202,7 +226,7 @@ public class Lexer {
         if (peekedToken != null)
             return peekedToken;
         Token temp = currToken;
-        Token token = getNextToken();
+        Token token = nextToken();
         loc = token.initLoc();
         peekedToken = token;
         currToken = temp;

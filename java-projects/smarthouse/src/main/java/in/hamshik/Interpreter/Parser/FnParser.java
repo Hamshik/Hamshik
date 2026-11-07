@@ -2,102 +2,152 @@ package in.hamshik.Interpreter.Parser;
 
 import java.util.ArrayList;
 
-import in.hamshik.Helpers.VarHelpers.Type;
 import in.hamshik.Interpreter.Lexer.Lexer;
-import in.hamshik.Interpreter.Lexer.TokenType;
 import in.hamshik.Interpreter.Lexer.Lexer.Token;
+import in.hamshik.Interpreter.Lexer.TokenType;
 import in.hamshik.Interpreter.shared.ASTKind;
 import in.hamshik.Interpreter.shared.ASTNode;
-import in.hamshik.Interpreter.shared.Union;
 import in.hamshik.Interpreter.shared.Union.Fn;
+import in.hamshik.Interpreter.shared.Union.HIRType;
 
-public class FnParser extends Parser {
-    public record Params(String name, Type type) {
-        Params(String name) {
-            this(name, Type.ANY);
+public class FnParser {
+    private final Parser parser;
+    private final Lexer lexer;
+    private Token pendingToken;
+    private final Helper helper;
+
+    public FnParser(Parser parser) {
+        this.helper = parser.helper;
+        this.parser = parser;
+        this.lexer = parser.lexer;
+    }
+
+    public record Params(String name, HIRType type, boolean isVariadic) {}
+
+    public ASTNode parseFunctionDefinition(Token fnToken) {
+        Token first = helper.nextToken();
+        if (!helper.isType(first))
+            throw helper.syntaxError("Expected a return type or function name", first);
+
+        HIRType firstType = parseType(first);
+        Token afterFirst = helper.nextToken();
+        String name;
+        HIRType returnType;
+
+        if (first.type() == TokenType.IDENTIFIER && afterFirst.type() == TokenType.LPAREN) {
+            name = first.val();
+            returnType = helper.primitive("void", false);
+        } else {
+            returnType = firstType;
+            helper.rejectPointer(returnType, "return type");
+            if (afterFirst.type() != TokenType.IDENTIFIER)
+                throw helper.syntaxError("Expected a function name after the return type", afterFirst);
+            name = afterFirst.val();
+            Token openParen = helper.nextToken();
+            if (openParen.type() != TokenType.LPAREN)
+                throw helper.syntaxError("Expected '(' after the function name", openParen);
         }
+
+        Params[] params = parseParameters();
+        helper.skipBodyOrTerminator();
+        return new ASTNode(
+                ASTKind.AST_FN,
+                null,
+                fnToken.initLoc(),
+                new Fn(returnType, name, params, null),
+                false,
+                false,
+                false);
     }
 
-    FnParser(Parser parser) throws Exception {
-        super(parser.path, parser.out, false);
-    }
-
-    private Object handleParam() {
-        TokenType[] expectedTokens = {
-                TokenType.IDENTIFIER,
-                TokenType.COLON,
-                TokenType.DATATYPE,
-        };
-        byte idx = 0;
-        Token[] tokens = new Token[expectedTokens.length];
-        for (Token next = lexer.getNextToken(); next.type() != TokenType.COMMA
-                || next.type() != TokenType.RPAREN; next = lexer.getNextToken(), idx++) {
-
-            if (next.type() == TokenType.EOF)
-                return String.format("Unexpected 'EOF', while expecting %s", getTokenTyName(expectedTokens[idx]));
-
-            if(next.type() == expectedTokens[0]){
-                next = lexer.getNextToken();
-                idx++;
-                if(next.type() != TokenType.COLON) return new Params(next.val());
-            }
-
-            if (next.type() != expectedTokens[idx])
-                return String.format("Unexpected %s while expecting %s", getTokenTyName(next.type()),
-                        getTokenTyName(expectedTokens[idx]));
-            tokens[idx] = next;
-        }
-        return new Params(tokens[0].val(), toType(tokens[2].val()));
-    }
-
-    private Type toType(String val) {
-        switch(val){
-            case "int": return Type.INT;
-            case "float": return Type.FLOAT;
-            case "bool": return Type.BOOL;
-            case "any": return Type.ANY;
-            default:
-                return null;
-        }
-    }
-
-    public Object handleParams() {
+    public Params[] parseParameters() {
         ArrayList<Params> params = new ArrayList<>();
-        if (lexer.peekToken().type() != TokenType.LPAREN)
-                return String.format("Unexepected '%s', while expecting '('", lexer.peekToken().val());
+        Token token = helper.nextToken();
+        if (token.type() == TokenType.RPAREN)
+            return new Params[0];
 
-        for (Token next = lexer.peekToken();; next = lexer.peekToken()) {
-            next = lexer.getNextToken(); //consumes comma and lparen
-            Object raw = handleParam();
-            if(raw instanceof Params param)
-                params.add(param);
-            else if(raw instanceof String err)
-                return err;
-            if(Lexer.currToken.type() == TokenType.RPAREN){
-                return params.toArray(new Params[0]);
+        while (true) {
+            boolean isMutable = false;
+            if (helper.isKeyword(token, "var")) {
+                token = helper.nextToken();
+                if (helper.isKeyword(token, "mut")) {
+                    isMutable = true;
+                    token = helper.nextToken();
+                }
+            } else if (helper.isKeyword(token, "mut")) {
+                throw helper.syntaxError("'mut' must follow 'var' in a parameter", token);
+            }
+
+            if (!helper.isType(token))
+                throw helper.syntaxError("Expected a parameter type", token);
+            HIRType type = parseType(token);
+            helper.rejectPointer(type, "parameter type");
+
+            Token paramName = helper.nextToken();
+            boolean isVariadic = paramName.type() == TokenType.ELLIPSIS;
+            if (isVariadic) {
+                type = helper.listType(type, isMutable, 0);
+                paramName = helper.nextToken();
+            } else {
+                type = helper.withMutability(type, isMutable);
+            }
+            if (paramName.type() != TokenType.IDENTIFIER)
+                throw helper.syntaxError("Expected a parameter name", paramName);
+
+            Params parameter = new Params(paramName.val(), type, isVariadic);
+            params.add(parameter);
+            if (isVariadic) {
+                params.add(new Params(
+                        paramName.val() + "\u0003_count",
+                        helper.primitive("i64", false),
+                        false));
+            }
+
+            token = helper.nextToken();
+            if (token.type() == TokenType.RPAREN)
+                return params.toArray(Params[]::new);
+            if (token.type() != TokenType.COMMA)
+                throw helper.syntaxError("Expected ',' or ')' after a parameter", token);
+            token = helper.nextToken();
+            if (token.type() == TokenType.RPAREN)
+                throw helper.syntaxError("Trailing commas are not allowed in parameter lists", token);
+        }
+    }
+
+    public HIRType parseType(Token first) {
+        HIRType type = first.type() == TokenType.IDENTIFIER
+                ? new HIRType("user_defined", first.val(), false, 0, null)
+                : helper.primitive(first.val(), false);
+
+        while (true) {
+            Token suffix = helper.nextToken();
+            if (suffix.type() == TokenType.AMP) {
+                type = new HIRType("helper.primitive", "ptr", false, 0, type);
+            } else if (suffix.type() == TokenType.AND) {
+                type = new HIRType("helper.primitive", "ptr", false, 0,
+                        new HIRType("helper.primitive", "ptr", false, 0, type));
+            } else if (suffix.type() == TokenType.LBRACKET) {
+                Token sizeToken = helper.nextToken();
+                long size = 0;
+                if (sizeToken.type() == TokenType.SEMICOLON) {
+                    Token count = helper.nextToken();
+                    if (count.type() != TokenType.NUMBER)
+                        throw helper.syntaxError("Expected a list size after ';'", count);
+                    try {
+                        size = Long.parseLong(count.val());
+                    } catch (NumberFormatException e) {
+                        throw helper.syntaxError("List size is outside the supported range", count);
+                    }
+                    sizeToken = helper.nextToken();
+                }
+                if (sizeToken.type() != TokenType.RBRACKET)
+                    throw helper.syntaxError("Expected ']' in the type", sizeToken);
+                type = helper.listType(type, false, size);
+            } else {
+                helper.unreadToken(suffix);
+                return type;
             }
         }
     }
 
-    public ASTNode parserFn() {
-        ASTNode fn = new ASTNode(ASTKind.AST_FN, null, lexer.loc, null, false, false, true);
-        Type type = isDatatype(lexer.getNextToken());
-        Token name = lexer.getNextToken();
-        if(name.type() != TokenType.IDENTIFIER){
-            System.err.println("Expected identifier");
-            return null;
-        }
-        Object raw = handleParams();
-        Params[] params = null;
-        if (raw instanceof Params[] param)
-            params = param;
-
-        else if(raw instanceof String err){
-            System.err.println(err);
-            return null;
-        }
-        Union fnUnion = new Fn(type, name.val(), params, null);
-        fn.val = fnUnion;
-        return fn;
-    }
 }

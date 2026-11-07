@@ -10,36 +10,31 @@ import javafx.scene.control.TextArea;
 
 import java.util.ArrayList;
 
-import in.hamshik.Helpers.VarHelpers.Type;
-
-
 public class Parser {
     String path;
     TextArea out;
     Lexer lexer;
-    FnParser fnParser;
-    ExprHandler exprHandler;
     Body seqs = new Body(new ArrayList<>());
+	public Helper helper;
+    FnParser fnParser;
 
     public Parser(String path, TextArea out, boolean isMainParser) throws Exception{
         this.lexer = new Lexer(path, out);
         this.path = path;
         this.out = out;
-        if(isMainParser) { //used  to avoid infinate recuration
-            fnParser = new FnParser(this);
-            exprHandler = new ExprHandler(this);
-        }
+        helper = new Helper(this);
+        fnParser = new FnParser(this);
     }
 
     public ASTNode startParsing(){
-        Token next = lexer.getNextToken();
-        switch (next.type()) {
-            case KEYWORD -> 
-                seqs.body().add(handleKeywords(next));
-            case IDENTIFIER ->
-                exprHandler.handleExpr(next);
-
-            default -> {}
+        Token next = lexer.nextToken();
+        while (next.type() != TokenType.EOF) {
+            if (next.type() == TokenType.KEYWORD) {
+                ASTNode node = handleKeywords(next);
+                if (node != null)
+                    seqs.body().add(node);
+            }
+            next = lexer.nextToken();
         }
         return new ASTNode(ASTKind.AST_SEQ, null, null, seqs);
     }
@@ -54,15 +49,11 @@ public class Parser {
     private ASTNode handleKeywords(Token next) {
         switch (lexer.keywords.keyMap.get(next.val())) {
             case FN -> {
-                return fnParser.parserFn();
+                return fnParser.parseFunctionDefinition(next);
             }
             default -> {}
         }
         return null;
-    }
-
-    Type isDatatype(Token nextToken) {
-        return lexer.isDatatype(nextToken.val());
     }
 
     String getTokenTyName(TokenType type){
