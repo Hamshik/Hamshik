@@ -1,10 +1,10 @@
 package in.hamshik.Interpreter.Parser;
 
-
 import in.hamshik.Interpreter.Lexer.Lexer;
-import in.hamshik.Interpreter.Lexer.Lexer.Token;
+import in.hamshik.Interpreter.Lexer.LexHelper.Token;
 import in.hamshik.Interpreter.Lexer.TokenType;
 import in.hamshik.Interpreter.shared.Union.HIRType;
+import in.hamshik.Interpreter.shared.Union.TypeKind;
 
 public class Helper {
 
@@ -20,7 +20,6 @@ public class Helper {
     public Object handleExpr(Token next) {
         return null;
     }
-
 
     public void skipBodyOrTerminator() {
         Token token = nextToken();
@@ -42,11 +41,11 @@ public class Helper {
     }
 
     public HIRType primitive(String name, boolean isMutable) {
-        return new HIRType("primitive", name, isMutable, 0, null);
+        return new HIRType(TypeKind.PRIMITIVE, name, isMutable, 0, null);
     }
 
     public HIRType listType(HIRType inner, boolean isMutable, long size) {
-        return new HIRType("primitive", "list", isMutable, size, inner);
+        return new HIRType(TypeKind.PRIMITIVE, "list", isMutable, size, inner);
     }
 
     public HIRType withMutability(HIRType type, boolean isMutable) {
@@ -56,13 +55,13 @@ public class Helper {
     public void rejectPointer(HIRType type, String context) {
         if (type == null)
             return;
-        if ("primitive".equals(type.kind()) && "ptr".equals(type.name()))
+        if (TypeKind.PRIMITIVE == type.kind() && "ptr".equals(type.name()))
             throw new IllegalArgumentException("Java runtime does not support pointer " + context);
         rejectPointer(type.inner(), context);
     }
 
-    public boolean isType(Token token) {
-        return token.type() == TokenType.DATATYPE || token.type() == TokenType.IDENTIFIER;
+    public boolean isType(TokenType token) {
+        return token == TokenType.DATATYPE || token == TokenType.IDENTIFIER;
     }
 
     public boolean isKeyword(Token token, String keyword) {
@@ -78,16 +77,67 @@ public class Helper {
         return lexer.nextToken();
     }
 
+    public boolean consumeToken(TokenType type, String errMsg) {
+        if (pendingToken == null)
+            return lexer.consumeToken(type, errMsg);
+
+        Token token = nextToken();
+        if (token.type() != type)
+            throw syntaxError(errMsg, token);
+        return true;
+    }
+
+    public boolean consumeToken(TokenType type) {
+        String expected = type.sym == null ? type.name() : "'" + type.sym + "'";
+        return consumeToken(type, "Expected " + expected);
+    }
+
     public void unreadToken(Token token) {
         if (pendingToken != null)
             throw new IllegalStateException("Only one token of lookahead is supported");
         pendingToken = token;
     }
 
-    public IllegalArgumentException syntaxError(String message, Token token) {
+    public static IllegalArgumentException syntaxError(String message, Token token) {
         String found = token.type() == TokenType.EOF
                 ? "end of file"
-                : "'" + token.val() + "' (" + parser.getTokenTyName(token.type()) + ")";
+                : "'" + token.val() + "' (" + Parser.getTokenTyName(token.type()) + ")";
         return new IllegalArgumentException(message + "; found " + found);
     }
+
+    public HIRType parseType(Token first) {
+        HIRType type = first.type() == TokenType.IDENTIFIER
+                ? new HIRType(TypeKind.USER_DEFINED, first.val(), false, 0, null)
+                : primitive(first.val(), false);
+
+        while (true) {
+            Token suffix = nextToken();
+            if (suffix.type() == TokenType.AMP)
+                type = new HIRType(TypeKind.PRIMITIVE, "ptr", false, 0, type);
+
+            else if (suffix.type() == TokenType.AND)
+                type = new HIRType(TypeKind.PRIMITIVE, "ptr", false, 0,
+                        new HIRType(TypeKind.PRIMITIVE, "ptr", false, 0, type));
+
+            else if (suffix.type() == TokenType.LBRACKET) {
+                Token sizeToken = nextToken();
+                long size = 0;
+                if (sizeToken.type() == TokenType.NUMBER) {
+                    try {
+                        size = Long.parseLong(sizeToken.val());
+                    } catch (NumberFormatException e) {
+                        throw syntaxError("List size is outside the supported range", sizeToken);
+                    }
+                    sizeToken = nextToken();
+                }
+                if (sizeToken.type() != TokenType.RBRACKET)
+                    throw syntaxError("Expected ']' in the type", sizeToken);
+                type = listType(type, false, size);
+            } else {
+                unreadToken(suffix);
+                return type;
+            }
+        }
+    }
+
 }

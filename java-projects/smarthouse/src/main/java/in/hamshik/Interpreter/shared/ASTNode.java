@@ -1,13 +1,12 @@
 package in.hamshik.Interpreter.shared;
 
 import in.hamshik.Helpers.VarHelpers.Type;
-import in.hamshik.Interpreter.Lexer.Lexer.Location;
+import in.hamshik.Interpreter.Lexer.LexHelper.Location;
 
 public class ASTNode {
     public ASTKind kind;
     public Type type;
     public boolean isglobal;
-    public boolean is_variadic;
     public boolean ismut;
     public Location loc; /* 0-based byte offset (start) */ /* 0-based byte offset (end) */
 
@@ -17,11 +16,8 @@ public class ASTNode {
         this.kind = kind;
         this.type = type;
         this.loc = loc;
-        if(bools != null){
-            this.isglobal = bools[0];
-            this.is_variadic = bools[1];
-            this.ismut = bools[2];
-        }
+        this.isglobal = bools[0];
+        this.ismut = bools[1];
         this.val = val;
     }
     public ASTNode(ASTKind kind, Type type, Location loc, Union val){

@@ -4,40 +4,21 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Locale;
-import java.util.Set;
 
-import in.hamshik.Helpers.VarHelpers.Type;
+import in.hamshik.Interpreter.Lexer.LexHelper.*;
 import javafx.scene.control.TextArea;
 
 public class Lexer {
-    private static final Set<String> DATATYPE_NAMES = Set.of(
-            "i8", "i16", "i32", "i64", "i128",
-            "u8", "u16", "u32", "u64", "u128",
-            "f32", "f64", "f128", "uf32", "uf64", "uf128",
-            "str", "char", "bool", "void");
 
     TextArea out;
     String filePath;
     Token peekedToken;
     public static Token currToken;
 
-    public Location loc = new Location();
     public KeyWords keywords = new KeyWords();
     char[] sourceCode;
-
-    public record Token(String val, Location initLoc, Location lastLoc, TokenType type) {
-        public Token{Lexer.currToken=this;}
-    }
-
-    public class Location {
-        int pos, col, ln = 0;
-
-        int incPosCol() {
-            col++;
-            return ++pos;
-        }
-    }
+    public LexHelper helper = new LexHelper(this);
+    public Location loc = helper.new Location();
 
     public Lexer(String path, TextArea out) throws IOException, FileNotFoundException {
         this.out = out;
@@ -54,118 +35,95 @@ public class Lexer {
             currToken = temp;
             return temp;
         }
+
         if (loc.pos >= sourceCode.length)
             return new Token(null, null, loc, TokenType.EOF);
 
         var _char = sourceCode[loc.pos];
-        if (isAlpha(_char))
+        if (LexHelper.isAlpha(_char))
             return idOrKeywords();
         if (_char == '"')
             return handleStrs();
-        if (_char == '\'' && peek(1) == '\'' && peek(2) == '\'')
+        if (_char == '\'' && helper.peek(1) == '\'' && helper.peek(2) == '\'')
             return handleComments();
-        if (_char == '\'' && peek(1) == '\'')
+        if (_char == '\'' && helper.peek(1) == '\'')
             return handleSingleCommet();
         if (_char == '\'')
             return handleChar();
-        if (isDigit(_char))
+        if (LexHelper.isDigit(_char))
             return handleDigits();
 
-        if (_char == '.' && peek(1) == '.' && peek(2) == '.') {
-            loc.incPosCol();
-            loc.incPosCol();
-            loc.incPosCol();
-            return new Token("...", null, loc, TokenType.ELLIPSIS);
-        }
-        if (_char == '&' && peek(1) == '&') {
-            loc.incPosCol();
-            loc.incPosCol();
-            return new Token("&&", null, loc, TokenType.AND);
-        }
         return handleSymbols(_char);
     }
 
+    public boolean consumeToken(TokenType type, String errMsg) {
+        return helper.consumeToken(type, errMsg);
+    }
+
+    public boolean consumeToken(TokenType type) {
+        return helper.consumeToken(type);
+    }
+
     private Token handleSingleCommet() {
-        var _char = sourceCode[loc.pos];
-        while (_char != '\n') {
-            if (loc.incPosCol() >= sourceCode.length) // consuming the single line commet & checking bounds
-                break;
-            _char = sourceCode[loc.pos];
-        }
+        for (char _char = sourceCode[loc.pos]; _char != '\n' && helper.consumeToken();
+            _char = sourceCode[loc.pos]);
         return nextToken();
     }
 
     private Token handleDigits() {
         StringBuilder chars = new StringBuilder();
-        var initLoc = loc;
-        var _char = sourceCode[loc.pos];
-        while (isDigit(_char)) {
+        var initLoc = helper.new Location(loc);
+        
+        for(var _char = sourceCode[loc.pos]; LexHelper.isDigit(_char) && helper.consumeToken();
+            _char = sourceCode[loc.pos])
             chars.append(_char);
-            if (loc.incPosCol() >= sourceCode.length)
-                break;
-            _char = sourceCode[loc.pos];
-        }
+
         return new Token(chars.toString(), initLoc, loc, TokenType.NUMBER);
     }
 
-    private char peek(int idx) {
-        if (idx >= sourceCode.length || loc.pos + idx >= sourceCode.length)
-            return 0;
-        return sourceCode[loc.pos + idx];
-    }
-
     private Token handleSymbols(char _char) {
-        loc.incPosCol();
-        switch (_char) {
-            case '{': return new Token("{", loc, null, TokenType.LBRACE);
-            case '}': return new Token("}", loc, null, TokenType.RBRACE);
-            case '[': return new Token("[", loc, null, TokenType.LBRACKET);
-            case ']': return new Token("]", loc, null, TokenType.RBRACKET);
-            case '(': return new Token("(", loc, null, TokenType.LPAREN);
-            case ')': return new Token(")", loc, null, TokenType.RPAREN);
-            case ',': return new Token(",", loc, null, TokenType.COMMA);
-            case '&': return new Token("&", loc, null, TokenType.AMP);
-            case '=': return new Token("=", loc, null, TokenType.ASSIGN);
-            case ';': return new Token(";", loc, null, TokenType.SEMICOLON);
-            case '+': return new Token(";", loc, null, TokenType.PLUS);
-            case '-': return new Token(";", loc, null, TokenType.MINUS);
-            case '*': return new Token(";", loc, null, TokenType.STAR);
-            case '/': return new Token(";", loc, null, TokenType.SLASH);
-            case ':': return new Token(":", loc, null, TokenType.COLON);
-            default: return nextToken();
-        }
+        helper.consumeToken();
+        char[] mayBeSym = { _char, helper.peek(1) };
+        TokenType sym = TokenType.getSymbols(new StringBuilder().append(mayBeSym).toString());
+        if (sym == null) {
+            sym = TokenType.getSymbols(new StringBuilder().append(_char).toString());
+            if (sym != null) {
+                return new Token(sym, loc, loc);
+            } else
+                return nextToken();
+        } 
+        helper.consumeToken();
+        return new Token(sym, loc, null);
     }
 
     private Token handleComments() {
-        var initLoc = loc;
+        var initLoc = helper.new Location(loc);
         // comsuming tri-quates
-        for (int i = 0; i < 3; i++)
-            loc.incPosCol();
-        var _char = sourceCode[loc.pos];
-        while (_char != '\'' && peek(1) != '\'' && peek(2) != '\'') {
-            if (loc.incPosCol() >= sourceCode.length) {
+        helper.consumeToken(3);
+       
+        for( var _char = sourceCode[loc.pos];
+            _char != '\'' && helper.peek(1) != '\'' && helper.peek(2) != '\''; _char = sourceCode[loc.pos]) {
+            if (!helper.consumeToken()) {
                 System.err.println("pls close the commet from " + initLoc.pos);
                 break;
             }
-            _char = sourceCode[loc.pos];
         }
-        for (int i = 0; i < 3; i++)
-            loc.incPosCol();
+        helper.consumeToken(3);
         return nextToken();
     }
 
     private Token handleChar() {
         StringBuilder chars = new StringBuilder();
-        var initLoc = loc;
-        var _char = sourceCode[loc.incPosCol()]; // consuming opening-quotes
-        while (_char != '\'') {
+        var initLoc = helper.new Location(loc);
+         // consuming opening-quotes
+        for(var _char = sourceCode[loc.incPosCol()]; _char != '\''; _char = sourceCode[loc.pos]) {
             chars.append(_char);
-            if (loc.incPosCol() >= sourceCode.length && sourceCode[loc.pos] != '\'') { // already consumed by
-                                                                                       // 'loc.incPosCol'
-                System.err.println("Only one char is allowed");
+            if (!helper.consumeToken() && sourceCode[loc.pos] != '\'') { // already consumed by
+                                                                  // 'loc.incPosCol'
+                System.err.println("Pls Close the quates");
                 break;
             }
-            _char = sourceCode[loc.pos];
+            
         }
         loc.incPosCol(); // consuming closing-quates
         return new Token(chars.toString(), initLoc, loc, TokenType.CHARACTER);
@@ -173,63 +131,30 @@ public class Lexer {
 
     private Token handleStrs() {
         StringBuilder chars = new StringBuilder();
-        var initLoc = loc;
-        var _char = sourceCode[loc.incPosCol()]; // consuming opening-quates
-        while (_char != '"') {
+        var initLoc = helper.new Location(loc);
+         // consuming opening-quates
+        for (var _char = sourceCode[loc.incPosCol()]; _char != '"'; _char = sourceCode[loc.pos]) {
             chars.append(_char);
-            if (_char == '\n' || loc.incPosCol() >= sourceCode.length) {
+            if (_char == '\n' || !helper.consumeToken()) {
                 System.err.println("pls close the qutes");
                 break;
             }
-            _char = sourceCode[loc.pos];
         }
-        loc.incPosCol(); // consuming closing-quates
+        helper.consumeToken(); // consuming closing-quates
         return new Token(chars.toString(), initLoc, loc, TokenType.STRINGS);
-    }
-
-    boolean isAlpha(char _char) {
-        return _char >= 'A' && _char <= 'Z' || _char >= 'a' && _char <= 'z' || _char == '_';
-    }
-
-    boolean isDigit(char _char) {
-        return _char >= '0' && _char <= '9';
     }
 
     Token idOrKeywords() {
         StringBuilder chars = new StringBuilder();
-        var initLoc = loc;
-        var _char = sourceCode[loc.pos];
-        while (isAlpha(_char) || isDigit(_char)) {
+        var initLoc = helper.new Location(loc);
+        
+        for (var _char = sourceCode[loc.pos];
+            (LexHelper.isAlpha(_char) || LexHelper.isDigit(_char)) && helper.consumeToken(); _char = sourceCode[loc.pos])
             chars.append(_char);
-            if (loc.incPosCol() >= sourceCode.length)
-                break;
-            _char = sourceCode[loc.pos];
-        }
+
         String value = chars.toString();
         return new Token(value, initLoc, loc,
-                DATATYPE_NAMES.contains(value.toLowerCase(Locale.ROOT)) ? TokenType.DATATYPE
-                        : iskeyword(value) ? TokenType.KEYWORD : TokenType.IDENTIFIER);
-    }
-
-    public boolean iskeyword(String chars) {
-        return keywords.keyMap.containsKey(chars);
-    }
-
-    public Type isDatatype(String type) {
-        for (var i : Type.values())
-            if (i.name().equals(type))
-                return i;
-        return null;
-    }
-
-    public Token peekToken() {
-        if (peekedToken != null)
-            return peekedToken;
-        Token temp = currToken;
-        Token token = nextToken();
-        loc = token.initLoc();
-        peekedToken = token;
-        currToken = temp;
-        return token;
+                LexHelper.isDatatype(value) != null ? TokenType.DATATYPE
+                        : helper.iskeyword(value) ? TokenType.KEYWORD : TokenType.IDENTIFIER);
     }
 }

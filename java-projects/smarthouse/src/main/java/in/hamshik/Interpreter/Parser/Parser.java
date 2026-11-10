@@ -2,7 +2,7 @@ package in.hamshik.Interpreter.Parser;
 
 import in.hamshik.Interpreter.Lexer.Lexer;
 import in.hamshik.Interpreter.Lexer.TokenType;
-import in.hamshik.Interpreter.Lexer.Lexer.Token;
+import in.hamshik.Interpreter.Lexer.LexHelper.Token;
 import in.hamshik.Interpreter.shared.ASTKind;
 import in.hamshik.Interpreter.shared.ASTNode;
 import in.hamshik.Interpreter.shared.Union.Body;
@@ -36,6 +36,7 @@ public class Parser {
             }
             next = lexer.nextToken();
         }
+        System.out.println("SUCESS");
         return new ASTNode(ASTKind.AST_SEQ, null, null, seqs);
     }
 
@@ -43,7 +44,7 @@ public class Parser {
         return new Token(val, null, null, type);
     }
     private Token createToken(String val){
-        return new Token(val, null, null, lexer.iskeyword(val) ? TokenType.KEYWORD : TokenType.IDENTIFIER );
+        return new Token(val, null, null, lexer.helper.iskeyword(val) ? TokenType.KEYWORD : TokenType.IDENTIFIER );
     }
 
     private ASTNode handleKeywords(Token next) {
@@ -56,7 +57,11 @@ public class Parser {
         return null;
     }
 
-    String getTokenTyName(TokenType type){
+    static String getTokenTyName(TokenType type){
         return type.sym != null ? type.sym : type.name();
+    }
+
+    boolean iskeyword(String value) {
+        return lexer.helper.iskeyword(value);
     }
 }

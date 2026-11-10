@@ -13,8 +13,10 @@ public interface Union {
     record IfConds(ASTNode cond, Body thenBranch, Body elseBranch) implements Union {}
     record While(ASTNode cond, ASTNode body, ASTNode expr) implements Union {}
     record Fn(HIRType ret, String name, Params[] params, Body body) implements Union {}
-    record HIRType(String kind, String name, boolean mutable, long size, HIRType inner) {}
+    record HIRType(TypeKind kind, String name, boolean mutable, long size, HIRType inner) {}
     record Lists(ArrayList<ASTNode> elements) implements Union {}
     record Index(ArrayList<ASTNode> expr) implements Union {}
-
-}
+    public enum TypeKind{
+        USER_DEFINED, PRIMITIVE
+    }
+} 
