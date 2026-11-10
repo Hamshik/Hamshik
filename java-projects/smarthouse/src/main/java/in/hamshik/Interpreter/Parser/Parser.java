@@ -1,25 +1,26 @@
 package in.hamshik.Interpreter.Parser;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.function.Consumer;
+
 import in.hamshik.Interpreter.Lexer.Lexer;
 import in.hamshik.Interpreter.Lexer.TokenType;
 import in.hamshik.Interpreter.Lexer.LexHelper.Token;
 import in.hamshik.Interpreter.shared.ASTKind;
 import in.hamshik.Interpreter.shared.ASTNode;
 import in.hamshik.Interpreter.shared.Union.Body;
-import javafx.scene.control.TextArea;
-
-import java.util.ArrayList;
 
 public class Parser {
     String path;
-    TextArea out;
+    private final Consumer<String> out;
     Lexer lexer;
     Body seqs = new Body(new ArrayList<>());
 	public Helper helper;
     FnParser fnParser;
 
-    public Parser(String path, TextArea out, boolean isMainParser) throws Exception{
-        this.lexer = new Lexer(path, out);
+    public Parser(String path, Consumer<String> out) throws IOException {
+        this.lexer = new Lexer(path, null);
         this.path = path;
         this.out = out;
         helper = new Helper(this);
@@ -27,17 +28,27 @@ public class Parser {
     }
 
     public ASTNode startParsing(){
-        Token next = lexer.nextToken();
-        while (next.type() != TokenType.EOF) {
-            if (next.type() == TokenType.KEYWORD) {
-                ASTNode node = handleKeywords(next);
-                if (node != null)
-                    seqs.body().add(node);
+        try {
+            Token next = lexer.nextToken();
+            while (next.type() != TokenType.EOF) {
+                if (next.type() == TokenType.KEYWORD) {
+                    ASTNode node = handleKeywords(next);
+                    if (node != null)
+                        seqs.body().add(node);
+                }
+                next = lexer.nextToken();
             }
-            next = lexer.nextToken();
+            showMessage("Parsing completed successfully.", "\u001B[32m");
+            return new ASTNode(ASTKind.AST_SEQ, null, null, seqs);
+        } catch (IllegalArgumentException e) {
+            showMessage("Parse error: " + e.getMessage(), "\u001B[31m");
+            return null;
         }
-        System.out.println("SUCESS");
-        return new ASTNode(ASTKind.AST_SEQ, null, null, seqs);
+    }
+
+    private void showMessage(String message, String color) {
+        if (out != null)
+            out.accept(color + message + "\u001B[0m\n");
     }
 
     private Token createToken(String val, TokenType type){

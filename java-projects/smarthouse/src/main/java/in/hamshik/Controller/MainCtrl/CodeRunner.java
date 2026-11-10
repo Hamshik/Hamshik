@@ -4,10 +4,10 @@ import javafx.fxml.FXML;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 import java.io.File;
+import java.io.IOException;
 
 import in.hamshik.Interpreter.Parser.Parser;
 import in.hamshik.Interpreter.shared.ASTNode;
@@ -16,7 +16,8 @@ public class CodeRunner extends Controller {
 
     @FXML private TextField filePathField;
     @FXML private Button codeRunBtn;
-    @FXML private TextArea out;
+
+    private TerminalWindow terminalWindow;
 
     @FXML
     private void browseCodeFile() {
@@ -33,15 +34,22 @@ public class CodeRunner extends Controller {
     }
 
     @FXML void eval() {
-        if(filePathField.getText().isEmpty()){
-            System.err.println("Pls fill the path");
+        if (terminalWindow == null)
+            terminalWindow = new TerminalWindow();
+        terminalWindow.show();
+        terminalWindow.clear();
+
+        String path = filePathField.getText().trim();
+        if (path.isEmpty()) {
+            terminalWindow.append("\u001B[31mPlease choose a source file.\u001B[0m\n");
             return;
         }
-        try{
-            Parser parser = new Parser(filePathField.getText().trim(), out, true);
+        try {
+            Parser parser = new Parser(path, terminalWindow::append);
             ASTNode root = parser.startParsing();
-        } catch (Exception e){
-            e.printStackTrace();
+        } catch (IOException e) {
+            terminalWindow.append("\u001B[31mCould not read source file: "
+                    + e.getMessage() + "\u001B[0m\n");
         }
     }
 }
