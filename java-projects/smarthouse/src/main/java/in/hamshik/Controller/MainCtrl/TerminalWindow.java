@@ -38,21 +38,21 @@ final class TerminalWindow {
     }
 
     private void configureTextFlow() {
-        textFlow.setStyle("-fx-background-color: #1e1e1e; -fx-padding: 14;");
+        textFlow.setStyle("-fx-background-color: #0a0000; -fx-padding: 14;");
     }
 
     private void configureScrollPane() {
         outputScrollPane.setFitToWidth(true);
         outputScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         outputScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        outputScrollPane.setStyle("-fx-background: #1e1e1e; -fx-background-color: #1e1e1e;");
+        outputScrollPane.setStyle("-fx-background: #0a0000; -fx-background-color: #0a0000;");
     }
 
     private void configureStage() {
         StackPane root = new StackPane(outputScrollPane);
-        root.setStyle("-fx-background-color: #1e1e1e;");
+        root.setStyle("-fx-background-color: #0a0000;");
         terminalStage.setTitle("Suvarnam — Output");
-        terminalStage.setScene(new Scene(root, 800, 500, Color.web("#1e1e1e")));
+        terminalStage.setScene(new Scene(root, 800, 500, Color.web("#0a0000")));
     }
 
     void show() {
@@ -113,7 +113,7 @@ final class TerminalWindow {
             return;
         Text text = new Text(value);
         text.setFill(textColor);
-        text.setFont(Font.font("Monospaced", boldText ? FontWeight.BOLD : FontWeight.NORMAL, 13));
+        text.setFont(Font.font("\"JetBrains Mono\", \"Consolas\", monospace", boldText ? FontWeight.BOLD : FontWeight.NORMAL, 15));
         textFlow.getChildren().add(text);
     }
 
@@ -134,7 +134,7 @@ final class TerminalWindow {
             for (int i = 0; i < parts.length; i++)
                 codes[i] = parts[i].isEmpty() ? 0 : Integer.parseInt(parts[i]);
             return codes;
-        } catch (NumberFormatException ignored) {
+        } catch (NumberFormatException _) {
             return null;
         }
     }

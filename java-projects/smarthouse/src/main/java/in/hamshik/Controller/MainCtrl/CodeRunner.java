@@ -9,13 +9,16 @@ import javafx.scene.control.TextField;
 import java.io.File;
 import java.io.IOException;
 
+import in.hamshik.Helpers.ProcessSpawner;
 import in.hamshik.Interpreter.Parser.Parser;
 import in.hamshik.Interpreter.shared.ASTNode;
 
 public class CodeRunner extends Controller {
 
-    @FXML private TextField filePathField;
-    @FXML private Button codeRunBtn;
+    @FXML
+    private TextField filePathField;
+    @FXML
+    private Button codeRunBtn;
 
     private TerminalWindow terminalWindow;
 
@@ -30,10 +33,11 @@ public class CodeRunner extends Controller {
         File selectedFile = fileChooser.showOpenDialog(window);
         if (selectedFile != null)
             filePathField.setText(selectedFile.getAbsolutePath());
-        
+
     }
 
-    @FXML void eval() {
+    @FXML
+    void eval() {
         if (terminalWindow == null)
             terminalWindow = new TerminalWindow();
         terminalWindow.show();
@@ -44,12 +48,23 @@ public class CodeRunner extends Controller {
             terminalWindow.append("\u001B[31mPlease choose a source file.\u001B[0m\n");
             return;
         }
-        try {
-            Parser parser = new Parser(path, terminalWindow::append);
-            ASTNode root = parser.startParsing();
-        } catch (IOException e) {
-            terminalWindow.append("\u001B[31mCould not read source file: "
-                    + e.getMessage() + "\u001B[0m\n");
-        }
+        boolean ok = false;
+
+        ProcessSpawner.createProcess((err) -> {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Choose Suvarnam excutable");
+            fileChooser.getExtensionFilters().add(
+                    new FileChooser.ExtensionFilter("Suvarnam bin"));
+
+            Window window = filePathField.getScene().getWindow();
+            File selectedFile = fileChooser.showOpenDialog(window);
+            if (selectedFile != null)
+                filePathField.setText(selectedFile.getAbsolutePath());
+            
+
+        }, "suvarnam", "w");
+        Parser parser = new Parser(path, terminalWindow::append);
+        ASTNode root = parser.startParsing();
+
     }
 }

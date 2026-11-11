@@ -19,8 +19,8 @@ public class Parser {
 	public Helper helper;
     FnParser fnParser;
 
-    public Parser(String path, Consumer<String> out) throws IOException {
-        this.lexer = new Lexer(path, null);
+    public Parser(String path, Consumer<String> out)  {
+        this.lexer = new Lexer(path, out);
         this.path = path;
         this.out = out;
         helper = new Helper(this);

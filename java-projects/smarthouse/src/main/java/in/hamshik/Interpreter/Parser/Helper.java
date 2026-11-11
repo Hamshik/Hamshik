@@ -17,10 +17,6 @@ public class Helper {
         this.lexer = parser.lexer;
     }
 
-    public Object handleExpr(Token next) {
-        return null;
-    }
-
     public void skipBodyOrTerminator() {
         Token token = nextToken();
         if (token.type() == TokenType.SEMICOLON)

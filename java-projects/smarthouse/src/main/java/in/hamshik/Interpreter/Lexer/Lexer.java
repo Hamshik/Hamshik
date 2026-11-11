@@ -1,16 +1,14 @@
 package in.hamshik.Interpreter.Lexer;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.function.Consumer;
 
 import in.hamshik.Interpreter.Lexer.LexHelper.*;
-import javafx.scene.control.TextArea;
 
 public class Lexer {
 
-    TextArea out;
     String filePath;
     Token peekedToken;
     public static Token currToken;
@@ -20,11 +18,13 @@ public class Lexer {
     public LexHelper helper = new LexHelper(this);
     public Location loc = helper.new Location();
 
-    public Lexer(String path, TextArea out) throws IOException, FileNotFoundException {
-        this.out = out;
+    public Lexer(String path, Consumer<String> out) {
         this.filePath = path;
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
             sourceCode = reader.readAllAsString().toCharArray();
+        } catch (IOException e) {
+            out.accept("\u001B[31m" + "Could not read source file: "
+                    + e.getMessage() + "\u001B[0m\n");
         }
     }
 
