@@ -10,35 +10,26 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<SplitPane fx:id="root" dividerPositions="0.21120186697782964" prefHeight="756.0" prefWidth="859.0"
-    xmlns="http://javafx.com/javafx/25.0.1" xmlns:fx="http://javafx.com/fxml/1"
-    fx:controller="in.hamshik.Controller.MainCtrl.CodeRunner">
+<SplitPane fx:id="root" dividerPositions="0.21120186697782964" prefHeight="756.0" prefWidth="859.0" xmlns="http://javafx.com/javafx/25.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.hamshik.Controller.MainCtrl.CodeRunner">
     <items>
         <fx:include fx:id="sidebar" source="sidebar.fxml" />
 
         <AnchorPane fx:id="pageContent" style="-fx-border-width: 0 0 0 0;" styleClass="app-root">
             <children>
-                <AnchorPane fx:id="topbarContainer" prefHeight="56.0" AnchorPane.leftAnchor="20.0"
-                    AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="12.0">
+                <AnchorPane fx:id="topbarContainer" prefHeight="56.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="12.0">
                     <children>
-                        <fx:include fx:id="topbar" source="topbar.fxml"
-                            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                            AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <fx:include fx:id="topbar" source="topbar.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                     </children>
                 </AnchorPane>
 
-                <StackPane styleClass="firmware-page" AnchorPane.bottomAnchor="20.0"
-                    AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0"
-                    AnchorPane.topAnchor="86.0">
+                <StackPane styleClass="firmware-page" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="86.0">
                     <children>
                         <VBox maxWidth="520.0" spacing="22.0" styleClass="firmware-card">
                             <children>
                                 <VBox spacing="7.0">
                                     <children>
                                         <Label styleClass="firmware-title" text="Code Runner" />
-                                        <Label styleClass="firmware-description"
-                                            text="Choose a file(Main) with .sa extenstion to run your custom code for better communication of app"
-                                            wrapText="true" />
+                                        <Label styleClass="firmware-description" text="Choose a file(Main) with .sa extenstion to run your custom code for better communication of app" wrapText="true" />
                                     </children>
                                 </VBox>
 
@@ -47,21 +38,31 @@
                                         <Label styleClass="firmware-field-label" text="Main file" />
                                         <HBox alignment="CENTER_LEFT" spacing="10.0">
                                             <children>
-                                                <TextField fx:id="filePathField" editable="false"
-                                                    prefHeight="40.0" promptText="Select main file"
-                                                    styleClass="field-input" HBox.hgrow="ALWAYS" />
-                                                <Button mnemonicParsing="false"
-                                                    onAction="#browseCodeFile" prefHeight="40.0"
-                                                    prefWidth="89.0" styleClass="navbuts"
-                                                    text="Browse" />
+                                                <TextField fx:id="filePathField" editable="false" prefHeight="40.0" promptText="Select main file" styleClass="field-input" HBox.hgrow="ALWAYS" />
+                                                <Button mnemonicParsing="false" onAction="#browseCodeFile" prefHeight="40.0" prefWidth="89.0" styleClass="navbuts" text="Browse" />
                                             </children>
                                         </HBox>
                                     </children>
                                 </VBox>
 
-                                <Button fx:id="runCodeBtn" maxWidth="Infinity"
-                                    mnemonicParsing="false" onAction="#eval" prefHeight="42.0"
-                                    styleClass="connect-btn" text="Run code" />
+                                <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#eval" prefHeight="42.0" styleClass="connect-btn" text="Run code" />
+                        <VBox spacing="8.0">
+                           <children>
+                              <AnchorPane fx:id="saFeildRoot" prefHeight="119.0" prefWidth="462.0" visible="false">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" layoutY="20.0" prefHeight="40.0" prefWidth="470.0" spacing="10.0">
+                                       <children>
+                                          <TextField fx:id="saExecPathField" editable="false" prefHeight="40.0" prefWidth="358.0" promptText="Select Executable file" styleClass="field-input" HBox.hgrow="SOMETIMES" />
+                                          <Button mnemonicParsing="false" onAction="#browseSAExecFile" prefHeight="40.0" prefWidth="89.0" styleClass="navbuts" text="Browse" HBox.hgrow="SOMETIMES" />
+                                       </children>
+                                    </HBox>
+                                    <Button layoutX="2.0" layoutY="69.0" maxWidth="Infinity" mnemonicParsing="false" onAction="#eval" prefHeight="42.0" prefWidth="456.0" styleClass="connect-btn" text="Run Compiler" />
+                                    <Label styleClass="firmware-field-label" text="Select Suvarnam Compiler" />
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </VBox>
+                        <Label fx:id="status" prefHeight="16.0" prefWidth="515.0" />
                             </children>
                         </VBox>
                     </children>

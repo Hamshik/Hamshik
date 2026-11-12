@@ -1,6 +1,6 @@
 module in.hamshik {
     requires transitive javafx.controls;
-    requires javafx.fxml;
+    requires transitive javafx.fxml;
     requires transitive javafx.graphics;
     requires javax.jmdns;
     requires javafx.base;

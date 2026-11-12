@@ -15,24 +15,24 @@ public final class ProcessSpawner {
             command.addAll(Arrays.asList(opts));
 
             Process process = new ProcessBuilder(command)
-                    .redirectErrorStream(true)
+                    .redirectOutput(ProcessBuilder.Redirect.DISCARD)
                     .start();
 
-            String output;
-            try (var stream = process.getInputStream()) {
-                output = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+            // Read only stderr
+            String errors;
+            try (var stream = process.getErrorStream()) {
+                errors = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
             }
 
             int exitCode = process.waitFor();
-            if (exitCode != 0) {
-                throw new IOException("Process exited with code " + exitCode + ": " + output);
-            }
+            if (exitCode != 0) 
+                throw new IOException("Process exited with code " + exitCode + ": " + errors);
 
-            return output;
-        } catch (IOException _) {
-            out.accept("Command is not found");
+            return errors;
+        } catch (IOException e) {
+            out.accept(e.getMessage());
             return null;
-        } catch (InterruptedException _){
+        } catch (InterruptedException _) {
             return null;
         }
     }
