@@ -28,6 +28,7 @@ public class Parser {
 
     public ASTNode startParsing(){
         try {
+            if(lexer.sourceCode == null) return null;
             Token next = lexer.nextToken();
             while (next.type() != TokenType.EOF) {
                 if (next.type() == TokenType.KEYWORD) {

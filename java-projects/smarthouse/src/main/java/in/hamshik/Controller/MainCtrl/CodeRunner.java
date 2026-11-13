@@ -6,10 +6,12 @@ import javafx.stage.Window;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import in.hamshik.Helpers.FXMLPipeline;
 import in.hamshik.Helpers.ProcessSpawner;
@@ -23,6 +25,7 @@ public class CodeRunner extends Controller {
     @FXML private AnchorPane saFeildRoot;
     private Object compiler = "suvarnam";
     private TerminalWindow terminalWindow;
+    private Boolean errOn = null;
 
     @FXML
     private void browseCodeFile() {
@@ -32,12 +35,15 @@ public class CodeRunner extends Controller {
             return;
 
         Path file = selectedFile.toPath();
+        final String err = "Plese select vaild Source code";
         filePathField.setText(file.toString());
         if (!Files.isRegularFile(file)) {
-            FXMLPipeline.showError("Plese select vaild Source code", true, status, filePathField);
+            errOn = true;
+            FXMLPipeline.showError(err, true, status, filePathField);
             return;
         }
-        FXMLPipeline.showError("", false, status, filePathField);
+        if(errOn != null && errOn)
+            FXMLPipeline.showError("", false, status, filePathField);
     }
 
     @FXML
@@ -50,11 +56,13 @@ public class CodeRunner extends Controller {
 
         Path executable = selectedFile.toPath();
         saExecPathField.setText(executable.toString());
+        final String err = "Plese select vaild Executable file";
         if (!Files.isRegularFile(executable) || !Files.isExecutable(executable)) {
-            FXMLPipeline.showError("Plese select vaild Executable file", true, status, saExecPathField);
+            errOn = false;
+            FXMLPipeline.showError(err, true, status, saExecPathField);
             return;
         }
-        FXMLPipeline.showError("", false, status, saExecPathField);
+        if(errOn != null && !errOn) FXMLPipeline.showError("", false, status, saExecPathField);
         compiler = executable;
     }
 
@@ -74,21 +82,35 @@ public class CodeRunner extends Controller {
         String path = filePathField.getText().trim();
         if (terminalWindow == null)
             terminalWindow = new TerminalWindow();
-        terminalWindow.show();
-        terminalWindow.clear();
 
         if (path.isEmpty()) {
             FXMLPipeline.showError("Please choose a source file.", true, status, filePathField);
+            errOn = true;
             return;
         }
 
-        String err = ProcessSpawner.createProcess(terminalWindow::append, compiler instanceof Path j ? j.toString() : (String)compiler, "");
-        if (err == null) {
-            FXMLPipeline.showError("Suvarnam complier is not found.", true, status, saExecPathField);
+        final AtomicBoolean isErr = new AtomicBoolean(false);
+        final String slicedPath = Path.of(path).getParent().toString();
+        final String tmpFileSrc = "/tmp" + path.substring(path.lastIndexOf("/"));
+        String err = ProcessSpawner.createProcess((errReason) -> {
+            isErr.set(true);
+            FXMLPipeline.setManagedVisibleTo(true, saFeildRoot);
+            FXMLPipeline.showError(
+                errReason.equals("Cannot run program \"suvarnam\": Exec failed, error: 2 (No such file or directory) ") ? 
+                "Cannot find the suvarnam complier" : errReason, true, status, saExecPathField
+            );
+            errOn = false;
+        }, compiler instanceof Path j ? j.toString() : (String)compiler, path, "--emit-desugared", tmpFileSrc, "-I", slicedPath);
+        
+        if(isErr.get()) return;
+
+        terminalWindow.show();
+        terminalWindow.clear();
+        if(err != null && !err.isBlank()) {
+            terminalWindow.append(err);
             return;
         }
-
-        Parser parser = new Parser(path, terminalWindow::append);
+        Parser parser = new Parser(tmpFileSrc, terminalWindow::append);
         ASTNode root = parser.startParsing();
 
     }

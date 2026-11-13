@@ -14,7 +14,7 @@ public class Lexer {
     public static Token currToken;
 
     public KeyWords keywords = new KeyWords();
-    char[] sourceCode;
+    public char[] sourceCode;
     public LexHelper helper = new LexHelper(this);
     public Location loc = helper.new Location();
 

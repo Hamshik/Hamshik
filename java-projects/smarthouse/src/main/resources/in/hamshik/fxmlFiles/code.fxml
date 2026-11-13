@@ -48,7 +48,7 @@
                                 <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#eval" prefHeight="42.0" styleClass="connect-btn" text="Run code" />
                         <VBox spacing="8.0">
                            <children>
-                              <AnchorPane fx:id="saFeildRoot" prefHeight="119.0" prefWidth="462.0" visible="false">
+                              <AnchorPane fx:id="saFeildRoot" prefHeight="119.0" prefWidth="462.0" visible="false" managed="false">
                                  <children>
                                     <HBox alignment="CENTER_LEFT" layoutY="20.0" prefHeight="40.0" prefWidth="470.0" spacing="10.0">
                                        <children>

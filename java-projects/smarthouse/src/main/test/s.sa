@@ -1,3 +1,4 @@
-fn main(var mut name) {
-    var mut name = 'a'
+fn main(var name) {
+    var mut names = 'a';
+    return 0;
 }

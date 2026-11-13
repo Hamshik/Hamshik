@@ -25,10 +25,8 @@ public final class ProcessSpawner {
             }
 
             int exitCode = process.waitFor();
-            if (exitCode != 0) 
-                throw new IOException("Process exited with code " + exitCode + ": " + errors);
-
             return errors;
+
         } catch (IOException e) {
             out.accept(e.getMessage());
             return null;

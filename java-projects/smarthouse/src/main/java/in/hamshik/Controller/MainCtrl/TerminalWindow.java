@@ -38,21 +38,21 @@ final class TerminalWindow {
     }
 
     private void configureTextFlow() {
-        textFlow.setStyle("-fx-background-color: #0a0000; -fx-padding: 14;");
+        textFlow.setStyle("-fx-background-color: #141313; -fx-padding: 14;");
     }
 
     private void configureScrollPane() {
         outputScrollPane.setFitToWidth(true);
         outputScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         outputScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        outputScrollPane.setStyle("-fx-background: #0a0000; -fx-background-color: #0a0000;");
+        outputScrollPane.setStyle("-fx-background: #141313; -fx-background-color: #141313;");
     }
 
     private void configureStage() {
         StackPane root = new StackPane(outputScrollPane);
         root.setStyle("-fx-background-color: #0a0000;");
         terminalStage.setTitle("Suvarnam — Output");
-        terminalStage.setScene(new Scene(root, 800, 500, Color.web("#0a0000")));
+        terminalStage.setScene(new Scene(root, 800, 500, Color.web("#141313")));
     }
 
     void show() {
