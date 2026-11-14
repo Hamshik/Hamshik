@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import in.hamshik.Interpreter.Lexer.Lexer;
 import in.hamshik.Interpreter.Lexer.LexHelper.Token;
 import in.hamshik.Interpreter.Lexer.TokenType;
-import in.hamshik.Interpreter.shared.ASTKind;
 import in.hamshik.Interpreter.shared.ASTNode;
 import in.hamshik.Interpreter.shared.Union.Fn;
 import in.hamshik.Interpreter.shared.Union.HIRType;
@@ -13,7 +12,6 @@ import in.hamshik.Interpreter.shared.Union.HIRType;
 public class FnParser {
     private final Parser parser;
     private final Lexer lexer;
-    private Token pendingToken;
     private final Helper helper;
 
     public FnParser(Parser parser) {
@@ -36,7 +34,6 @@ public class FnParser {
             returnType = helper.primitive(null, false);
         } else {
             returnType = helper.parseType(first);
-            helper.rejectPointer(returnType, "return type");
             if (afterFirst.type() != TokenType.IDENTIFIER)
                 throw Helper.syntaxError("Expected a function name after the return type", afterFirst);
             name = afterFirst.val();
@@ -44,15 +41,10 @@ public class FnParser {
         }
 
         Params[] params = parseParameters();
-        helper.skipBodyOrTerminator();
         return new ASTNode(
-                ASTKind.AST_FN,
                 null,
                 fnToken.initLoc(),
-                new Fn(returnType, name, params, null),
-                false,
-                false,
-                false);
+                new Fn(returnType, name, params, helper.parseBody()));
     }
 
     public Params[] parseParameters() {

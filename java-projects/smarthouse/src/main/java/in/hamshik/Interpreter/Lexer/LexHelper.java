@@ -47,15 +47,12 @@ public class LexHelper {
         return _char >= '0' && _char <= '9';
     }
 
-    public boolean iskeyword(String chars) {
-        return lexer.keywords.keyMap.containsKey(chars);
+    public static boolean iskeyword(String chars) {
+        return KeyWords.keyMap.containsKey(chars);
     }
 
     public static Type isDatatype(String type) {
-        for (var i : Type.values())
-            if (i.name().equals(type))
-                return i;
-        return null;
+        return Type.datatype.get(type);
     }
 
     char peek(int idx) {

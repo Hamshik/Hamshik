@@ -6,7 +6,6 @@ import javafx.stage.Window;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.Text;
 
 import java.io.File;
 import java.nio.file.Files;

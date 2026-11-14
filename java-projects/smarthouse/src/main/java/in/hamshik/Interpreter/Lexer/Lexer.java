@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.function.Consumer;
 
 import in.hamshik.Interpreter.Lexer.LexHelper.*;
+import in.hamshik.Interpreter.Parser.Helper;
 
 public class Lexer {
 
@@ -13,7 +14,6 @@ public class Lexer {
     Token peekedToken;
     public static Token currToken;
 
-    public KeyWords keywords = new KeyWords();
     public char[] sourceCode;
     public LexHelper helper = new LexHelper(this);
     public Location loc = helper.new Location();
@@ -103,10 +103,9 @@ public class Lexer {
        
         for( var _char = sourceCode[loc.pos];
             _char != '\'' && helper.peek(1) != '\'' && helper.peek(2) != '\''; _char = sourceCode[loc.pos]) {
-            if (!helper.consumeToken()) {
-                System.err.println("pls close the commet from " + initLoc.pos);
-                break;
-            }
+            if (!helper.consumeToken()) 
+                throw Helper.syntaxError("pls close the commet from " + initLoc.pos, new Token(TokenType.EOF, initLoc, loc));
+
         }
         helper.consumeToken(3);
         return nextToken();
@@ -118,11 +117,8 @@ public class Lexer {
          // consuming opening-quotes
         for(var _char = sourceCode[loc.incPosCol()]; _char != '\''; _char = sourceCode[loc.pos]) {
             chars.append(_char);
-            if (!helper.consumeToken() && sourceCode[loc.pos] != '\'') { // already consumed by
-                                                                  // 'loc.incPosCol'
-                System.err.println("Pls Close the quates");
-                break;
-            }
+            if (!helper.consumeToken() && sourceCode[loc.pos] != '\'')
+                throw Helper.syntaxError("Pls Close the quates", new Token(TokenType.EOF, initLoc, loc));
             
         }
         loc.incPosCol(); // consuming closing-quates
@@ -135,10 +131,8 @@ public class Lexer {
          // consuming opening-quates
         for (var _char = sourceCode[loc.incPosCol()]; _char != '"'; _char = sourceCode[loc.pos]) {
             chars.append(_char);
-            if (_char == '\n' || !helper.consumeToken()) {
-                System.err.println("pls close the qutes");
-                break;
-            }
+            if (_char == '\n' || !helper.consumeToken())
+                throw Helper.syntaxError("pls close the qutes", new Token(TokenType.EOF, initLoc, loc));
         }
         helper.consumeToken(); // consuming closing-quates
         return new Token(chars.toString(), initLoc, loc, TokenType.STRINGS);
@@ -155,6 +149,6 @@ public class Lexer {
         String value = chars.toString();
         return new Token(value, initLoc, loc,
                 LexHelper.isDatatype(value) != null ? TokenType.DATATYPE
-                        : helper.iskeyword(value) ? TokenType.KEYWORD : TokenType.IDENTIFIER);
+                        : LexHelper.iskeyword(value) ? TokenType.KEYWORD : TokenType.IDENTIFIER);
     }
 }

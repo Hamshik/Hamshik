@@ -1,8 +1,11 @@
 package in.hamshik.Interpreter.Parser;
 
+import java.util.ArrayList;
+
 import in.hamshik.Interpreter.Lexer.Lexer;
 import in.hamshik.Interpreter.Lexer.LexHelper.Token;
 import in.hamshik.Interpreter.Lexer.TokenType;
+import in.hamshik.Interpreter.shared.Union.Body;
 import in.hamshik.Interpreter.shared.Union.HIRType;
 import in.hamshik.Interpreter.shared.Union.TypeKind;
 
@@ -17,25 +20,6 @@ public class Helper {
         this.lexer = parser.lexer;
     }
 
-    public void skipBodyOrTerminator() {
-        Token token = nextToken();
-        if (token.type() == TokenType.SEMICOLON)
-            return;
-        if (token.type() != TokenType.LBRACE)
-            throw syntaxError("Expected ';' or a function body after the signature", token);
-
-        int depth = 1;
-        while (depth > 0) {
-            token = nextToken();
-            if (token.type() == TokenType.EOF)
-                throw syntaxError("Unexpected end of file inside the function body", token);
-            if (token.type() == TokenType.LBRACE)
-                depth++;
-            else if (token.type() == TokenType.RBRACE)
-                depth--;
-        }
-    }
-
     public HIRType primitive(String name, boolean isMutable) {
         return new HIRType(TypeKind.PRIMITIVE, name, isMutable, 0, null);
     }
@@ -46,14 +30,6 @@ public class Helper {
 
     public HIRType withMutability(HIRType type, boolean isMutable) {
         return new HIRType(type.kind(), type.name(), isMutable, type.size(), type.inner());
-    }
-
-    public void rejectPointer(HIRType type, String context) {
-        if (type == null)
-            return;
-        if (TypeKind.PRIMITIVE == type.kind() && "ptr".equals(type.name()))
-            throw new IllegalArgumentException("Java runtime does not support pointer " + context);
-        rejectPointer(type.inner(), context);
     }
 
     public boolean isType(TokenType token) {
@@ -108,32 +84,50 @@ public class Helper {
 
         while (true) {
             Token suffix = nextToken();
-            if (suffix.type() == TokenType.AMP)
-                type = new HIRType(TypeKind.PRIMITIVE, "ptr", false, 0, type);
-
-            else if (suffix.type() == TokenType.AND)
-                type = new HIRType(TypeKind.PRIMITIVE, "ptr", false, 0,
-                        new HIRType(TypeKind.PRIMITIVE, "ptr", false, 0, type));
-
-            else if (suffix.type() == TokenType.LBRACKET) {
-                Token sizeToken = nextToken();
-                long size = 0;
-                if (sizeToken.type() == TokenType.NUMBER) {
-                    try {
-                        size = Long.parseLong(sizeToken.val());
-                    } catch (NumberFormatException e) {
-                        throw syntaxError("List size is outside the supported range", sizeToken);
+            switch (suffix.type()) {
+                case AMP ->
+                    type = new HIRType(TypeKind.PRIMITIVE, "ptr", false, 0, type);
+                case AND ->
+                    type = new HIRType(TypeKind.PRIMITIVE, "ptr", false, 0,
+                            new HIRType(TypeKind.PRIMITIVE, "ptr", false, 0, type));
+                case LBRACKET -> {
+                    Token sizeToken = nextToken();
+                    long size = 0;
+                    if (sizeToken.type() == TokenType.NUMBER) {
+                        try {
+                            size = Long.parseLong(sizeToken.val());
+                        } catch (NumberFormatException e) {
+                            syntaxError("List size is outside the supported range", sizeToken);
+                        }
+                        sizeToken = nextToken();
                     }
-                    sizeToken = nextToken();
+                    if (sizeToken.type() != TokenType.RBRACKET) {
+                        syntaxError("Expected ']' in the type", sizeToken);
+                        return null;
+                    }
+                    type = listType(type, false, size);
                 }
-                if (sizeToken.type() != TokenType.RBRACKET)
-                    throw syntaxError("Expected ']' in the type", sizeToken);
-                type = listType(type, false, size);
-            } else {
-                unreadToken(suffix);
-                return type;
+                default -> {
+                    unreadToken(suffix);
+                    return type;
+                }
             }
         }
     }
 
+    Body parseBody() {
+        lexer.consumeToken(TokenType.LBRACE, "Expected '{' to start a block");
+        var tempSeq = parser.seqs;
+        parser.seqs = new Body(new ArrayList<>());
+        parser.isParsingBody = true;
+        try {
+            parser.startParsing();
+            var fnBody = parser.seqs;
+            parser.seqs = tempSeq;
+            return fnBody;
+        } finally {
+            parser.isParsingBody = false;
+            parser.seqs = tempSeq;
+        }
+    }
 }
