@@ -8,6 +8,8 @@ public class LexHelper {
 
     public record Token(String val, Location initLoc, Location lastLoc, TokenType type) {
         public Token {
+            initLoc = initLoc == null ? null : initLoc.copy();
+            lastLoc = lastLoc == null ? null : lastLoc.copy();
             Lexer.currToken = this;
         }
 
@@ -20,18 +22,51 @@ public class LexHelper {
     }
 
     public class Location {
-        public int pos, col, ln = 0;
+        public int pos, col, ln,
+            lastPos, lastCol, lastLn = 0;
+        private boolean hasRange;
 
         public int incPosCol() {
             col++;
             return ++pos;
         }
+
+        public int incPosCol(char consumed) {
+            pos++;
+            if (consumed == '\n') {
+                ln++;
+                col = 0;
+            } else {
+                col++;
+            }
+
+            return pos;
+        }
+
         public Location() {}
 
         public Location(Location loc){
             pos = loc.pos;
             col = loc.col;
             ln = loc.ln;
+            lastPos = loc.lastPos;
+            lastCol = loc.lastCol;
+            lastLn = loc.lastLn;
+            hasRange = loc.hasRange;
+        }
+
+        public Location copy() {
+            return new Location(this);
+        }
+
+        public Location combineLocation(Location b){
+            Location loc = new Location();
+            loc.pos = pos; loc.col = col; loc.ln = ln;
+            loc.lastPos = b.hasRange ? b.lastPos : b.pos;
+            loc.lastCol = b.hasRange ? b.lastCol : b.col;
+            loc.lastLn = b.hasRange ? b.lastLn : b.ln;
+            loc.hasRange = true;
+            return loc;
         }
     }
 
@@ -65,7 +100,7 @@ public class LexHelper {
         for (int i = 0; i < no; i++) {
             if (lexer.loc.pos >= lexer.sourceCode.length)
                 return false;
-            lexer.loc.incPosCol();
+            lexer.loc.incPosCol(lexer.sourceCode[lexer.loc.pos]);
         }
         return true;
     }

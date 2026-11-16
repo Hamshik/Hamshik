@@ -6,6 +6,7 @@ import java.util.function.Function;
 
 import in.hamshik.Interpreter.Lexer.Lexer;
 import in.hamshik.Interpreter.Lexer.TokenType;
+import in.hamshik.Interpreter.Lexer.LexHelper.Location;
 import in.hamshik.Interpreter.Lexer.LexHelper.Token;
 import in.hamshik.Interpreter.shared.ASTNode;
 import in.hamshik.Interpreter.shared.Union;
@@ -47,7 +48,7 @@ public class ExprParser {
 
             left = new ASTNode(
                     null,
-                    left.loc,
+                    left.loc.combineLocation(right.loc),
                     new Union.Binary(op.type(), left, right));
         }
     }
@@ -58,14 +59,14 @@ public class ExprParser {
             return prefixParser.apply(first);
 
         return switch (first.type()) {
-            case NUMBER -> new ASTNode(null, first.initLoc(), new Union.Literals(first.val(), first.type()));
-            case STRINGS -> new ASTNode( null, first.initLoc(), new Union.Literals(first.val(), first.type()));
-            case CHARACTER -> new ASTNode( null, first.initLoc(), new Union.Literals(first.val(), first.type()));
-            case BOOL -> new ASTNode( null, first.initLoc(), new Union.Literals(first.val(), first.type()));
-            case IDENTIFIER -> new ASTNode( null, first.initLoc(), new Union.Literals(first.val(), first.type()));
+            case NUMBER, STRINGS, CHARACTER, BOOL, IDENTIFIER ->
+                new ASTNode(null, tokenLocation(first), new Union.Literals(first.val(), first.type()));
             case LPAREN -> {
                 ASTNode expression = parseExpr(helper.nextToken(), 1);
-                helper.consumeToken(TokenType.RPAREN, "Expected ')' after the expression");
+                Token close = helper.nextToken();
+                if (close.type() != TokenType.RPAREN)
+                    throw Helper.syntaxError("Expected ')' after the expression", close);
+                expression.loc = first.initLoc().combineLocation(close.lastLoc());
                 yield expression;
             }
             default -> throw Helper.syntaxError("Expected an expression", first);
@@ -76,8 +77,12 @@ public class ExprParser {
         ASTNode operand = parsePrefix(helper.nextToken());
         return new ASTNode(
                 null,
-                operator.initLoc(),
+                operator.initLoc().combineLocation(operand.loc),
                 new Union.Unary(operator.type(), operand));
+    }
+
+    private Location tokenLocation(Token token) {
+        return token.initLoc().combineLocation(token.lastLoc());
     }
 
     private int precedence(TokenType type) {
@@ -99,8 +104,10 @@ public class ExprParser {
         Token token = firstToken;
         boolean isMutable = false;
         String name = null;
+        boolean isAmbrigedAssginLegal = false;
 
         if (token.type() == TokenType.KEYWORD && token.val().equals("var")) {
+            isAmbrigedAssginLegal = true;
             token = helper.nextToken();
             if (helper.isKeyword(token, "mut")) {
                 isMutable = true;
@@ -122,8 +129,15 @@ public class ExprParser {
             throw Helper.syntaxError("Expected a variable name or assignment target", token);
         }
 
-        if (token.type() != TokenType.ASSIGN)
-            throw Helper.syntaxError("Expected '=' in assignment", token);
+        if (!token.type().toString().contains("ASSIGN")){
+            if(isAmbrigedAssginLegal) throw Helper.syntaxError("Expected '=' in assignment", token);
+            else  throw Helper.syntaxError("Expected assignment operators", token);
+
+        } else if(token.type() != TokenType.ASSIGN && isAmbrigedAssginLegal)
+            throw Helper.syntaxError("Expected '=' in assignment operator", token);
+
+
+        TokenType assignOp = token.type();
 
         ASTNode lhs = new ASTNode(
                 null,
@@ -137,7 +151,7 @@ public class ExprParser {
 
         return new ASTNode(
                 null,
-                firstToken.initLoc(),
-                new Union.Assign(TokenType.ASSIGN, lhs, rhs));
+                firstToken.initLoc().combineLocation(lexer.loc),
+                new Union.Assign(assignOp, lhs, rhs));
     }
 }

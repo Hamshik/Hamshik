@@ -66,10 +66,9 @@ public class Parser {
 
     private ASTNode handleKeywords(Token next) {
         switch (KeyWords.keyMap.get(next.val())) {
-            case FN: return fnParser.parseFunctionDefinition(next);
+            case FN: fnParser.parseFunctionDefinition(next);
             case VAR: return exprParser.parseAssign(next);
-            case RETURN:
-            case RET: {
+            case RETURN, RET: {
                 ASTNode expr = exprParser.parseExpr(helper.nextToken(), 0);
                 return new ASTNode(null, next.initLoc(), new Return(expr));
             }

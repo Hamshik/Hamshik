@@ -82,18 +82,18 @@ public class Lexer {
     }
 
     private Token handleSymbols(char _char) {
+        var initLoc = helper.new Location(loc);
         helper.consumeToken();
-        char[] mayBeSym = { _char, helper.peek(1) };
-        TokenType sym = TokenType.getSymbols(new StringBuilder().append(mayBeSym).toString());
+        TokenType sym = TokenType.getSymbols("" + _char + helper.peek(0));
         if (sym == null) {
-            sym = TokenType.getSymbols(new StringBuilder().append(_char).toString());
+            sym = TokenType.getSymbols(Character.toString(_char));
             if (sym != null) {
-                return new Token(sym, loc, loc);
+                return new Token(sym, initLoc, loc);
             } else
                 return nextToken();
         } 
         helper.consumeToken();
-        return new Token(sym, loc, null);
+        return new Token(sym, initLoc, loc);
     }
 
     private Token handleComments() {
@@ -115,13 +115,13 @@ public class Lexer {
         StringBuilder chars = new StringBuilder();
         var initLoc = helper.new Location(loc);
          // consuming opening-quotes
-        for(var _char = sourceCode[loc.incPosCol()]; _char != '\''; _char = sourceCode[loc.pos]) {
+        for(var _char = sourceCode[loc.incPosCol(sourceCode[loc.pos])]; _char != '\''; _char = sourceCode[loc.pos]) {
             chars.append(_char);
             if (!helper.consumeToken() && sourceCode[loc.pos] != '\'')
                 throw Helper.syntaxError("Pls Close the quates", new Token(TokenType.EOF, initLoc, loc));
             
         }
-        loc.incPosCol(); // consuming closing-quates
+        loc.incPosCol(sourceCode[loc.pos]); // consuming closing-quates
         return new Token(chars.toString(), initLoc, loc, TokenType.CHARACTER);
     }
 
@@ -129,7 +129,7 @@ public class Lexer {
         StringBuilder chars = new StringBuilder();
         var initLoc = helper.new Location(loc);
          // consuming opening-quates
-        for (var _char = sourceCode[loc.incPosCol()]; _char != '"'; _char = sourceCode[loc.pos]) {
+        for (var _char = sourceCode[loc.incPosCol(sourceCode[loc.pos])]; _char != '"'; _char = sourceCode[loc.pos]) {
             chars.append(_char);
             if (_char == '\n' || !helper.consumeToken())
                 throw Helper.syntaxError("pls close the qutes", new Token(TokenType.EOF, initLoc, loc));
