@@ -59,15 +59,27 @@ public class ExprParser {
             return prefixParser.apply(first);
 
         return switch (first.type()) {
-            case NUMBER, STRINGS, CHARACTER, BOOL, IDENTIFIER ->
+            case NUMBER, STRINGS, CHARACTER, BOOL ->
                 new ASTNode(null, tokenLocation(first), new Union.Literals(first.val(), first.type()));
+            case IDENTIFIER -> {
+                Token next = helper.nextToken();
+                if (next.type() == TokenType.LPAREN) 
+                    yield parser.fnParser.parseCallArgs(next);
+
+                helper.unreadToken(next);
+                yield new ASTNode(null, tokenLocation(first), new Union.Literals(first.val(), first.type()));
+            }
             case LPAREN -> {
                 ASTNode expression = parseExpr(helper.nextToken(), 1);
-                Token close = helper.nextToken();
-                if (close.type() != TokenType.RPAREN)
-                    throw Helper.syntaxError("Expected ')' after the expression", close);
-                expression.loc = first.initLoc().combineLocation(close.lastLoc());
+                lexer.consumeToken(TokenType.RPAREN, "Expected ')' after the expression");
+                expression.loc = first.initLoc().combineLocation(lexer.loc);
                 yield expression;
+            }
+            case LBRACKET -> {
+                ASTNode lists = parser.fnParser.parseCallArgs(helper.nextToken());
+                lexer.consumeToken(TokenType.RBRACKET, "Expected ']' after the expression");
+                lists.loc = first.initLoc().combineLocation(lexer.loc);
+                yield lists;
             }
             default -> throw Helper.syntaxError("Expected an expression", first);
         };

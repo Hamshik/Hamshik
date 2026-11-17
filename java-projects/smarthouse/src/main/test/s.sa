@@ -1,4 +1,4 @@
 fn main(var name) {
-    var mut names = 'a';
+    var mut names = [10,10,10];
     return 0;
 }

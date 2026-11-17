@@ -6,6 +6,7 @@ import in.hamshik.Interpreter.Lexer.Lexer;
 import in.hamshik.Interpreter.Lexer.LexHelper.Token;
 import in.hamshik.Interpreter.Lexer.TokenType;
 import in.hamshik.Interpreter.shared.ASTNode;
+import in.hamshik.Interpreter.shared.Union;
 import in.hamshik.Interpreter.shared.Union.Fn;
 import in.hamshik.Interpreter.shared.Union.HIRType;
 
@@ -20,7 +21,8 @@ public class FnParser {
         this.lexer = parser.lexer;
     }
 
-    public record Params(String name, HIRType type) {}
+    public record Params(String name, HIRType type) {
+    }
 
     public ASTNode parseFunctionDefinition(Token fnToken) {
         Token first = helper.nextToken();
@@ -67,7 +69,7 @@ public class FnParser {
             Token afterToken = helper.nextToken();
             Token paramName = null;
             HIRType type = null;
-            if(token.type() == TokenType.IDENTIFIER && afterToken.type() != TokenType.IDENTIFIER){
+            if (token.type() == TokenType.IDENTIFIER && afterToken.type() != TokenType.IDENTIFIER) {
                 paramName = token;
             } else {
                 type = helper.parseType(token);
@@ -91,5 +93,46 @@ public class FnParser {
                 throw Helper.syntaxError("Trailing commas are not allowed in parameter lists", token);
         }
     }
+
+    public ArrayList<ASTNode> parseArgList(Token first, String terminatingSym) {
+        ArrayList<ASTNode> args = new ArrayList<>();
+        Token next = first;
+
+        while (!next.val().equals(terminatingSym)) {
+            ASTNode expr = parser.exprParser.parseExpr(next, 0);
+            args.add(expr);
+
+            Token sep = helper.nextToken();
+            if (sep.val().equals(terminatingSym))
+                break; // end of list
+            
+            if (sep.type() != TokenType.COMMA)
+                throw Helper.syntaxError("Expected ',' or '" + terminatingSym + "'", sep);
+            
+
+            next = helper.nextToken();
+            if (next.val().equals(terminatingSym))
+                throw Helper.syntaxError("Trailing comma is not allowed", sep);
+        }
+
+        return args;
+    }
+
+    public ASTNode parseCallArgs(Token first) {
+        ArrayList<ASTNode> args = new ArrayList<>();
+        Token current = first;
+
+        if (current.type() == TokenType.LPAREN) {
+            current = helper.nextToken();
+        }
+
+        if (current.type() == TokenType.RPAREN) {
+            return new ASTNode(null, first.initLoc(), new Union.FnCall(args));
+        }
+
+        args = parseArgList(current, TokenType.RPAREN.sym);
+        return new ASTNode(null, first.initLoc(), new Union.FnCall(args));
+    }
+
 
 }

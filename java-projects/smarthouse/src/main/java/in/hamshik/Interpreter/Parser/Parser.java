@@ -17,8 +17,9 @@ public class Parser {
     public final Consumer<String> out;
     Lexer lexer;
     Body seqs = new Body(new ArrayList<>());
-	public Helper helper;
-    FnParser fnParser;
+	public final Helper helper;
+    final FnParser fnParser;
+    public final ExprParser exprParser;
     boolean isParsingBody = false;
 
     public Parser(String path, Consumer<String> out)  {
@@ -30,7 +31,6 @@ public class Parser {
         exprParser = new ExprParser(this);
     }
 
-    private final ExprParser exprParser;
 
     public ASTNode startParsing(){
         try {
