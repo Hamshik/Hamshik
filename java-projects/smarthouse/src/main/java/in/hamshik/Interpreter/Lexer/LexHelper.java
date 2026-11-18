@@ -2,6 +2,7 @@ package in.hamshik.Interpreter.Lexer;
 
 import in.hamshik.Helpers.VarHelpers.Type;
 import in.hamshik.Interpreter.Parser.Helper;
+import javafx.scene.input.KeyCode;
 
 public class LexHelper {
     private Lexer lexer;
@@ -86,8 +87,8 @@ public class LexHelper {
         return KeyWords.keyMap.containsKey(chars);
     }
 
-    public static Type isDatatype(String type) {
-        return Type.datatype.get(type);
+    public static KeyWords.KeyWordTy isDatatype(String type) {
+        return KeyWords.datatype.get(type);
     }
 
     char peek(int idx) {

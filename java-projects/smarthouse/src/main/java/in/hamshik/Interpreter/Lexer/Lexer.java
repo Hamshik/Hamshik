@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 
 import in.hamshik.Interpreter.Lexer.LexHelper.*;
 import in.hamshik.Interpreter.Parser.Helper;
+import in.hamshik.Interpreter.shared.Error;
 
 public class Lexer {
 
@@ -22,9 +23,13 @@ public class Lexer {
         this.filePath = path;
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
             sourceCode = reader.readAllAsString().toCharArray();
+            Error.setSourceContext(path, sourceCode, out);
         } catch (IOException e) {
-            out.accept("\u001B[31m" + "Could not read source file: "
-                    + e.getMessage() + "\u001B[0m\n");
+            sourceCode = null;
+            Error.setSourceContext(path, null, out);
+            if (out != null)
+                out.accept("\u001B[31m" + "Could not read source file: "
+                        + e.getMessage() + "\u001B[0m\n");
         }
     }
 
@@ -89,8 +94,9 @@ public class Lexer {
             sym = TokenType.getSymbols(Character.toString(_char));
             if (sym != null) {
                 return new Token(sym, initLoc, loc);
-            } else
+            } else 
                 return nextToken();
+
         } 
         helper.consumeToken();
         return new Token(sym, initLoc, loc);

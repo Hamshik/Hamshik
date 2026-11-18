@@ -11,6 +11,7 @@ import in.hamshik.Interpreter.Lexer.LexHelper.Token;
 import in.hamshik.Interpreter.shared.ASTNode;
 import in.hamshik.Interpreter.shared.Union.Return;
 import in.hamshik.Interpreter.shared.Union.Body;
+import in.hamshik.Interpreter.shared.Error.PanicException;
 
 public class Parser {
     String path;
@@ -46,6 +47,8 @@ public class Parser {
             }
             if(!isParsingBody) showMessage("Parsing completed successfully.", "\u001B[32m");
             return new ASTNode(null, null, seqs);
+        } catch (PanicException e) {
+            return null;
         } catch (IllegalArgumentException e) {
             showMessage("Parse error: " + e.getMessage(), "\u001B[31m");
             return null;
@@ -66,7 +69,7 @@ public class Parser {
 
     private ASTNode handleKeywords(Token next) {
         switch (KeyWords.keyMap.get(next.val())) {
-            case FN: fnParser.parseFunctionDefinition(next);
+            case FN: return fnParser.parseFunctionDefinition(next);
             case VAR: return exprParser.parseAssign(next);
             case RETURN, RET: {
                 ASTNode expr = exprParser.parseExpr(helper.nextToken(), 0);

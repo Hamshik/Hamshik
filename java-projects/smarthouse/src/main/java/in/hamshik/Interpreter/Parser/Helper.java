@@ -3,11 +3,14 @@ package in.hamshik.Interpreter.Parser;
 import java.util.ArrayList;
 
 import in.hamshik.Interpreter.Lexer.Lexer;
+import in.hamshik.Interpreter.Lexer.LexHelper.Location;
 import in.hamshik.Interpreter.Lexer.LexHelper.Token;
 import in.hamshik.Interpreter.Lexer.TokenType;
 import in.hamshik.Interpreter.shared.Union.Body;
 import in.hamshik.Interpreter.shared.Union.HIRType;
 import in.hamshik.Interpreter.shared.Union.TypeKind;
+import in.hamshik.Interpreter.shared.Error;
+import in.hamshik.Interpreter.shared.Error.ErrorCode;
 
 public class Helper {
 
@@ -74,7 +77,11 @@ public class Helper {
         String found = token.type() == TokenType.EOF
                 ? "end of file"
                 : "'" + token.val() + "' (" + Parser.getTokenTyName(token.type()) + ")";
-        return new IllegalArgumentException(message + "; found " + found);
+        Location location = token.initLoc();
+        if (location != null && token.lastLoc() != null)
+            location = location.combineLocation(token.lastLoc());
+        Error.panic(location, ErrorCode.PARSE_SYNTAX, message + "; found " + found);
+        return null;
     }
 
     public HIRType parseType(Token first) {

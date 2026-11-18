@@ -10,11 +10,6 @@ public class VarHelpers {
 
         /** Human-readable label used in the UI and CardHolder comparisons. */
         public String displayName() { return name(); }
-        public static HashMap<String, Type> datatype = new HashMap<>();
-        static {
-            for (var i : Type.values())
-                datatype.put(i.name().toLowerCase(), i);
-        }
     }
 
     // Order MUST match ESP enum: RO=0, RW=1, WO=2
