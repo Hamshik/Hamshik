@@ -78,16 +78,26 @@ public class Lexer {
     private Token handleDigits() {
         StringBuilder chars = new StringBuilder();
         var initLoc = helper.new Location(loc);
-        
-        for(var _char = sourceCode[loc.pos]; LexHelper.isDigit(_char) && helper.consumeToken();
-            _char = sourceCode[loc.pos])
+
+        boolean hasDot = false;
+        for (var _char = sourceCode[loc.pos];
+             (LexHelper.isDigit(_char) || (!hasDot && _char == '.')) && helper.consumeToken();
+             _char = sourceCode[loc.pos]) {
+            if (_char == '.') hasDot = true;
             chars.append(_char);
+        }
 
         return new Token(chars.toString(), initLoc, loc, TokenType.NUMBER);
     }
 
     private Token handleSymbols(char _char) {
         var initLoc = helper.new Location(loc);
+        String triple = "" + _char + helper.peek(0) + helper.peek(1);
+        TokenType tripleType = TokenType.getSymbols(triple);
+        if (tripleType != null) {
+            helper.consumeToken(3);
+            return new Token(tripleType, initLoc, loc);
+        }
         helper.consumeToken();
         TokenType sym = TokenType.getSymbols("" + _char + helper.peek(0));
         if (sym == null) {
@@ -153,6 +163,8 @@ public class Lexer {
             chars.append(_char);
 
         String value = chars.toString();
+        if (value.equals("true") || value.equals("false"))
+            return new Token(value, initLoc, loc, TokenType.BOOL);
         return new Token(value, initLoc, loc,
                 LexHelper.isDatatype(value) != null ? TokenType.DATATYPE
                         : LexHelper.iskeyword(value) ? TokenType.KEYWORD : TokenType.IDENTIFIER);

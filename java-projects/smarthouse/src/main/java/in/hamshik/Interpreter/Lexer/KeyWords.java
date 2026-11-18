@@ -7,7 +7,7 @@ public class KeyWords {
     public static HashMap<String, KeyWordTy> datatype = new HashMap<>();
 
     public enum KeyWordTy {
-        IF, ELSE, FOR, WHILE, IN, FN, VAR, MUT,
+        IF, ELSE, FOR, WHILE, IN, FN, VAR, MUT, IMPORT,
         I8(true), I16(true), I32(true), I64(true),
         F32(true), F64(true),
         U8(true), U16(true), U32(true), U64(true),

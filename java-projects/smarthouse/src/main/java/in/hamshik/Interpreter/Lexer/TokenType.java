@@ -5,13 +5,16 @@ import java.util.HashMap;
 public enum TokenType {
     NUMBER, BOOL, STRINGS, CHARACTER, IDENTIFIER, KEYWORD, DATATYPE, EOF,
 
-    PLUS("+"), MINUS("-"), STAR("*"), SLASH("/"), MOD("%"),
+    PLUS("+"), MINUS("-"), STAR("*"), SLASH("/"), MOD("%"), POW("**"), XOR_POW("^^"),
+    INC("++"), DEC("--"),
     AMP("&"), PIPE("|"), XOR("^"), BIT_NOT("~"),
+    LSHIFT("<<"), RSHIFT(">>"),
     GT(">"), LT("<"), EGT(">="), ELT("<="),
     EQ("=="), NEQ("!="),
     AND("&&"), OR("||"), NOT("!"), ASSIGN("="),
     PLUS_ASSIGN("+="), MINUS_ASSIGN("-="), MUL_ASSIGN("*="),
-    DIV_ASSIGN("/="), MOD_ASSIGN("%="), POW_ASSIGN("**="),
+    DIV_ASSIGN("/="), MOD_ASSIGN("%="), POW_ASSIGN("**="), XOR_POW_ASSIGN("^^="),
+    LSHIFT_ASSIGN("<<="), RSHIFT_ASSIGN(">>="),
 
     LBRACE("{"), RBRACE("}"), LBRACKET("["), RBRACKET("]"),
     LPAREN("("), RPAREN(")"),

@@ -11,16 +11,17 @@ public class ASTNode {
 
     public Object val;
 
-    public ASTNode(Type type, Location loc, Union val, boolean... bools){
-        this.type = type;
-        this.loc = loc;
-        this.isglobal = bools[0];
-        this.ismut = bools[1];
-        this.val = val;
-    }
     public ASTNode(Type type, Location loc, Object val){
         this.type = type;
         this.loc = loc;
+        this.val = val;
+    }
+
+    public ASTNode(Type type, Location loc, Object val, boolean isglobal, boolean ismut){
+        this.type = type;
+        this.loc = loc;
+        this.isglobal = isglobal;
+        this.ismut = ismut;
         this.val = val;
     }
 }

@@ -16,9 +16,10 @@ public interface Union {
     record Fn(HIRType ret, String name, Params[] params, Body body) {}
     record HIRType(TypeKind kind, String name, boolean mutable, long size, HIRType inner) {}
     record Lists(ArrayList<ASTNode> elements) {}
-    record Index(ArrayList<ASTNode> expr) {}
+    record Index(ASTNode target, ArrayList<ASTNode> expr) {}
     record FnCall(ArrayList<ASTNode> args) {}
     public record Return(ASTNode expr) {}
+    public record Import(String path) {}
     public enum TypeKind{
         USER_DEFINED, PRIMITIVE
     }

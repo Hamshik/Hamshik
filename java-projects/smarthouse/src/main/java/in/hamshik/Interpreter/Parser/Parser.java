@@ -12,6 +12,7 @@ import in.hamshik.Interpreter.shared.ASTNode;
 import in.hamshik.Interpreter.shared.Union.Return;
 import in.hamshik.Interpreter.shared.Union.Body;
 import in.hamshik.Interpreter.shared.Error.PanicException;
+import in.hamshik.Interpreter.shared.Union;
 
 public class Parser {
     String path;
@@ -71,12 +72,66 @@ public class Parser {
         switch (KeyWords.keyMap.get(next.val())) {
             case FN: return fnParser.parseFunctionDefinition(next);
             case VAR: return exprParser.parseAssign(next);
+            case IF: return parseIf();
+            case WHILE: return parseWhile();
             case RETURN, RET: {
                 ASTNode expr = exprParser.parseExpr(helper.nextToken(), 0);
                 return new ASTNode(null, next.initLoc(), new Return(expr));
             }
+            case IMPORT: {
+                Token path = helper.nextToken();
+                if (path.type() != TokenType.STRINGS)
+                    throw Helper.syntaxError("Expected a string literal after import", path);
+                return new ASTNode(null, next.initLoc().combineLocation(path.lastLoc()),
+                        new Union.Import(path.val()));
+            }
             default: return null; 
         }
+    }
+
+    private ASTNode parseIf() {
+        ASTNode cond = exprParser.parseExpr(helper.nextToken(), 1);
+        Body thenBranch = helper.parseBody();
+
+        Body elseBranch = null;
+        Token next = helper.nextToken();
+        if (helper.isKeyword(next, "else")) {
+            Token afterElse = helper.nextToken();
+            if (helper.isKeyword(afterElse, "if")) {
+                ASTNode nestedIf = parseIf();
+                ArrayList<ASTNode> nodes = new ArrayList<>();
+                nodes.add(nestedIf);
+                elseBranch = new Body(nodes);
+            } else {
+                helper.unreadToken(afterElse);
+                elseBranch = helper.parseBody();
+            }
+        } else {
+            helper.unreadToken(next);
+        }
+
+        return new ASTNode(
+                null,
+                cond.loc,
+                new Union.IfConds(cond, thenBranch, elseBranch));
+    }
+
+    private ASTNode parseWhile() {
+        ASTNode cond = exprParser.parseExpr(helper.nextToken(), 1);
+
+        ASTNode update = null;
+        Token next = helper.nextToken();
+        if (next.type() == TokenType.COLON) {
+            update = exprParser.parseAssign(helper.nextToken());
+        } else {
+            helper.unreadToken(next);
+        }
+
+        Body body = helper.parseBody();
+        return new ASTNode(
+                null,
+                cond.loc,
+                new Union.While(cond, new ASTNode(null, cond.loc, body), update));
     }
 
     static String getTokenTyName(TokenType type){
