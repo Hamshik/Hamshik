@@ -9,6 +9,7 @@ import in.hamshik.Interpreter.Lexer.Lexer;
 import in.hamshik.Interpreter.Lexer.TokenType;
 import in.hamshik.Interpreter.Lexer.LexHelper.Token;
 import in.hamshik.Interpreter.shared.ASTNode;
+import in.hamshik.Interpreter.shared.Error;
 import in.hamshik.Interpreter.shared.Union.Return;
 import in.hamshik.Interpreter.shared.Union.Body;
 import in.hamshik.Interpreter.shared.Error.PanicException;
@@ -22,6 +23,7 @@ public class Parser {
 	public final Helper helper;
     final FnParser fnParser;
     public final ExprParser exprParser;
+    public final Error err;
     boolean isParsingBody = false;
 
     public Parser(String path, Consumer<String> out)  {
@@ -31,6 +33,7 @@ public class Parser {
         helper = new Helper(this);
         fnParser = new FnParser(this);
         exprParser = new ExprParser(this);
+        err = new Error(path, lexer.sourceCode, out);
     }
 
 
@@ -46,10 +49,7 @@ public class Parser {
                             seqs.add(exprParser.parseAssign(next));
                         else seqs.add(exprParser.parseExpr(next, 0));
                     }
-                    case LPAREN -> {
-                        helper.unreadToken(next);
-                        seqs.add(new ASTNode(null, next.loc(), helper.parseBody()));
-                    }
+                    case LBRACE -> seqs.add(new ASTNode(null, next.loc(), helper.parseBody()));
                     default -> {}
                 }
                 next = lexer.nextToken();
@@ -88,7 +88,7 @@ public class Parser {
             case IMPORT: {
                 Token path = helper.nextToken();
                 if (path.type() != TokenType.STRINGS)
-                    throw Helper.syntaxError("Expected a string literal after import", path);
+                    throw helper.syntaxError("Expected a string literal after import", path);
                 return new ASTNode(null, next.loc(),
                         new Union.Import(path.val()));
             }
@@ -113,9 +113,8 @@ public class Parser {
                 helper.unreadToken(afterElse);
                 elseBranch = helper.parseBody();
             }
-        } else {
+        } else 
             helper.unreadToken(next);
-        }
 
         return new ASTNode(
                 null,

@@ -9,12 +9,10 @@ public class Error {
     private static final String DIM = "\u001B[2m";
     private static final String RESET = "\u001B[0m";
 
-    private static String filename = "<input>";
-    private static char[] source;
-    private static int errorCount;
-    private static Consumer<String> output;
-
-    private Error() {}
+    private String filename = "<input>";
+    private char[] source;
+    private int errorCount;
+    private Consumer<String> output;
 
     public enum ErrorCode {
         INTERNAL_ERROR(0),
@@ -56,18 +54,17 @@ public class Error {
         }
     }
 
-    public static void setSourceContext(
-            String filename, char[] source, Consumer<String> output) {
-        Error.filename = filename == null ? "<input>" : filename;
-        Error.source = source == null ? null : source.clone();
-        Error.output = output;
+    public Error(String filename, char[] source, Consumer<String> output) {
+        this.filename = filename == null ? "<input>" : filename;
+        this.source = source == null ? null : source.clone();
+        this.output = output;
     }
 
-    public static void panic(Location loc, ErrorCode code, String detail) {
+    public void panic(Location loc, ErrorCode code, String detail) {
         panic(loc, code.code, detail);
     }
 
-    public static void panic(Location loc, int code, String detail) {
+    public void panic(Location loc, int code, String detail) {
         errorCount++;
         String base = messageForCode(code);
         String safeDetail = detail == null ? "" : detail.trim();
@@ -92,11 +89,11 @@ public class Error {
         throw new PanicException(firstLine.toString().replaceAll("\u001B\\[[0;1;2]*m", ""));
     }
 
-    public static void panic(Location loc, String detail) {
+    public void panic(Location loc, String detail) {
         panic(loc, 0, detail);
     }
 
-    private static String formatLocation(Location loc) {
+    private String formatLocation(Location loc) {
         StringBuilder result = new StringBuilder();
         if (source == null || source.length == 0 || loc == null) {
             int line = loc == null ? 1 : Math.max(loc.ln, 1);
@@ -151,7 +148,7 @@ public class Error {
         return result.toString();
     }
 
-    private static void appendSourceLine(
+    private void appendSourceLine(
             StringBuilder result, int line, int lineWidth, int lineStart, int lineEnd) {
         int leadingSpaces = lineWidth - Integer.toString(line).length();
         result.append(DIM)
@@ -175,7 +172,7 @@ public class Error {
         result.append(RESET);
     }
 
-    private static void appendLocation(StringBuilder result, int line, int column) {
+    private void appendLocation(StringBuilder result, int line, int column) {
         result.append(DIM)
                 .append(" --> ")
                 .append(filename)
@@ -186,12 +183,12 @@ public class Error {
                 .append(RESET);
     }
 
-    private static void write(String message) {
+    private void write(String message) {
         if (output != null) {
             output.accept(message + "\n");
-        } else {
+        } else 
             System.err.println(message);
-        }
+        
     }
 
     private static String messageForCode(int code) {
@@ -230,7 +227,7 @@ public class Error {
         };
     }
 
-    public static int getErrorCount() {
+    public int getErrorCount() {
         return errorCount;
     }
 

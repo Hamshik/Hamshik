@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.util.function.Consumer;
 
 import in.hamshik.Interpreter.Lexer.LexHelper.*;
-import in.hamshik.Interpreter.Parser.Helper;
-import in.hamshik.Interpreter.shared.Error;
 
 public class Lexer {
 
@@ -15,21 +13,19 @@ public class Lexer {
     Token peekedToken;
     public static Token currToken;
 
-    public char[] sourceCode;
+    public char[] sourceCode = null;
     public LexHelper helper = new LexHelper(this);
     public Location loc = helper.new Location();
+    public Consumer<String> out;
 
     public Lexer(String path, Consumer<String> out) {
         this.filePath = path;
+        this.out = out;
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
             sourceCode = reader.readAllAsString().toCharArray();
-            Error.setSourceContext(path, sourceCode, out);
         } catch (IOException e) {
-            sourceCode = null;
-            Error.setSourceContext(path, null, out);
-            if (out != null)
-                out.accept("\u001B[31m" + "Could not read source file: "
-                        + e.getMessage() + "\u001B[0m\n");
+            out.accept("\u001B[31m" + "Could not read source file: "
+                + e.getMessage() + "\u001B[0m\n");
         }
     }
 
@@ -120,7 +116,7 @@ public class Lexer {
         for( var _char = sourceCode[loc.pos];
             _char != '\'' && helper.peek(1) != '\'' && helper.peek(2) != '\''; _char = sourceCode[loc.pos]) {
             if (!helper.consumeToken()) 
-                throw Helper.syntaxError("pls close the commet from " + initLoc.pos, new Token(TokenType.EOF, initLoc.combineLocation(loc)));
+                throw helper.syntaxError("pls close the commet from " + initLoc.pos, new Token(TokenType.EOF, initLoc.combineLocation(loc)));
 
         }
         helper.consumeToken(3);
@@ -134,7 +130,7 @@ public class Lexer {
         for(var _char = sourceCode[loc.incPosCol(sourceCode[loc.pos])]; _char != '\''; _char = sourceCode[loc.pos]) {
             chars.append(_char);
             if (!helper.consumeToken() && sourceCode[loc.pos] != '\'')
-                throw Helper.syntaxError("Pls Close the quates", new Token(TokenType.EOF, initLoc.combineLocation(loc)));
+                throw helper.syntaxError("Pls Close the quates", new Token(TokenType.EOF, initLoc.combineLocation(loc)));
             
         }
         loc.incPosCol(sourceCode[loc.pos]); // consuming closing-quates
@@ -148,7 +144,7 @@ public class Lexer {
         for (var _char = sourceCode[loc.incPosCol(sourceCode[loc.pos])]; _char != '"'; _char = sourceCode[loc.pos]) {
             chars.append(_char);
             if (_char == '\n' || !helper.consumeToken())
-                throw Helper.syntaxError("pls close the qutes", new Token(TokenType.EOF, initLoc.combineLocation(loc)));
+                throw helper.syntaxError("pls close the qutes", new Token(TokenType.EOF, initLoc.combineLocation(loc)));
         }
         helper.consumeToken(); // consuming closing-quates
         return new Token(chars.toString(), initLoc.combineLocation(loc), TokenType.STRINGS);

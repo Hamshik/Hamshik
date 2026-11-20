@@ -1,6 +1,7 @@
 package in.hamshik.Interpreter.Lexer;
 
 import in.hamshik.Interpreter.Parser.Helper;
+import in.hamshik.Interpreter.shared.Error;
 
 public class LexHelper {
     private Lexer lexer;
@@ -121,7 +122,7 @@ public class LexHelper {
     public boolean consumeToken(TokenType type, String errMsg) {
         Token next = lexer.nextToken();
         if(next.type() != type)
-            throw Helper.syntaxError(errMsg, next);
+            throw syntaxError(errMsg, next);
 
         return true;
     }
@@ -129,5 +130,9 @@ public class LexHelper {
     public boolean consumeToken(TokenType type) {
         String expected = type.sym == null ? type.name() : "'" + type.sym + "'";
         return consumeToken(type, "Expected " + expected);
+    }
+
+    IllegalArgumentException syntaxError(String msg, Token token){
+        return Helper.syntaxError(new Error(lexer.filePath, lexer.sourceCode, lexer.out), msg, token);
     }
 }

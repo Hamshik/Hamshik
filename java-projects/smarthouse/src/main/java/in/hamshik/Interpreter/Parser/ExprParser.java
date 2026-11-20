@@ -92,21 +92,21 @@ public class ExprParser {
                 Token next = helper.nextToken();
                 while (next.type() != TokenType.RBRACKET) {
                     if (next.type() == TokenType.EOF)
-                        throw Helper.syntaxError("Expected ']' after the list", next);
+                        throw helper.syntaxError("Expected ']' after the list", next);
                     elements.add(parseExpr(next, 1));
                     Token separator = helper.nextToken();
                     if (separator.type() == TokenType.RBRACKET)
                         break;
                     if (separator.type() != TokenType.COMMA)
-                        throw Helper.syntaxError("Expected ',' or ']' in the list", separator);
+                        throw helper.syntaxError("Expected ',' or ']' in the list", separator);
                     next = helper.nextToken();
                     if (next.type() == TokenType.RBRACKET)
-                        throw Helper.syntaxError("Trailing commas are not allowed in lists", separator);
+                        throw helper.syntaxError("Trailing commas are not allowed in lists", separator);
                 }
                 yield new ASTNode(null, first.loc().combineLocation(lexer.loc),
                         new Union.Lists(elements));
             }
-            default -> throw Helper.syntaxError("Expected an expression", first);
+            default -> throw helper.syntaxError("Expected an expression", first);
         };
     }
 
@@ -174,14 +174,14 @@ public class ExprParser {
             helper.parseType(token);
             Token nameToken = helper.nextToken();
             if (nameToken.type() != TokenType.IDENTIFIER)
-                throw Helper.syntaxError("Expected a variable name after the type", nameToken);
+                throw helper.syntaxError("Expected a variable name after the type", nameToken);
             name = nameToken.val();
             token = helper.nextToken();
         } else if (token.type() == TokenType.IDENTIFIER) {
             name = token.val();
             token = helper.nextToken();
         } else {
-            throw Helper.syntaxError("Expected a variable name or assignment target", token);
+            throw helper.syntaxError("Expected a variable name or assignment target", token);
         }
 
         ASTNode lhs = new ASTNode(
@@ -198,8 +198,8 @@ public class ExprParser {
 
         if (!token.type().name().contains("ASSIGN")) {
             if (isAmbrigedAssginLegal && token.type() != TokenType.ASSIGN)
-                throw Helper.syntaxError("Expected '=' in assignment", token);
-            throw Helper.syntaxError("Expected assignment operators", token);
+                throw helper.syntaxError("Expected '=' in assignment", token);
+            throw helper.syntaxError("Expected assignment operators", token);
         }
 
         TokenType assignOp = token.type();

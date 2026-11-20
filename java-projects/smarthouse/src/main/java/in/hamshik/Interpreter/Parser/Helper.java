@@ -3,7 +3,6 @@ package in.hamshik.Interpreter.Parser;
 import java.util.ArrayList;
 
 import in.hamshik.Interpreter.Lexer.Lexer;
-import in.hamshik.Interpreter.Lexer.LexHelper.Location;
 import in.hamshik.Interpreter.Lexer.LexHelper.Token;
 import in.hamshik.Interpreter.Lexer.TokenType;
 import in.hamshik.Interpreter.shared.Union.Body;
@@ -73,12 +72,16 @@ public class Helper {
         pendingToken = token;
     }
 
-    public static IllegalArgumentException syntaxError(String message, Token token) {
+    public static IllegalArgumentException syntaxError(Error err, String message, Token token) {
         String found = token.type() == TokenType.EOF
                 ? "end of file"
                 : "'" + token.val() + "' (" + Parser.getTokenTyName(token.type()) + ")";
-        Error.panic(token.loc(), ErrorCode.PARSE_SYNTAX, message + "; found " + found);
+        err.panic(token.loc(), ErrorCode.PARSE_SYNTAX, message + "; found " + found);
         return null;
+    }
+
+    IllegalArgumentException syntaxError(String message, Token token){
+        return syntaxError(parser.err, message, token);
     }
 
     public HIRType parseType(Token first) {
@@ -89,11 +92,6 @@ public class Helper {
         while (true) {
             Token suffix = nextToken();
             switch (suffix.type()) {
-                case AMP ->
-                    type = new HIRType(TypeKind.PRIMITIVE, "ptr", false, 0, type);
-                case AND ->
-                    type = new HIRType(TypeKind.PRIMITIVE, "ptr", false, 0,
-                            new HIRType(TypeKind.PRIMITIVE, "ptr", false, 0, type));
                 case LBRACKET -> {
                     Token sizeToken = nextToken();
                     long size = 0;
@@ -120,7 +118,6 @@ public class Helper {
     }
 
     Body parseBody() {
-        consumeToken(TokenType.LBRACE, "Expected '{' to start a block");
         var tempSeq = parser.seqs;
         parser.seqs = new Body(new ArrayList<>());
         parser.isParsingBody = true;

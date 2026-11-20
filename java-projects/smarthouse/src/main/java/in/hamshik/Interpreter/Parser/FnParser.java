@@ -37,7 +37,7 @@ public class FnParser {
         } else {
             returnType = helper.parseType(first);
             if (afterFirst.type() != TokenType.IDENTIFIER)
-                throw Helper.syntaxError("Expected a function name after the return type", afterFirst);
+                throw helper.syntaxError("Expected a function name after the return type", afterFirst);
             name = afterFirst.val();
             helper.consumeToken(TokenType.LPAREN, "Expected '(' after the function name");
         }
@@ -64,7 +64,7 @@ public class FnParser {
                     token = helper.nextToken();
                 }
             } else if (helper.isKeyword(token, "mut")) {
-                throw Helper.syntaxError("'mut' must follow 'var' in a parameter", token);
+                throw helper.syntaxError("'mut' must follow 'var' in a parameter", token);
             }
             Token afterToken = helper.nextToken();
             Token paramName = null;
@@ -78,7 +78,7 @@ public class FnParser {
             paramName = paramName == null ? helper.nextToken() : paramName;
 
             if (paramName.type() != TokenType.IDENTIFIER)
-                throw Helper.syntaxError("Expected a parameter name", paramName);
+                throw helper.syntaxError("Expected a parameter name", paramName);
 
             Params parameter = new Params(paramName.val(), type);
             params.add(parameter);
@@ -87,10 +87,10 @@ public class FnParser {
             if (token.type() == TokenType.RPAREN)
                 return params.toArray(Params[]::new);
             if (token.type() != TokenType.COMMA)
-                throw Helper.syntaxError("Expected ',' or ')' after a parameter", token);
+                throw helper.syntaxError("Expected ',' or ')' after a parameter", token);
             token = helper.nextToken();
             if (token.type() == TokenType.RPAREN)
-                throw Helper.syntaxError("Trailing commas are not allowed in parameter lists", token);
+                throw helper.syntaxError("Trailing commas are not allowed in parameter lists", token);
         }
     }
 
@@ -107,12 +107,12 @@ public class FnParser {
                 break; // end of list
             
             if (sep.type() != TokenType.COMMA)
-                throw Helper.syntaxError("Expected ',' or '" + terminatingSym + "'", sep);
+                throw helper.syntaxError("Expected ',' or '" + terminatingSym + "'", sep);
             
 
             next = helper.nextToken();
             if (next.val().equals(terminatingSym))
-                throw Helper.syntaxError("Trailing comma is not allowed", sep);
+                throw helper.syntaxError("Trailing comma is not allowed", sep);
         }
 
         return args;
