@@ -42,7 +42,7 @@ public class Lexer {
         }
 
         if (loc.pos >= sourceCode.length)
-            return new Token(null, null, loc, TokenType.EOF);
+            return new Token(null, loc, TokenType.EOF);
 
         var _char = sourceCode[loc.pos];
         if (LexHelper.isAlpha(_char))
@@ -87,7 +87,7 @@ public class Lexer {
             chars.append(_char);
         }
 
-        return new Token(chars.toString(), initLoc, loc, TokenType.NUMBER);
+        return new Token(chars.toString(), initLoc.combineLocation(loc), TokenType.NUMBER);
     }
 
     private Token handleSymbols(char _char) {
@@ -96,20 +96,20 @@ public class Lexer {
         TokenType tripleType = TokenType.getSymbols(triple);
         if (tripleType != null) {
             helper.consumeToken(3);
-            return new Token(tripleType, initLoc, loc);
+            return new Token(tripleType, initLoc.combineLocation(loc));
         }
         helper.consumeToken();
         TokenType sym = TokenType.getSymbols("" + _char + helper.peek(0));
         if (sym == null) {
             sym = TokenType.getSymbols(Character.toString(_char));
             if (sym != null) {
-                return new Token(sym, initLoc, loc);
+                return new Token(sym, initLoc.combineLocation(loc));
             } else 
                 return nextToken();
 
         } 
         helper.consumeToken();
-        return new Token(sym, initLoc, loc);
+        return new Token(sym, initLoc.combineLocation(loc));
     }
 
     private Token handleComments() {
@@ -120,7 +120,7 @@ public class Lexer {
         for( var _char = sourceCode[loc.pos];
             _char != '\'' && helper.peek(1) != '\'' && helper.peek(2) != '\''; _char = sourceCode[loc.pos]) {
             if (!helper.consumeToken()) 
-                throw Helper.syntaxError("pls close the commet from " + initLoc.pos, new Token(TokenType.EOF, initLoc, loc));
+                throw Helper.syntaxError("pls close the commet from " + initLoc.pos, new Token(TokenType.EOF, initLoc.combineLocation(loc)));
 
         }
         helper.consumeToken(3);
@@ -134,11 +134,11 @@ public class Lexer {
         for(var _char = sourceCode[loc.incPosCol(sourceCode[loc.pos])]; _char != '\''; _char = sourceCode[loc.pos]) {
             chars.append(_char);
             if (!helper.consumeToken() && sourceCode[loc.pos] != '\'')
-                throw Helper.syntaxError("Pls Close the quates", new Token(TokenType.EOF, initLoc, loc));
+                throw Helper.syntaxError("Pls Close the quates", new Token(TokenType.EOF, initLoc.combineLocation(loc)));
             
         }
         loc.incPosCol(sourceCode[loc.pos]); // consuming closing-quates
-        return new Token(chars.toString(), initLoc, loc, TokenType.CHARACTER);
+        return new Token(chars.toString(), initLoc.combineLocation(loc), TokenType.CHARACTER);
     }
 
     private Token handleStrs() {
@@ -148,10 +148,10 @@ public class Lexer {
         for (var _char = sourceCode[loc.incPosCol(sourceCode[loc.pos])]; _char != '"'; _char = sourceCode[loc.pos]) {
             chars.append(_char);
             if (_char == '\n' || !helper.consumeToken())
-                throw Helper.syntaxError("pls close the qutes", new Token(TokenType.EOF, initLoc, loc));
+                throw Helper.syntaxError("pls close the qutes", new Token(TokenType.EOF, initLoc.combineLocation(loc)));
         }
         helper.consumeToken(); // consuming closing-quates
-        return new Token(chars.toString(), initLoc, loc, TokenType.STRINGS);
+        return new Token(chars.toString(), initLoc.combineLocation(loc), TokenType.STRINGS);
     }
 
     Token idOrKeywords() {
@@ -164,9 +164,9 @@ public class Lexer {
 
         String value = chars.toString();
         if (value.equals("true") || value.equals("false"))
-            return new Token(value, initLoc, loc, TokenType.BOOL);
-        return new Token(value, initLoc, loc,
-                LexHelper.isDatatype(value) != null ? TokenType.DATATYPE
+            return new Token(value, initLoc.combineLocation(loc), TokenType.BOOL);
+        return new Token(value, initLoc.combineLocation(loc),
+                LexHelper.isDatatype(value) ? TokenType.DATATYPE
                         : LexHelper.iskeyword(value) ? TokenType.KEYWORD : TokenType.IDENTIFIER);
     }
 }

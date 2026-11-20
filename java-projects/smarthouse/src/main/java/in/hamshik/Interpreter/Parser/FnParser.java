@@ -45,7 +45,7 @@ public class FnParser {
         Params[] params = parseParameters();
         return new ASTNode(
                 null,
-                fnToken.initLoc(),
+                fnToken.loc(),
                 new Fn(returnType, name, params, helper.parseBody()));
     }
 
@@ -122,16 +122,16 @@ public class FnParser {
         ArrayList<ASTNode> args = new ArrayList<>();
         Token current = first;
 
-        if (current.type() == TokenType.LPAREN) {
+        if (current.type() == TokenType.LPAREN) 
             current = helper.nextToken();
-        }
+        
 
-        if (current.type() == TokenType.RPAREN) {
-            return new ASTNode(null, first.initLoc(), new Union.FnCall(args));
-        }
+        if (current.type() == TokenType.RPAREN) 
+            return new ASTNode(null, first.loc(), new Union.FnCall(null, args));
+        
 
         args = parseArgList(current, TokenType.RPAREN.sym);
-        return new ASTNode(null, first.initLoc(), new Union.FnCall(args));
+        return new ASTNode(null, first.loc(), new Union.FnCall(null, args));
     }
 
 

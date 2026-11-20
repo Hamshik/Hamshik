@@ -77,10 +77,7 @@ public class Helper {
         String found = token.type() == TokenType.EOF
                 ? "end of file"
                 : "'" + token.val() + "' (" + Parser.getTokenTyName(token.type()) + ")";
-        Location location = token.initLoc();
-        if (location != null && token.lastLoc() != null)
-            location = location.combineLocation(token.lastLoc());
-        Error.panic(location, ErrorCode.PARSE_SYNTAX, message + "; found " + found);
+        Error.panic(token.loc(), ErrorCode.PARSE_SYNTAX, message + "; found " + found);
         return null;
     }
 
@@ -123,7 +120,7 @@ public class Helper {
     }
 
     Body parseBody() {
-        lexer.consumeToken(TokenType.LBRACE, "Expected '{' to start a block");
+        consumeToken(TokenType.LBRACE, "Expected '{' to start a block");
         var tempSeq = parser.seqs;
         parser.seqs = new Body(new ArrayList<>());
         parser.isParsingBody = true;

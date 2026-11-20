@@ -65,8 +65,12 @@ public class ExprParser {
                 new ASTNode(null, tokenLocation(first), new Union.Literals(first.val(), first.type()));
             case IDENTIFIER -> {
                 Token next = helper.nextToken();
-                if (next.type() == TokenType.LPAREN) 
-                    yield parser.fnParser.parseCallArgs(next);
+                if (next.type() == TokenType.LPAREN) {
+                    ASTNode callNode = parser.fnParser.parseCallArgs(next);
+                    Union.FnCall fc = (Union.FnCall) callNode.val;
+                    yield new ASTNode(null, tokenLocation(first),
+                            new Union.FnCall(first.val(), fc.args()));
+                }
                 if (next.type() == TokenType.LBRACKET)
                     yield parseIndex(
                             new ASTNode(null, tokenLocation(first),
@@ -79,8 +83,8 @@ public class ExprParser {
             }
             case LPAREN -> {
                 ASTNode expression = parseExpr(helper.nextToken(), 1);
-                lexer.consumeToken(TokenType.RPAREN, "Expected ')' after the expression");
-                expression.loc = first.initLoc().combineLocation(lexer.loc);
+                helper.consumeToken(TokenType.RPAREN, "Expected ')' after the expression");
+                expression.loc = first.loc().combineLocation(lexer.loc);
                 yield expression;
             }
             case LBRACKET -> {
@@ -99,7 +103,7 @@ public class ExprParser {
                     if (next.type() == TokenType.RBRACKET)
                         throw Helper.syntaxError("Trailing commas are not allowed in lists", separator);
                 }
-                yield new ASTNode(null, first.initLoc().combineLocation(lexer.loc),
+                yield new ASTNode(null, first.loc().combineLocation(lexer.loc),
                         new Union.Lists(elements));
             }
             default -> throw Helper.syntaxError("Expected an expression", first);
@@ -110,7 +114,7 @@ public class ExprParser {
         ASTNode operand = parsePrefix(helper.nextToken());
         return new ASTNode(
                 null,
-                operator.initLoc().combineLocation(operand.loc),
+                operator.loc().combineLocation(operand.loc),
                 new Union.Unary(operator.type(), operand));
     }
 
@@ -119,7 +123,7 @@ public class ExprParser {
         Token bracket = firstBracket;
         while (bracket.type() == TokenType.LBRACKET) {
             ASTNode index = parseExpr(helper.nextToken(), 1);
-            lexer.consumeToken(TokenType.RBRACKET, "Expected ']' after the index expression");
+            helper.consumeToken(TokenType.RBRACKET, "Expected ']' after the index expression");
             indices.add(index);
             bracket = helper.nextToken();
         }
@@ -131,7 +135,7 @@ public class ExprParser {
     }
 
     private Location tokenLocation(Token token) {
-        return token.initLoc().combineLocation(token.lastLoc());
+        return token.loc();
     }
 
     private int precedence(TokenType type) {
@@ -182,7 +186,7 @@ public class ExprParser {
 
         ASTNode lhs = new ASTNode(
                 null,
-                firstToken.initLoc(),
+                firstToken.loc(),
                 new Union.Literals(name, TokenType.IDENTIFIER),
                 false,
                 isMutable);
@@ -193,27 +197,23 @@ public class ExprParser {
         }
 
         if (!token.type().name().contains("ASSIGN")) {
-            if (isAmbrigedAssginLegal)
+            if (isAmbrigedAssginLegal && token.type() != TokenType.ASSIGN)
                 throw Helper.syntaxError("Expected '=' in assignment", token);
             throw Helper.syntaxError("Expected assignment operators", token);
         }
-        if (token.type() != TokenType.ASSIGN && isAmbrigedAssginLegal)
-            throw Helper.syntaxError("Expected '=' in assignment operator", token);
 
         TokenType assignOp = token.type();
 
         Token rhsFirst = helper.nextToken();
         ASTNode rhs = parseExpr(rhsFirst, 1);
         Token terminator = helper.nextToken();
-        if (terminator.type() == TokenType.SEMICOLON) {
-            // statement completed
-        } else {
+        if (terminator.type() == TokenType.SEMICOLON);
+        else 
             helper.unreadToken(terminator);
-        }
 
         return new ASTNode(
                 null,
-                firstToken.initLoc().combineLocation(lexer.loc),
+                firstToken.loc().combineLocation(lexer.loc),
                 new Union.Assign(assignOp, lhs, rhs),
                 false,
                 isMutable);

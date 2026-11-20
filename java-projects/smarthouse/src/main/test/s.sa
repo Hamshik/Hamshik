@@ -1,7 +1,5 @@
 fn main(var name) {
-    var mut names = [10,10,10];
-    for i in names {
-        printf("%d", i);
-    }
+    var mut any names = 10;
+    names = 100;
     return 0;
 }

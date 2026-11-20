@@ -1,7 +1,5 @@
 package in.hamshik.Helpers;
 
-import java.util.HashMap;
-
 public class VarHelpers {
 
     // Order MUST match ESP enum: INT=0, FLOAT=1, STRING=2, BOOL=3

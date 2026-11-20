@@ -39,14 +39,21 @@ public class Parser {
             if(lexer.sourceCode == null) return null;
             Token next = lexer.nextToken();
             while (!(next.type() == TokenType.EOF || (isParsingBody && next.type() == TokenType.RBRACE))) {
-                if (next.type() == TokenType.KEYWORD) {
-                    ASTNode node = handleKeywords(next);
-                    if (node != null)
-                        seqs.body().add(node);
+                switch (next.type()) {
+                    case KEYWORD -> seqs.add(handleKeywords(next));
+                    case IDENTIFIER ->{
+                        if(lexer.helper.peekToken().type().name().contains("ASSIGN"))
+                            seqs.add(exprParser.parseAssign(next));
+                        else seqs.add(exprParser.parseExpr(next, 0));
+                    }
+                    case LPAREN -> {
+                        helper.unreadToken(next);
+                        seqs.add(new ASTNode(null, next.loc(), helper.parseBody()));
+                    }
+                    default -> {}
                 }
                 next = lexer.nextToken();
             }
-            if(!isParsingBody) showMessage("Parsing completed successfully.", "\u001B[32m");
             return new ASTNode(null, null, seqs);
         } catch (PanicException e) {
             return null;
@@ -62,10 +69,10 @@ public class Parser {
     }
 
     private Token createToken(String val, TokenType type){
-        return new Token(val, null, null, type);
+        return new Token(val, null, type);
     }
     private Token createToken(String val){
-        return new Token(val, null, null, LexHelper.iskeyword(val) ? TokenType.KEYWORD : TokenType.IDENTIFIER );
+        return new Token(val, null, LexHelper.iskeyword(val) ? TokenType.KEYWORD : TokenType.IDENTIFIER );
     }
 
     private ASTNode handleKeywords(Token next) {
@@ -76,13 +83,13 @@ public class Parser {
             case WHILE: return parseWhile();
             case RETURN, RET: {
                 ASTNode expr = exprParser.parseExpr(helper.nextToken(), 0);
-                return new ASTNode(null, next.initLoc(), new Return(expr));
+                return new ASTNode(null, next.loc(), new Return(expr));
             }
             case IMPORT: {
                 Token path = helper.nextToken();
                 if (path.type() != TokenType.STRINGS)
                     throw Helper.syntaxError("Expected a string literal after import", path);
-                return new ASTNode(null, next.initLoc().combineLocation(path.lastLoc()),
+                return new ASTNode(null, next.loc(),
                         new Union.Import(path.val()));
             }
             default: return null; 

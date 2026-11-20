@@ -1,23 +1,20 @@
 package in.hamshik.Interpreter.Lexer;
 
-import in.hamshik.Helpers.VarHelpers.Type;
 import in.hamshik.Interpreter.Parser.Helper;
-import javafx.scene.input.KeyCode;
 
 public class LexHelper {
     private Lexer lexer;
 
-    public record Token(String val, Location initLoc, Location lastLoc, TokenType type) {
+    public record Token(String val, Location loc, TokenType type) {
         public Token {
-            initLoc = initLoc == null ? null : initLoc.copy();
-            lastLoc = lastLoc == null ? null : lastLoc.copy();
+            loc = loc == null ? null : loc.copy();
             Lexer.currToken = this;
         }
 
-        public Token(TokenType type, Location initLoc, Location lastLoc) {
+        public Token(TokenType type, Location loc) {
             if (type.sym == null)
                 throw new IllegalArgumentException("this constrcutor is only supported for symbols");
-            this(type.sym, initLoc, lastLoc, type);
+            this(type.sym, loc, type);
         }
 
     }
@@ -87,8 +84,9 @@ public class LexHelper {
         return KeyWords.keyMap.containsKey(chars);
     }
 
-    public static KeyWords.KeyWordTy isDatatype(String type) {
-        return KeyWords.datatype.get(type);
+    public static boolean isDatatype(String type) {
+        var ty = KeyWords.datatype.get(type);
+        return  ty == null ? false : ty.isDatatype;
     }
 
     char peek(int idx) {
@@ -115,7 +113,6 @@ public class LexHelper {
             return lexer.peekedToken;
         Token temp = Lexer.currToken;
         Token token = lexer.nextToken();
-        lexer.loc = token.initLoc();
         lexer.peekedToken = token;
         Lexer.currToken = temp;
         return token;
