@@ -2,7 +2,6 @@ package in.hamshik.Interpreter.Parser;
 
 import java.util.ArrayList;
 
-import in.hamshik.Interpreter.Lexer.Lexer;
 import in.hamshik.Interpreter.Lexer.LexHelper.Token;
 import in.hamshik.Interpreter.Lexer.TokenType;
 import in.hamshik.Interpreter.shared.ASTNode;
@@ -12,17 +11,14 @@ import in.hamshik.Interpreter.shared.Union.HIRType;
 
 public class FnParser {
     private final Parser parser;
-    private final Lexer lexer;
     private final Helper helper;
 
     public FnParser(Parser parser) {
         this.helper = parser.helper;
         this.parser = parser;
-        this.lexer = parser.lexer;
     }
 
-    public record Params(String name, HIRType type) {
-    }
+    public record Params(String name, HIRType type) {}
 
     public ASTNode parseFunctionDefinition(Token fnToken) {
         Token first = helper.nextToken();
@@ -43,10 +39,9 @@ public class FnParser {
         }
 
         Params[] params = parseParameters();
-        return new ASTNode(
-                null,
-                fnToken.loc(),
-                new Fn(returnType, name, params, helper.parseBody()));
+        var node = new ASTNode(null, fnToken.loc(), new Fn(returnType, name, params, helper.parseBody()));
+        helper.fnMaps.put(name, (Union.Fn)node.val);
+        return node;
     }
 
     public Params[] parseParameters() {
@@ -105,10 +100,9 @@ public class FnParser {
             Token sep = helper.nextToken();
             if (sep.val().equals(terminatingSym))
                 break; // end of list
-            
+
             if (sep.type() != TokenType.COMMA)
                 throw helper.syntaxError("Expected ',' or '" + terminatingSym + "'", sep);
-            
 
             next = helper.nextToken();
             if (next.val().equals(terminatingSym))
@@ -122,17 +116,14 @@ public class FnParser {
         ArrayList<ASTNode> args = new ArrayList<>();
         Token current = first;
 
-        if (current.type() == TokenType.LPAREN) 
+        if (current.type() == TokenType.LPAREN)
             current = helper.nextToken();
-        
 
-        if (current.type() == TokenType.RPAREN) 
+        if (current.type() == TokenType.RPAREN)
             return new ASTNode(null, first.loc(), new Union.FnCall(null, args));
-        
 
         args = parseArgList(current, TokenType.RPAREN.sym);
         return new ASTNode(null, first.loc(), new Union.FnCall(null, args));
     }
-
 
 }

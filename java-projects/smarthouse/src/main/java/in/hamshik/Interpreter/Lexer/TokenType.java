@@ -12,9 +12,6 @@ public enum TokenType {
     GT(">"), LT("<"), EGT(">="), ELT("<="),
     EQ("=="), NEQ("!="),
     AND("&&"), OR("||"), NOT("!"), ASSIGN("="),
-    PLUS_ASSIGN("+="), MINUS_ASSIGN("-="), MUL_ASSIGN("*="),
-    DIV_ASSIGN("/="), MOD_ASSIGN("%="), POW_ASSIGN("**="), XOR_POW_ASSIGN("^^="),
-    LSHIFT_ASSIGN("<<="), RSHIFT_ASSIGN(">>="),
 
     LBRACE("{"), RBRACE("}"), LBRACKET("["), RBRACKET("]"),
     LPAREN("("), RPAREN(")"),

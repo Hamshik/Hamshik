@@ -1,4 +1,4 @@
-fn main(var name) {
+fn main(var i32 name) {
     var mut any names = 10;
     names = 100;
     return 0;

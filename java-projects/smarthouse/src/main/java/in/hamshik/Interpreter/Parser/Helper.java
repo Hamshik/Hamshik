@@ -1,6 +1,7 @@
 package in.hamshik.Interpreter.Parser;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import in.hamshik.Interpreter.Lexer.Lexer;
 import in.hamshik.Interpreter.Lexer.LexHelper.Token;
@@ -10,12 +11,15 @@ import in.hamshik.Interpreter.shared.Union.HIRType;
 import in.hamshik.Interpreter.shared.Union.TypeKind;
 import in.hamshik.Interpreter.shared.Error;
 import in.hamshik.Interpreter.shared.Error.ErrorCode;
+import in.hamshik.Interpreter.shared.Union;
 
 public class Helper {
 
     private final Parser parser;
     private final Lexer lexer;
     private Token pendingToken;
+    public final HashMap<String, Union.Fn> fnMaps = new HashMap<>();
+    public final HashMap<String, Union.RawLiteral> globalVars = new HashMap<>();
 
     public Helper(Parser parser) {
         this.parser = parser;

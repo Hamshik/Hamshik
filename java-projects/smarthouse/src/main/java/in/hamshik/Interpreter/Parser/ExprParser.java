@@ -29,9 +29,7 @@ public class ExprParser {
         prefixOperators.put(TokenType.AMP, this::parseUnary);
     }
 
-    public ASTNode handleExpr(Token firstTok) {
-        return parseExpr(firstTok, 1);
-    }
+    public ASTNode handleExpr(Token firstTok) { return parseExpr(firstTok, 1); }
 
     public ASTNode parseExpr(Token first, int minPrecedence) {
         ASTNode left = parsePrefix(first);
@@ -48,10 +46,7 @@ public class ExprParser {
             Token rightFirst = helper.nextToken();
             ASTNode right = parseExpr(rightFirst, precedence + 1);
 
-            left = new ASTNode(
-                    null,
-                    left.loc.combineLocation(right.loc),
-                    new Union.Binary(op.type(), left, right));
+            left = new ASTNode(null, left.loc.combineLocation(right.loc), new Union.Binary(op.type(), left, right));
         }
     }
 
@@ -61,25 +56,22 @@ public class ExprParser {
             return prefixParser.apply(first);
 
         return switch (first.type()) {
-            case NUMBER, STRINGS, CHARACTER, BOOL ->
-                new ASTNode(null, tokenLocation(first), new Union.Literals(first.val(), first.type()));
+            case NUMBER, STRINGS, CHARACTER, BOOL -> new ASTNode(null, tokenLocation(first),
+                    new Union.RawLiteral(first.val(), first.type()));
             case IDENTIFIER -> {
                 Token next = helper.nextToken();
                 if (next.type() == TokenType.LPAREN) {
                     ASTNode callNode = parser.fnParser.parseCallArgs(next);
                     Union.FnCall fc = (Union.FnCall) callNode.val;
-                    yield new ASTNode(null, tokenLocation(first),
-                            new Union.FnCall(first.val(), fc.args()));
+                    yield new ASTNode(null, tokenLocation(first), new Union.FnCall(first.val(), fc.args()));
                 }
                 if (next.type() == TokenType.LBRACKET)
                     yield parseIndex(
-                            new ASTNode(null, tokenLocation(first),
-                                    new Union.Literals(first.val(), first.type())),
+                            new ASTNode(null, tokenLocation(first), new Union.RawLiteral(first.val(), first.type())),
                             next);
 
                 helper.unreadToken(next);
-                yield new ASTNode(null, tokenLocation(first),
-                        new Union.Literals(first.val(), first.type()));
+                yield new ASTNode(null, tokenLocation(first), new Union.RawLiteral(first.val(), first.type()));
             }
             case LPAREN -> {
                 ASTNode expression = parseExpr(helper.nextToken(), 1);
@@ -103,8 +95,7 @@ public class ExprParser {
                     if (next.type() == TokenType.RBRACKET)
                         throw helper.syntaxError("Trailing commas are not allowed in lists", separator);
                 }
-                yield new ASTNode(null, first.loc().combineLocation(lexer.loc),
-                        new Union.Lists(elements));
+                yield new ASTNode(null, first.loc().combineLocation(lexer.loc), new Union.Lists(elements));
             }
             default -> throw helper.syntaxError("Expected an expression", first);
         };
@@ -112,9 +103,7 @@ public class ExprParser {
 
     private ASTNode parseUnary(Token operator) {
         ASTNode operand = parsePrefix(helper.nextToken());
-        return new ASTNode(
-                null,
-                operator.loc().combineLocation(operand.loc),
+        return new ASTNode(null, operator.loc().combineLocation(operand.loc),
                 new Union.Unary(operator.type(), operand));
     }
 
@@ -128,15 +117,10 @@ public class ExprParser {
             bracket = helper.nextToken();
         }
         helper.unreadToken(bracket);
-        return new ASTNode(
-                null,
-                target.loc.combineLocation(lexer.loc),
-                new Union.Index(target, indices));
+        return new ASTNode(null, target.loc.combineLocation(lexer.loc), new Union.Index(target, indices));
     }
 
-    private Location tokenLocation(Token token) {
-        return token.loc();
-    }
+    private Location tokenLocation(Token token) { return token.loc(); }
 
     private int precedence(TokenType type) {
         return switch (type) {
@@ -159,10 +143,8 @@ public class ExprParser {
         Token token = firstToken;
         boolean isMutable = false;
         String name = null;
-        boolean isAmbrigedAssginLegal = false;
 
         if (token.type() == TokenType.KEYWORD && token.val().equals("var")) {
-            isAmbrigedAssginLegal = true;
             token = helper.nextToken();
             if (helper.isKeyword(token, "mut")) {
                 isMutable = true;
@@ -184,11 +166,7 @@ public class ExprParser {
             throw helper.syntaxError("Expected a variable name or assignment target", token);
         }
 
-        ASTNode lhs = new ASTNode(
-                null,
-                firstToken.loc(),
-                new Union.Literals(name, TokenType.IDENTIFIER),
-                false,
+        ASTNode lhs = new ASTNode(null, firstToken.loc(), new Union.RawLiteral(name, TokenType.IDENTIFIER), false,
                 isMutable);
 
         if (token.type() == TokenType.LBRACKET) {
@@ -196,26 +174,19 @@ public class ExprParser {
             token = helper.nextToken();
         }
 
-        if (!token.type().name().contains("ASSIGN")) {
-            if (isAmbrigedAssginLegal && token.type() != TokenType.ASSIGN)
-                throw helper.syntaxError("Expected '=' in assignment", token);
+        if (token.type() != TokenType.ASSIGN) {
             throw helper.syntaxError("Expected assignment operators", token);
         }
-
-        TokenType assignOp = token.type();
 
         Token rhsFirst = helper.nextToken();
         ASTNode rhs = parseExpr(rhsFirst, 1);
         Token terminator = helper.nextToken();
-        if (terminator.type() == TokenType.SEMICOLON);
-        else 
+        if (terminator.type() != TokenType.SEMICOLON)
             helper.unreadToken(terminator);
+        
+        if(!parser.isParsingBody) helper.globalVars.put(name, (Union.RawLiteral)rhs.val);
 
-        return new ASTNode(
-                null,
-                firstToken.loc().combineLocation(lexer.loc),
-                new Union.Assign(assignOp, lhs, rhs),
-                false,
-                isMutable);
+        return new ASTNode(null, firstToken.loc().combineLocation(lexer.loc),
+                new Union.Assign(TokenType.ASSIGN, lhs, rhs), false, isMutable);
     }
 }

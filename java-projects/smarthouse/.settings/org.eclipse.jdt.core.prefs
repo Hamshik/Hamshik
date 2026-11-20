@@ -1,0 +1,6 @@
+eclipse.preferences.version=1
+org.eclipse.jdt.core.formatter.indent_switchstatements_compare_to_cases=true
+org.eclipse.jdt.core.formatter.indent_switchstatements_compare_to_switch=true
+org.eclipse.jdt.core.formatter.keep_method_body_on_one_line=one_line_if_single_item
+org.eclipse.jdt.core.formatter.keep_type_declaration_on_one_line=one_line_if_empty
+org.eclipse.jdt.core.formatter.keep_record_declaration_on_one_line=one_line_if_empty
