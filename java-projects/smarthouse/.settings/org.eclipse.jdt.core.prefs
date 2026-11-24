@@ -1,6 +1,14 @@
 eclipse.preferences.version=1
+org.eclipse.jdt.core.compiler.codegen.targetPlatform=25
+org.eclipse.jdt.core.compiler.compliance=25
+org.eclipse.jdt.core.compiler.problem.enablePreviewFeatures=disabled
+org.eclipse.jdt.core.compiler.problem.forbiddenReference=error
+org.eclipse.jdt.core.compiler.problem.reportPreviewFeatures=ignore
+org.eclipse.jdt.core.compiler.processAnnotations=disabled
+org.eclipse.jdt.core.compiler.release=enabled
+org.eclipse.jdt.core.compiler.source=25
 org.eclipse.jdt.core.formatter.indent_switchstatements_compare_to_cases=true
 org.eclipse.jdt.core.formatter.indent_switchstatements_compare_to_switch=true
 org.eclipse.jdt.core.formatter.keep_method_body_on_one_line=one_line_if_single_item
-org.eclipse.jdt.core.formatter.keep_type_declaration_on_one_line=one_line_if_empty
 org.eclipse.jdt.core.formatter.keep_record_declaration_on_one_line=one_line_if_empty
+org.eclipse.jdt.core.formatter.keep_type_declaration_on_one_line=one_line_if_empty

@@ -18,8 +18,11 @@ public class App extends Application {
     protected static Controller homeCtrl;
     protected static FileMngCtrl fileMngCtrl;
     protected static CodeRunner codeCtrl;
+    @SuppressWarnings("exports")
     public static DeviceMngCtrl deviceMngCtrl;
+    @SuppressWarnings("exports")
     public static DashCtrl dashCtrl;
+    @SuppressWarnings("exports")
     public static FXMLPipeline fxmlPipeline;
 
     @Override

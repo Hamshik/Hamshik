@@ -24,12 +24,15 @@ public class Evaluvator {
     }
 
     public void runProgram(ASTNode root) {
+        if (stopRequested())
+            return;
+
         var fn = fnHandler.getFn("setup");
         if (fn == null)
             errOut.panic(null, "Plese define the setup funtion to run an program");
         fnHandler.call("setup", new ArrayList<>());
         if (fnHandler.getFn("loop") != null)
-            while (true)
+            while (!stopRequested())
                 fnHandler.call("loop", new ArrayList<>());
     }
 
@@ -42,6 +45,7 @@ public class Evaluvator {
             case Binary binOp -> binOpHandler.dispatch(node, binOp);
             case Unary unaryOp -> unOpHandler.dispatch(node, unaryOp);
             case FnCall fnCall -> fnHandler.call(fnCall);
+            case Body body -> evalBody(body);
             default -> null;
         };
     }
@@ -56,5 +60,22 @@ public class Evaluvator {
         helper.globalVars.forEach((name, raw) -> {
             scope.stack.getFirst().varMap.put(name, literalHandler.dispatch(null, raw));
         });
+    }
+
+    Literal evalBody(Body body) {
+        for (ASTNode statement : body.body()) {
+            if (stopRequested())
+                return null;
+
+            if (statement.val instanceof Return ret)
+                return eval(ret.expr());
+
+            eval(statement);
+        }
+        return null; // function reached the end without returning
+    }
+
+    private boolean stopRequested() {
+        return Thread.currentThread().isInterrupted();
     }
 }

@@ -58,19 +58,22 @@ public class FnParser {
                     isMutable = true;
                     token = helper.nextToken();
                 }
-            } else if (helper.isKeyword(token, "mut")) {
-                throw helper.syntaxError("'mut' must follow 'var' in a parameter", token);
-            }
+            } 
+            
             Token afterToken = helper.nextToken();
-            Token paramName = null;
+            Token paramName;
             HIRType type = null;
+            Token separator;
             if (token.type() == TokenType.IDENTIFIER && afterToken.type() != TokenType.IDENTIFIER) {
                 paramName = token;
+                separator = afterToken;
             } else {
+                helper.unreadToken(afterToken);
                 type = helper.parseType(token);
                 type = helper.withMutability(type, isMutable);
+                paramName = helper.nextToken();
+                separator = helper.nextToken();
             }
-            paramName = paramName == null ? helper.nextToken() : paramName;
 
             if (paramName.type() != TokenType.IDENTIFIER)
                 throw helper.syntaxError("Expected a parameter name", paramName);
@@ -78,11 +81,10 @@ public class FnParser {
             Params parameter = new Params(paramName.val(), type);
             params.add(parameter);
 
-            token = afterToken;
-            if (token.type() == TokenType.RPAREN)
+            if (separator.type() == TokenType.RPAREN)
                 return params.toArray(Params[]::new);
-            if (token.type() != TokenType.COMMA)
-                throw helper.syntaxError("Expected ',' or ')' after a parameter", token);
+            if (separator.type() != TokenType.COMMA)
+                throw helper.syntaxError("Expected ',' or ')' after a parameter", separator);
             token = helper.nextToken();
             if (token.type() == TokenType.RPAREN)
                 throw helper.syntaxError("Trailing commas are not allowed in parameter lists", token);

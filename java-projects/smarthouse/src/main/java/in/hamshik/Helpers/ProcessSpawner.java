@@ -24,7 +24,7 @@ public final class ProcessSpawner {
                 errors = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
             }
 
-            int exitCode = process.waitFor();
+            process.waitFor();
             return errors;
 
         } catch (IOException e) {

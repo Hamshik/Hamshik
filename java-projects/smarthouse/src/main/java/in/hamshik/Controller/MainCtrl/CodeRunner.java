@@ -30,6 +30,7 @@ public class CodeRunner extends Controller {
     private AnchorPane saFeildRoot;
     private Object compiler = "suvarnam";
     private TerminalWindow terminalWindow;
+    private Thread interpreterThread;
     private Boolean errOn = null;
 
     @FXML
@@ -84,7 +85,7 @@ public class CodeRunner extends Controller {
     void eval() {
         String path = filePathField.getText().trim();
         if (terminalWindow == null)
-            terminalWindow = new TerminalWindow();
+            terminalWindow = new TerminalWindow(this::stopInterpreter);
 
         if (path.isEmpty()) {
             FXMLPipeline.showError("Please choose a source file.", true, status, filePathField);
@@ -92,6 +93,7 @@ public class CodeRunner extends Controller {
             return;
         }
 
+        stopInterpreter();
         final AtomicBoolean isErr = new AtomicBoolean(false);
         final String slicedPath = Path.of(path).getParent().toString();
         final String tmpFileSrc = "/tmp" + path.substring(path.lastIndexOf("/"));
@@ -116,18 +118,27 @@ public class CodeRunner extends Controller {
             terminalWindow.append(err);
             return;
         }
-        var interpreterThread = new Thread(() -> {
+        interpreterThread = new Thread(() -> {
             var outFn = new Consumer<String>() {
                 public void accept(String err) { Platform.runLater(() -> terminalWindow.append(err)); }
             };
-            
+
             Parser parser = new Parser(tmpFileSrc, outFn);
             ASTNode root = parser.startParsing();
+
+            if (root == null || Thread.currentThread().isInterrupted())
+                return;
+
             Evaluvator eval = new Evaluvator(parser.err, outFn);
             eval.pullAllGlobVarAndFn(parser.helper);
             eval.runProgram(root);
         }, "Interpreter Thread");
         interpreterThread.setDaemon(true);
         interpreterThread.start();
+    }
+
+    private void stopInterpreter() {
+        if (interpreterThread != null && interpreterThread.isAlive())
+            interpreterThread.interrupt();
     }
 }

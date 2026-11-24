@@ -68,13 +68,6 @@ public class Parser {
             out.accept(color + message + "\u001B[0m\n");
     }
 
-    private Token createToken(String val, TokenType type){
-        return new Token(val, null, type);
-    }
-    private Token createToken(String val){
-        return new Token(val, null, LexHelper.iskeyword(val) ? TokenType.KEYWORD : TokenType.IDENTIFIER );
-    }
-
     private ASTNode handleKeywords(Token next) {
         switch (KeyWords.keyMap.get(next.val())) {
             case FN: return fnParser.parseFunctionDefinition(next);

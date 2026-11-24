@@ -31,10 +31,11 @@ final class TerminalWindow {
     private Color textColor = DEFAULT_COLOR;
     private boolean boldText;
 
-    TerminalWindow() {
+    TerminalWindow(Runnable onClose) {
         configureTextFlow();
         configureScrollPane();
         configureStage();
+        terminalStage.setOnCloseRequest(event -> onClose.run());
     }
 
     private void configureTextFlow() {
