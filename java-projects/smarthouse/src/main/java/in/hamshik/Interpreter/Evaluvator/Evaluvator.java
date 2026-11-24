@@ -3,7 +3,6 @@ package in.hamshik.Interpreter.Evaluvator;
 import java.util.ArrayList;
 import java.util.function.Consumer;
 
-import in.hamshik.Interpreter.Parser.Helper;
 import in.hamshik.Interpreter.shared.ASTNode;
 import in.hamshik.Interpreter.shared.Error;
 import in.hamshik.Interpreter.shared.Error.ErrorCode;
@@ -14,7 +13,7 @@ public class Evaluvator {
     final Consumer<String> out;
     final Scope scope = new Scope(this);
     final FnHandler fnHandler = new FnHandler(this);
-    final LiteralHandler literalHandler = new LiteralHandler(this);
+    final Helper helper = new Helper(this);
     final BinOpHandler binOpHandler = new BinOpHandler(this);
     final UnOpHandler unOpHandler = new UnOpHandler(this);
 
@@ -41,11 +40,15 @@ public class Evaluvator {
             return null;
 
         return switch (node.val) {
-            case RawLiteral l -> literalHandler.dispatch(node, l);
+            case RawLiteral l -> helper.dispatch(node, l);
             case Binary binOp -> binOpHandler.dispatch(node, binOp);
             case Unary unaryOp -> unOpHandler.dispatch(node, unaryOp);
             case FnCall fnCall -> fnHandler.call(fnCall);
             case Body body -> evalBody(body);
+            case IfConds ifStmt -> helper.handleIfCond(ifStmt);
+            case While whileNode -> helper.handleWhile(whileNode);
+            case Index idx -> helper.handleIndex(idx);
+            case Lists lists -> helper.handleLists(lists);
             default -> null;
         };
     }
@@ -55,10 +58,10 @@ public class Evaluvator {
         return null;
     }
 
-    public void pullAllGlobVarAndFn(Helper helper) {
-        fnHandler.fnMap.putAll(helper.fnMaps);
-        helper.globalVars.forEach((name, raw) -> {
-            scope.stack.getFirst().varMap.put(name, literalHandler.dispatch(null, raw));
+    public void pullAllGlobVarAndFn(in.hamshik.Interpreter.Parser.Helper _helper) {
+        fnHandler.fnMap.putAll(_helper.fnMaps);
+        _helper.globalVars.forEach((name, raw) -> {
+            scope.stack.getFirst().varMap.put(name, helper.dispatch(null, raw));
         });
     }
 

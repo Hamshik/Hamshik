@@ -1,3 +1,6 @@
 fn setup() {
-    printf("Hello!");
+    var mut ls = [1,2,3,4,6];
+
+    for i in ls:
+        printf("", i);
 }

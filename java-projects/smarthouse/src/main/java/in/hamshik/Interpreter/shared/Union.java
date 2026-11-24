@@ -23,7 +23,7 @@ public interface Union {
 
     record IfConds(ASTNode cond, Body thenBranch, Body elseBranch) {}
 
-    record While(ASTNode cond, ASTNode body, ASTNode expr) {}
+    record While(ASTNode cond, Body body) {}
 
     record Fn(HIRType ret, String name, Params[] params, Body body) {}
 

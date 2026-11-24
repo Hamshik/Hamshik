@@ -91,6 +91,7 @@ public class Parser {
 
     private ASTNode parseIf() {
         ASTNode cond = exprParser.parseExpr(helper.nextToken(), 1);
+        helper.consumeToken(TokenType.LBRACE, "Expected '{' after the condition");
         Body thenBranch = helper.parseBody();
 
         Body elseBranch = null;
@@ -117,20 +118,13 @@ public class Parser {
 
     private ASTNode parseWhile() {
         ASTNode cond = exprParser.parseExpr(helper.nextToken(), 1);
-
-        ASTNode update = null;
-        Token next = helper.nextToken();
-        if (next.type() == TokenType.COLON) {
-            update = exprParser.parseAssign(helper.nextToken());
-        } else {
-            helper.unreadToken(next);
-        }
+        helper.consumeToken(TokenType.LBRACE, "Expected '{' after the condition");
 
         Body body = helper.parseBody();
         return new ASTNode(
                 null,
                 cond.loc,
-                new Union.While(cond, new ASTNode(null, cond.loc, body), update));
+                new Union.While(cond, body));
     }
 
     static String getTokenTyName(TokenType type){
