@@ -1,7 +1,7 @@
 #include <JavaIoTKit.hpp>
 #include <CloudVar.hpp>
 
-JavaIoTKit ioTKit("********", "********", "Hamshik");
+JavaIoTKit ioTKit("INNOVATION HUB", "prsc$123", "Hamshik");
 CloudVar<int> temp("temperature", 100, Permission::RO);
 CloudVar<bool> ramdonSense("randSense", true, Permission::RW);
 

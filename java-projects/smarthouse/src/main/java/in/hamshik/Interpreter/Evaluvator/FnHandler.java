@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.function.Function;
 
 import in.hamshik.Interpreter.shared.ASTNode;
-import in.hamshik.Interpreter.shared.Error.ErrorCode;
 import in.hamshik.Interpreter.shared.Union;
 import in.hamshik.Interpreter.shared.Union.Literal;
 
@@ -20,6 +19,7 @@ public class FnHandler {
         this.scope = eval.scope;
         builtInFnMap.put("printf", new Print(eval));
         builtInFnMap.put("println", new Println(eval));
+        builtInFnMap.put("len", new Lenght(eval));
     }
 
     void setFn(String name, Union.Fn fnBody) { fnMap.put(name, fnBody); }

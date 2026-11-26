@@ -159,7 +159,7 @@ public class CodeRunner extends Controller {
                     case FLOAT -> "float";
                     case INT -> "i64";
                     case STRING -> "str";
-                    case ANY -> "any";
+                    case ANY, LISTS -> "any";
                     case CHAR -> "char";
                 };
                 var val = WifiSender.sendDataToESP32(FXMLPipeline.deviceMngCtrl.activeDevice,

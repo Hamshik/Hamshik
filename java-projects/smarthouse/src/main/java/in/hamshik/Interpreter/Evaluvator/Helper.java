@@ -81,7 +81,7 @@ public final class Helper {
         ArrayList<Literal> elements = new ArrayList<>(lists.elements().size());
         for (ASTNode element : lists.elements())
             elements.add(eval.eval(element));
-        return new Literal(Type.ANY, elements);
+        return new Literal(Type.LISTS, elements);
     }
 
     public Literal handleIndex(Index idx) {

@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.function.Consumer;
 
-import in.hamshik.App;
 import in.hamshik.Helpers.DragHelper;
 import in.hamshik.Helpers.FXMLPipeline;
 import in.hamshik.Helpers.CardManager.*;

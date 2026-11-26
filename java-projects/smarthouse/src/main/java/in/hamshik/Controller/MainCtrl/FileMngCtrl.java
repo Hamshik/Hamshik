@@ -1,6 +1,5 @@
 package in.hamshik.Controller.MainCtrl;
 
-import in.hamshik.App;
 import in.hamshik.DNSHandler.ESP32FlashUploader;
 import in.hamshik.DNSHandler.WiFiScanner.EspDevice;
 import in.hamshik.Helpers.FXMLPipeline;

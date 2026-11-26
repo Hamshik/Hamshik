@@ -2,7 +2,6 @@ package in.hamshik.Controller.CardCtrl;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.HashMap;
 import java.util.function.Consumer;
 
 import com.google.gson.JsonElement;
@@ -11,7 +10,6 @@ import com.google.gson.JsonPrimitive;
 import in.hamshik.Helpers.CloudRequest;
 import in.hamshik.Helpers.FXMLPipeline;
 import in.hamshik.Helpers.VarHelpers;
-import in.hamshik.Helpers.VarHelpers.Variable;
 import in.hamshik.Controller.MainCtrl.DeviceMngCtrl;
 import in.hamshik.Helpers.CardManager.DeviceInfo;
 import in.hamshik.WifiHandler.WifiSender;
