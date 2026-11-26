@@ -184,7 +184,8 @@ public class ExprParser {
         if (terminator.type() != TokenType.SEMICOLON)
             helper.unreadToken(terminator);
         
-        if(!parser.isParsingBody) helper.globalVars.put(name, (Union.RawLiteral)rhs.val);
+        if (!parser.isParsingBody)
+            helper.globalVars.put(name, rhs);
 
         return new ASTNode(null, firstToken.loc().combineLocation(lexer.loc),
                 new Union.Assign(TokenType.ASSIGN, lhs, rhs), false, isMutable);

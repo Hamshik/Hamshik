@@ -186,6 +186,7 @@ public class Error {
     private void write(String message) {
         if (output != null) {
             output.accept(message + "\n");
+            System.err.println(message);
         } else 
             System.err.println(message);
         

@@ -52,9 +52,9 @@ public class CardManager {
             controller.setup(info);
             controller.setOnDelete(this::removeCard);
             controller.setOnEdit(ctrl -> {
-                if (App.dashCtrl != null) {
-                    App.dashCtrl.openEditCardPopup(ctrl);
-                }
+                if (FXMLPipeline.dashCtrl != null) 
+                    FXMLPipeline.dashCtrl.openEditCardPopup(ctrl);
+                
             });
 
             cardControllers.add(controller);

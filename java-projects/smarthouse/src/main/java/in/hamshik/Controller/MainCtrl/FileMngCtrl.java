@@ -3,6 +3,7 @@ package in.hamshik.Controller.MainCtrl;
 import in.hamshik.App;
 import in.hamshik.DNSHandler.ESP32FlashUploader;
 import in.hamshik.DNSHandler.WiFiScanner.EspDevice;
+import in.hamshik.Helpers.FXMLPipeline;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.stage.FileChooser;
@@ -37,7 +38,7 @@ public class FileMngCtrl extends Controller {
 
     @FXML
     private void uploadFirmware() {
-        EspDevice device = App.deviceMngCtrl.activeDevice;
+        EspDevice device = FXMLPipeline.deviceMngCtrl.activeDevice;
         if (device == null) {
             statusLabel.setText("Connect to an ESP32 before uploading firmware.");
             return;

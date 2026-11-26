@@ -3,7 +3,9 @@ package in.hamshik.Interpreter.Evaluvator;
 import java.util.HashMap;
 import java.util.Stack;
 
-import in.hamshik.Interpreter.shared.Union.Literal;
+import in.hamshik.Helpers.VarHelpers.Type;
+import in.hamshik.Interpreter.Lexer.TokenType;
+import in.hamshik.Interpreter.shared.Union.*;
 
 class VarHandler {
     final HashMap<String, Literal> varMap = new HashMap<>();
@@ -41,6 +43,16 @@ public class Scope {
         return null;
     }
 
+    public static TokenType getTokenType(Type type) {
+       return switch (type) {
+            case INT -> TokenType.NUMBER; 
+            case FLOAT -> TokenType.NUMBER;
+            case BOOL ->  TokenType.BOOL;
+            case STRING ->  TokenType.STRINGS;
+            default -> null;
+        };
+    }
+
     Literal getCurrentVar(String name) { return stack.peek().getVar(name); }
 
     Literal getGlobalVar(String name) { return stack.getFirst().getVar(name); }
@@ -48,5 +60,5 @@ public class Scope {
     void setVar(String name, Literal val) { stack.peek().setVar(name, val); }
 
     void setGlobVar(String name, Literal val) { stack.getFirst().varMap.put(name, val); }
-    
+
 }

@@ -2,6 +2,7 @@ package in.hamshik.Helpers;
 
 import in.hamshik.App;
 import in.hamshik.Controller.MainCtrl.Controller.*;
+import in.hamshik.Interpreter.Evaluvator.Evaluvator;
 import in.hamshik.Controller.MainCtrl.*;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -9,16 +10,19 @@ import javafx.scene.control.SplitPane;
 
 public class FXMLPipeline extends App {
     public Node[] pages;
-    private Controller homeCtrl = App.homeCtrl;
-    private DashCtrl dashCtrl = App.dashCtrl;
-    private DeviceMngCtrl deviceMngCtrl = App.deviceMngCtrl;
-    private FileMngCtrl fileMngCtrl = App.fileMngCtrl;
-    private CodeRunner codeCtrl = App.codeCtrl;
+
+    public static Controller homeCtrl = App.homeCtrl;
+    public static DashCtrl dashCtrl = App.dashCtrl;
+    public static DeviceMngCtrl deviceMngCtrl = App.deviceMngCtrl;
+    public static FileMngCtrl fileMngCtrl = App.fileMngCtrl;
+    public static CodeRunner codeCtrl = App.codeCtrl;
+    public static Evaluvator eval = null;
+    public static final double WIDTH_MIN = 73;
+    public static final double WIDTH_MAX = 141.321;
+    
     private boolean syncingDividerPos = false;
     private double sidebarWidth = 140.0;
     Controller[] ctrls = { dashCtrl, deviceMngCtrl, homeCtrl, fileMngCtrl, codeCtrl };
-    public static final double WIDTH_MIN = 73;
-    public static final double WIDTH_MAX = 141.321;
 
     public FXMLPipeline(Node... pages) {
         this.pages = pages;

@@ -12,6 +12,7 @@ import in.hamshik.DNSHandler.Esp32WebSocketClient;
 import in.hamshik.DNSHandler.Esp32WebSocketClient.DeviceListener;
 import in.hamshik.DNSHandler.WiFiScanner.EspDevice;
 import in.hamshik.WifiHandler.WifiDisplayer;
+import in.hamshik.Helpers.FXMLPipeline;
 import in.hamshik.Helpers.VarHelpers.*;
 
 import javafx.fxml.FXML;
@@ -64,7 +65,7 @@ public class DeviceMngCtrl extends Controller {
                     App.fxmlPipeline.setWifiButtonConnected(false);
                     if (wifiBut != null)
                         wifiBut.setText("Disconnected");
-                    App.dashCtrl.createSetVarJsoniableNames(List.of());
+                    FXMLPipeline.dashCtrl.createSetVarJsoniableNames(List.of());
                     Esp32WebSocketClient.disconnect();
                 });
     }
@@ -105,7 +106,7 @@ public class DeviceMngCtrl extends Controller {
                 wifiBut.setText("Connecting");
                 loadingSpinner.setVisible(true);
                 statusLabel.setText("Connecting to " + wifiDisplayer.getConnectingDeviceName() + "...");
-                App.dashCtrl.createSetVarJsoniableNames(List.of());
+                FXMLPipeline.dashCtrl.createSetVarJsoniableNames(List.of());
             }
 
             @Override
@@ -120,16 +121,17 @@ public class DeviceMngCtrl extends Controller {
             @Override
             public void onVariablesReceived(JsonObject response) {
                 List<Variable> names = readVariableNames(response);
-                App.dashCtrl.createSetVarJsoniableNames(names);
+                FXMLPipeline.dashCtrl.createSetVarJsoniableNames(names);
                 System.out.println("Loaded " + names.size() + " ESP32 variable names.");
                 updateInitialVariableValues(response);
             }
 
             @Override
             public void onVariableUpdated(String varName, JsonElement value) {
-                if (App.dashCtrl != null) {
-                    App.dashCtrl.updateVariable(varName, value);
-                }
+                if (FXMLPipeline.dashCtrl != null)
+                    FXMLPipeline.dashCtrl.updateVariable(varName, value);
+                if(FXMLPipeline.eval != null)
+                    FXMLPipeline.eval.updateVariable(varName, value);
             }
 
             @Override
@@ -140,7 +142,7 @@ public class DeviceMngCtrl extends Controller {
                 App.fxmlPipeline.setWifiButText("Disconnected");
                 statusLabel
                         .setText("Couldn't connect to the ESP32. Check the address, port, and device, then try again.");
-                App.dashCtrl.createSetVarJsoniableNames(List.of());
+                FXMLPipeline.dashCtrl.createSetVarJsoniableNames(List.of());
             }
 
             @Override
@@ -150,7 +152,7 @@ public class DeviceMngCtrl extends Controller {
                 App.fxmlPipeline.setWifiButtonConnected(false);
                 App.fxmlPipeline.setWifiButText("Disconnected");
                 statusLabel.setText("ESP32 connection lost.");
-                App.dashCtrl.createSetVarJsoniableNames(List.of());
+                FXMLPipeline.dashCtrl.createSetVarJsoniableNames(List.of());
             }
         };
     }
@@ -203,7 +205,7 @@ public class DeviceMngCtrl extends Controller {
     }
 
     private void updateInitialVariableValues(JsonObject response) {
-        if (response == null || App.dashCtrl == null)
+        if (response == null || FXMLPipeline.dashCtrl == null)
             return;
 
         JsonObject variables = null;
@@ -219,7 +221,7 @@ public class DeviceMngCtrl extends Controller {
             return;
 
         for (var entry : variables.entrySet()) {
-            App.dashCtrl.updateVariable(entry.getKey(), entry.getValue());
+            FXMLPipeline.dashCtrl.updateVariable(entry.getKey(), entry.getValue());
         }
     }
 

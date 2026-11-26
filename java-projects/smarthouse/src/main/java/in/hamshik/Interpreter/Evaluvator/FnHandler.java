@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.function.Function;
 
 import in.hamshik.Interpreter.shared.ASTNode;
+import in.hamshik.Interpreter.shared.Error.ErrorCode;
 import in.hamshik.Interpreter.shared.Union;
 import in.hamshik.Interpreter.shared.Union.Literal;
 

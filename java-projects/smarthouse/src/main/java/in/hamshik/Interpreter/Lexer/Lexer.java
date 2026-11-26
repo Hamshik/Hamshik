@@ -142,12 +142,47 @@ public class Lexer {
         var initLoc = helper.new Location(loc);
          // consuming opening-quates
         for (var _char = sourceCode[loc.incPosCol(sourceCode[loc.pos])]; _char != '"'; _char = sourceCode[loc.pos]) {
+            if(_char == '\\') {
+                chars.append(getEscSeq(_char));
+                continue;
+            }
             chars.append(_char);
             if (_char == '\n' || !helper.consumeToken())
                 throw helper.syntaxError("pls close the qutes", new Token(TokenType.EOF, initLoc.combineLocation(loc)));
         }
         helper.consumeToken(); // consuming closing-quates
         return new Token(chars.toString(), initLoc.combineLocation(loc), TokenType.STRINGS);
+    }
+
+    private char getEscSeq(char _char) {
+        char nextChar = helper.peek(1);
+        switch (nextChar) {
+            case 'n' -> {
+                helper.consumeToken(2); //consuming the backslash & n
+                return '\n';
+            }
+            case 't' -> {
+                helper.consumeToken(2);
+                return '\t';
+            }
+            case 'r' -> {
+                helper.consumeToken(2);
+                return '\r';
+            }
+            case '\\' -> {
+                helper.consumeToken(2);
+                return '\\';
+            }
+            case '"' -> {
+                helper.consumeToken();
+                return '"';
+            }
+            case '\'' -> {
+                helper.consumeToken(2);
+                return '\'';
+            }
+            default -> throw helper.syntaxError("Invalid escape sequence: \\" + nextChar, new Token(TokenType.STRINGS, loc));
+        }
     }
 
     Token idOrKeywords() {

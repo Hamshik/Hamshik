@@ -40,19 +40,23 @@ public class Parser {
     public ASTNode startParsing(){
         try {
             if(lexer.sourceCode == null) return null;
-            Token next = lexer.nextToken();
+            Token next = helper.nextToken();
             while (!(next.type() == TokenType.EOF || (isParsingBody && next.type() == TokenType.RBRACE))) {
                 switch (next.type()) {
-                    case KEYWORD -> seqs.add(handleKeywords(next));
+                    case KEYWORD -> {
+                        ASTNode statement = handleKeywords(next);
+                        if (statement != null)
+                            seqs.add(statement);
+                    }
                     case IDENTIFIER ->{
-                        if(lexer.helper.peekToken().type().name().contains("ASSIGN"))
+                        if(lexer.helper.peekToken().type() == TokenType.ASSIGN)
                             seqs.add(exprParser.parseAssign(next));
                         else seqs.add(exprParser.parseExpr(next, 0));
                     }
                     case LBRACE -> seqs.add(new ASTNode(null, next.loc(), helper.parseBody()));
                     default -> {}
                 }
-                next = lexer.nextToken();
+                next = helper.nextToken();
             }
             return new ASTNode(null, null, seqs);
         } catch (PanicException e) {
@@ -82,6 +86,8 @@ public class Parser {
                 Token path = helper.nextToken();
                 if (path.type() != TokenType.STRINGS)
                     throw helper.syntaxError("Expected a string literal after import", path);
+                if (path.val().equals("cloudVars.sa"))
+                    return null;
                 return new ASTNode(null, next.loc(),
                         new Union.Import(path.val()));
             }

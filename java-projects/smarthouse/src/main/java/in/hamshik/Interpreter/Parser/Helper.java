@@ -2,10 +2,12 @@ package in.hamshik.Interpreter.Parser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import in.hamshik.Interpreter.Lexer.Lexer;
 import in.hamshik.Interpreter.Lexer.LexHelper.Token;
 import in.hamshik.Interpreter.Lexer.TokenType;
+import in.hamshik.Interpreter.shared.ASTNode;
 import in.hamshik.Interpreter.shared.Union.Body;
 import in.hamshik.Interpreter.shared.Union.HIRType;
 import in.hamshik.Interpreter.shared.Union.TypeKind;
@@ -19,7 +21,7 @@ public class Helper {
     private final Lexer lexer;
     private Token pendingToken;
     public final HashMap<String, Union.Fn> fnMaps = new HashMap<>();
-    public final HashMap<String, Union.RawLiteral> globalVars = new HashMap<>();
+    public final LinkedHashMap<String, ASTNode> globalVars = new LinkedHashMap<>();
 
     public Helper(Parser parser) {
         this.parser = parser;
@@ -123,6 +125,7 @@ public class Helper {
 
     Body parseBody() {
         var tempSeq = parser.seqs;
+        boolean wasParsingBody = parser.isParsingBody;
         parser.seqs = new Body(new ArrayList<>());
         parser.isParsingBody = true;
         try {
@@ -131,7 +134,7 @@ public class Helper {
             parser.seqs = tempSeq;
             return fnBody;
         } finally {
-            parser.isParsingBody = false;
+            parser.isParsingBody = wasParsingBody;
             parser.seqs = tempSeq;
         }
     }

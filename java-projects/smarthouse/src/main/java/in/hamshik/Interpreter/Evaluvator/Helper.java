@@ -3,12 +3,22 @@ package in.hamshik.Interpreter.Evaluvator;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.lang.reflect.Array;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.JsonElement;
+
+import in.hamshik.Helpers.ProcessSpawner;
 import in.hamshik.Helpers.VarHelpers.Type;
+import in.hamshik.Interpreter.Lexer.TokenType;
+import in.hamshik.Interpreter.Parser.Parser;
 import in.hamshik.Interpreter.shared.ASTNode;
+import in.hamshik.Interpreter.shared.Error.ErrorCode;
 import in.hamshik.Interpreter.shared.Union.*;
+import in.hamshik.Controller.MainCtrl.CodeRunner;
 
 public final class Helper {
     final Evaluvator eval;
@@ -46,6 +56,19 @@ public final class Helper {
         if ((boolean) cond.value())
             return eval.evalBody(ifConds.thenBranch());
         return ifConds.elseBranch() == null ? null : eval.evalBody(ifConds.elseBranch());
+    }
+
+    public Literal handleAssign(Assign assignment) {
+        ASTNode target = assignment.lhs();
+        if (!(target.val instanceof RawLiteral variable) || variable.literalTy() != TokenType.IDENTIFIER)
+            throw eval.failure(target, "Assignment target must be a variable");
+
+        Literal value = eval.eval(assignment.rhAstNode());
+        if (value == null)
+            throw eval.failure(assignment.rhAstNode(), "Assignment value is not defined");
+
+        eval.scope.setVar(variable.raw(), value);
+        return value;
     }
 
     public Literal handleWhile(While whileNode) {
@@ -113,9 +136,7 @@ public final class Helper {
             if (index >= list.size())
                 throw eval.failure(expression, "Index is out of bounds");
             Object value = list.get(index);
-            return value instanceof Literal literal
-                    ? literal
-                    : new Literal(Type.ANY, value);
+            return value instanceof Literal literal ? literal : new Literal(Type.ANY, value);
         }
 
         if (container != null && container.getClass().isArray()) {
@@ -132,5 +153,50 @@ public final class Helper {
         }
 
         throw eval.failure(expression, "Value is not indexable");
+    }
+
+    public Literal jsonElementToLiteral(JsonElement value) {
+        if (!value.isJsonPrimitive())
+            return null;
+        var primitive = value.getAsJsonPrimitive();
+        if (primitive.isBoolean())
+            return new Literal(Type.BOOL, primitive.getAsBoolean());
+        else if (primitive.isNumber()) {
+            String raw = primitive.getAsString();
+            return new Literal(raw.contains(".") ? Type.FLOAT : Type.INT,
+                    raw.contains(".") ? new BigDecimal(raw) : new BigInteger(raw));
+        } else if (primitive.isString())
+            return new Literal(Type.STRING, primitive.getAsString());
+
+        return null;
+    }
+
+    public Literal handleImport(Import imp) {
+        Path importPath;
+        try {
+            importPath = Path.of(imp.path()).toAbsolutePath().normalize();
+        } catch (RuntimeException e) {
+            throw eval.failure(null, "Invalid import path: " + imp.path());
+        }
+
+        if (!Files.isRegularFile(importPath) || !Files.isReadable(importPath))
+            eval.errOut.panic(null, ErrorCode.SEM_IMPORT_FILE_NOT_FOUND, "Could not read imported file: " + importPath);
+        final String slicedPath = Path.of(imp.path()).getParent().toString();
+        final String tmpFileSrc = System.getProperty("java.io.tmpdir") + "/smarthouse"
+                + imp.path().substring(imp.path().lastIndexOf("/"));
+        Path dir = Paths.get(System.getProperty("java.io.tmpdir"), "smarthouse", "include");
+
+        String err = ProcessSpawner.createProcess((errReason) -> {
+        }, CodeRunner.compiler instanceof Path ? ((Path) CodeRunner.compiler).toString() : (String) CodeRunner.compiler,
+                importPath.toString(), "--emit-desugared", tmpFileSrc, "-I", slicedPath, "-I", dir.toString());
+        eval.out.accept(err);
+        Parser parser = new Parser(tmpFileSrc, eval.out);
+        ASTNode importedProgram = parser.startParsing();
+        if (parser.err.getErrorCount() != 0 || importedProgram == null) {
+            Thread.currentThread().interrupt(); // Stop execution if there were errors in the imported file
+            return null;
+        }
+        eval.pullAllGlobVarAndFn(parser.helper);
+        return null;
     }
 }

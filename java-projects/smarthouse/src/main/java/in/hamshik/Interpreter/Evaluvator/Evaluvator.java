@@ -3,6 +3,8 @@ package in.hamshik.Interpreter.Evaluvator;
 import java.util.ArrayList;
 import java.util.function.Consumer;
 
+import com.google.gson.JsonElement;
+
 import in.hamshik.Interpreter.shared.ASTNode;
 import in.hamshik.Interpreter.shared.Error;
 import in.hamshik.Interpreter.shared.Error.ErrorCode;
@@ -26,6 +28,17 @@ public class Evaluvator {
         if (stopRequested())
             return;
 
+        // Imports are top-level declarations. Load them before looking up setup,
+        // since their functions are registered by handleImport.
+        if (root != null && root.val instanceof Body body) {
+            for (ASTNode statement : body.body()) {
+                if (statement != null && statement.val instanceof Import)
+                    eval(statement);
+                if (stopRequested())
+                    return;
+            }
+        }
+
         var fn = fnHandler.getFn("setup");
         if (fn == null)
             errOut.panic(null, "Plese define the setup funtion to run an program");
@@ -33,6 +46,7 @@ public class Evaluvator {
         if (fnHandler.getFn("loop") != null)
             while (!stopRequested())
                 fnHandler.call("loop", new ArrayList<>());
+        return;
     }
 
     public Literal eval(ASTNode node) {
@@ -43,12 +57,14 @@ public class Evaluvator {
             case RawLiteral l -> helper.dispatch(node, l);
             case Binary binOp -> binOpHandler.dispatch(node, binOp);
             case Unary unaryOp -> unOpHandler.dispatch(node, unaryOp);
+            case Assign assign -> helper.handleAssign(assign);
             case FnCall fnCall -> fnHandler.call(fnCall);
             case Body body -> evalBody(body);
             case IfConds ifStmt -> helper.handleIfCond(ifStmt);
             case While whileNode -> helper.handleWhile(whileNode);
             case Index idx -> helper.handleIndex(idx);
             case Lists lists -> helper.handleLists(lists);
+            case Import imp -> helper.handleImport(imp);
             default -> null;
         };
     }
@@ -60,8 +76,11 @@ public class Evaluvator {
 
     public void pullAllGlobVarAndFn(in.hamshik.Interpreter.Parser.Helper _helper) {
         fnHandler.fnMap.putAll(_helper.fnMaps);
-        _helper.globalVars.forEach((name, raw) -> {
-            scope.stack.getFirst().varMap.put(name, helper.dispatch(null, raw));
+        _helper.globalVars.forEach((name, initializer) -> {
+            Literal value = eval(initializer);
+            if (value == null)
+                throw failure(initializer, "Global initializer is not defined");
+            scope.setGlobVar(name, value);
         });
     }
 
@@ -69,6 +88,10 @@ public class Evaluvator {
         for (ASTNode statement : body.body()) {
             if (stopRequested())
                 return null;
+
+            // The parser can produce null entries for keywords it does not handle.
+            if (statement == null)
+                continue;
 
             if (statement.val instanceof Return ret)
                 return eval(ret.expr());
@@ -78,7 +101,14 @@ public class Evaluvator {
         return null; // function reached the end without returning
     }
 
-    private boolean stopRequested() {
-        return Thread.currentThread().isInterrupted();
+    private static boolean stopRequested() { return Thread.currentThread().isInterrupted(); }
+
+    public void updateVariable(String varName, JsonElement value) {
+        Literal literalValue = helper.jsonElementToLiteral(value);
+        if (literalValue == null) {
+            errOut.panic(null, ErrorCode.SEM_OTHER_ERROR, "Failed to convert JSON value to Literal for variable: " + varName);
+            return;
+        }
+        scope.setVar(varName, literalValue);
     }
 }

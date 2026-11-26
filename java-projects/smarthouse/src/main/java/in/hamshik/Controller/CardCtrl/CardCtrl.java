@@ -21,20 +21,29 @@ import org.controlsfx.control.textfield.TextFields;
 /**
  * Controller for the IoT variable card (card.fxml).
  *
- * Type and Permission are driven by the ESP — they are shown as read-only labels
- * and filled automatically when the user picks a variable from the autocomplete.
- * The user only enters: Sensor name, Variable name (from autocomplete), and Range.
+ * Type and Permission are driven by the ESP — they are shown as read-only
+ * labels and filled automatically when the user picks a variable from the
+ * autocomplete. The user only enters: Sensor name, Variable name (from
+ * autocomplete), and Range.
  */
 public class CardCtrl {
 
-    @FXML private VBox cardRoot;
-    @FXML private Label cardTitleLabel;
-    @FXML private Button closeBtn;
-    @FXML private TextField sensorField;
-    @FXML private TextField varNameField, rangeFrom, rangeTo;
-    @FXML private Button typeInfoLabel, permissionInfoLabel;
-    @FXML private Button saveBtn;
-    @FXML private Label errLabel;
+    @FXML
+    private VBox cardRoot;
+    @FXML
+    private Label cardTitleLabel;
+    @FXML
+    private Button closeBtn;
+    @FXML
+    private TextField sensorField;
+    @FXML
+    private TextField varNameField, rangeFrom, rangeTo;
+    @FXML
+    private Button typeInfoLabel, permissionInfoLabel;
+    @FXML
+    private Button saveBtn;
+    @FXML
+    private Label errLabel;
 
     /** Tracks the card currently being edited, or null if creating a new card. */
     private CardShowerCtrl currentEditingCard = null;
@@ -43,34 +52,30 @@ public class CardCtrl {
     private Runnable onDismiss;
 
     /** Full list of variables received from the ESP. */
-    private HashMap<String, Variable> variableData = new HashMap<>();
+    HashMap<String, Variable> variableData = new HashMap<>();
     /** The Variable that was resolved from the autocomplete selection. */
     private String selectedVariable = null;
 
     public void createSetVarJsoniableNames(Collection<Variable> names) {
-        convertToHash(names == null ? null : names.stream()
-                .filter(v -> v != null && !v.name().isBlank())
-                .distinct()
-                .toList());
+        convertToHash(names == null ? null
+                : names.stream().filter(v -> v != null && !v.name().isBlank()).distinct().toList());
     }
 
     private void convertToHash(Collection<Variable> names) {
         variableData.clear();
-        if (names == null) return;
-        for(var name : names)
+        if (names == null)
+            return;
+        for (var name : names)
             variableData.put(name.name(), name);
     }
 
     @FXML
     protected void initialize() {
         var completion = TextFields.bindAutoCompletion(varNameField, request -> {
-            String query = request.getUserText() == null
-                    ? ""
-                    : request.getUserText().trim().toLowerCase();
+            String query = request.getUserText() == null ? "" : request.getUserText().trim().toLowerCase();
             if (query.isEmpty() || variableData.keySet() == null)
                 return List.of();
-            return variableData.keySet().stream()
-                    .filter(v -> v.toLowerCase().contains(query)).toList();
+            return variableData.keySet().stream().filter(v -> v.toLowerCase().contains(query)).toList();
         });
         completion.setVisibleRowCount(5);
         completion.setPrefWidth(varNameField.getPrefWidth());
@@ -90,20 +95,22 @@ public class CardCtrl {
 
         // Also try to resolve when user finishes typing manually (focus lost / Enter)
         varNameField.focusedProperty().addListener((obs, wasFocused, isFocused) -> {
-            if (!isFocused) resolveVariableByName(varNameField.getText());
+            if (!isFocused)
+                resolveVariableByName(varNameField.getText());
         });
     }
 
     /** Resolves type/permission from the variable list by matching name. */
     private void resolveVariableByName(String name) {
-        if (name == null || name.isBlank() || variableData.keySet() == null) return;
-        variableData.keySet().stream()
-                .filter(v -> v.equalsIgnoreCase(name.trim()))
-                .findFirst()
+        if (name == null || name.isBlank() || variableData.keySet() == null)
+            return;
+        variableData.keySet().stream().filter(v -> v.equalsIgnoreCase(name.trim())).findFirst()
                 .ifPresent(this::applyVariable);
     }
 
-    /** Applies a resolved Variable — updates the info labels and records selection. */
+    /**
+     * Applies a resolved Variable — updates the info labels and records selection.
+     */
     private void applyVariable(String v) {
         selectedVariable = v;
         var variable = variableData.get(v);
@@ -121,7 +128,8 @@ public class CardCtrl {
     // ─── Edit support ────────────────────────────────────────────────────────
 
     public void startEdit(CardShowerCtrl card) {
-        if (card == null || card.getInfo() == null) return;
+        if (card == null || card.getInfo() == null)
+            return;
         this.currentEditingCard = card;
 
         DeviceInfo info = card.getInfo();
@@ -133,8 +141,10 @@ public class CardCtrl {
         // Re-resolve variable metadata from ESP list
         resolveVariableByName(info.var().name());
 
-        if (cardTitleLabel != null) cardTitleLabel.setText("Edit Variable");
-        if (saveBtn != null) saveBtn.setText("Update Variable");
+        if (cardTitleLabel != null)
+            cardTitleLabel.setText("Edit Variable");
+        if (saveBtn != null)
+            saveBtn.setText("Update Variable");
     }
 
     public void resetToNew() {
@@ -145,8 +155,10 @@ public class CardCtrl {
         rangeFrom.clear();
         rangeTo.clear();
         clearVariableInfo();
-        if (cardTitleLabel != null) cardTitleLabel.setText("New Variable");
-        if (saveBtn != null) saveBtn.setText("Save Variable");
+        if (cardTitleLabel != null)
+            cardTitleLabel.setText("New Variable");
+        if (saveBtn != null)
+            saveBtn.setText("Save Variable");
     }
 
     // ─── FXML handlers ───────────────────────────────────────────────────────
@@ -161,29 +173,25 @@ public class CardCtrl {
 
     @FXML
     private void handleSave(ActionEvent e) {
-        FXMLPipeline.showError(null, false, errLabel, sensorField, varNameField,
-                rangeFrom, rangeTo);
+        FXMLPipeline.showError(null, false, errLabel, sensorField, varNameField, rangeFrom, rangeTo);
 
         String sensorName = sensorField.getText().trim();
         String variableName = varNameField.getText().trim();
         String rangeFromVal = rangeFrom.getText().trim();
         String rangeToVal = rangeTo.getText().trim();
 
-        if (sensorName.isEmpty() || variableName.isEmpty()
-                || rangeFromVal.isEmpty() || rangeToVal.isEmpty()) {
+        if (sensorName.isEmpty() || variableName.isEmpty() || rangeFromVal.isEmpty() || rangeToVal.isEmpty()) {
             FXMLPipeline.showError("Complete all required fields.", true, errLabel,
-                    sensorName.isEmpty() ? sensorField : null,
-                    variableName.isEmpty() ? varNameField : null,
-                    rangeFromVal.isEmpty() ? rangeFrom : null,
-                    rangeToVal.isEmpty() ? rangeTo : null);
+                    sensorName.isEmpty() ? sensorField : null, variableName.isEmpty() ? varNameField : null,
+                    rangeFromVal.isEmpty() ? rangeFrom : null, rangeToVal.isEmpty() ? rangeTo : null);
             return;
         }
 
         selectedVariable = null;
         resolveVariableByName(variableName);
         if (selectedVariable == null) {
-            FXMLPipeline.showError("Select a variable available on the connected device.",
-                    true, errLabel, varNameField);
+            FXMLPipeline.showError("Select a variable available on the connected device.", true, errLabel,
+                    varNameField);
             return;
         }
 
@@ -191,8 +199,7 @@ public class CardCtrl {
         try {
             from = Integer.parseInt(rangeFromVal);
         } catch (NumberFormatException ex) {
-            FXMLPipeline.showError("Minimum range value must be a whole number.", true,
-                    errLabel, rangeFrom);
+            FXMLPipeline.showError("Minimum range value must be a whole number.", true, errLabel, rangeFrom);
             return;
         }
 
@@ -200,19 +207,19 @@ public class CardCtrl {
         try {
             to = Integer.parseInt(rangeToVal);
         } catch (NumberFormatException ex) {
-            FXMLPipeline.showError("Maximum range value must be a whole number.", true,
-                    errLabel, rangeTo);
+            FXMLPipeline.showError("Maximum range value must be a whole number.", true, errLabel, rangeTo);
             return;
         }
 
-        DeviceInfo newInfo = new DeviceInfo(sensorName, variableData.get(selectedVariable),
-                new Range(from, to), App.deviceMngCtrl.activeDevice);
+        DeviceInfo newInfo = new DeviceInfo(sensorName, variableData.get(selectedVariable), new Range(from, to),
+                FXMLPipeline.deviceMngCtrl.activeDevice);
 
-        var cardMg = App.fxmlPipeline.getDashCtrl().cardManager;
+        var cardMg = FXMLPipeline.dashCtrl.cardManager;
 
         if (currentEditingCard != null) {
             currentEditingCard.setup(newInfo);
-            if (cardMg != null) cardMg.reapplyCachedValue(currentEditingCard);
+            if (cardMg != null)
+                cardMg.reapplyCachedValue(currentEditingCard);
             currentEditingCard = null;
         } else {
             DragHelper.makeDraggable(cardMg.addCard(newInfo), cardMg.board);
@@ -224,17 +231,15 @@ public class CardCtrl {
     @FXML
     public void handleCancel(ActionEvent e) {
         resetToNew();
-        if (onDismiss != null) onDismiss.run();
+        if (onDismiss != null)
+            onDismiss.run();
     }
 
     // ─── Wiring API ──────────────────────────────────────────────────────────
 
-    public void setOnClose(Consumer<VBox> onClose) {
-        this.onClose = onClose;
-    }
+    public void setOnClose(Consumer<VBox> onClose) { this.onClose = onClose; }
 
-    public void setOnDismiss(Runnable onDismiss) {
-        this.onDismiss = onDismiss;
-    }
+    public void setOnDismiss(Runnable onDismiss) { this.onDismiss = onDismiss; }
 
+    public HashMap<String, Variable> getVariableData() { return variableData; }
 }

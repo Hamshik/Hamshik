@@ -21,7 +21,7 @@ public class DashCtrl extends Controller {
     @FXML private Button undoBtn;
 
     public CardManager cardManager;
-    @FXML private CardCtrl cardRootController;
+    @FXML public CardCtrl cardRootController;
 
     @FXML protected void initialize() {
         super.initialize(); // Automatically runs parent initialize with this screen's injected items
