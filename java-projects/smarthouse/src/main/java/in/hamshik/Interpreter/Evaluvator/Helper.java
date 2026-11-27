@@ -72,7 +72,9 @@ public final class Helper {
     }
 
     public Literal handleWhile(While whileNode) {
-        for (Literal cond = eval.eval(whileNode.cond()); (boolean) cond.value(); cond = eval.eval(whileNode.cond()))
+        for (Literal cond = eval.eval(whileNode.cond());
+                !Thread.currentThread().isInterrupted() && (boolean) cond.value();
+                cond = eval.eval(whileNode.cond()))
             eval.evalBody(whileNode.body());
         return null;
     }

@@ -1,6 +1,5 @@
 package in.hamshik.Controller.MainCtrl;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
@@ -128,7 +127,7 @@ public class CodeRunner extends Controller {
         }
         interpreterThread = new Thread(() -> {
             var outFn = new Consumer<String>() {
-                public void accept(String err) { Platform.runLater(() -> terminalWindow.append(err)); }
+                public void accept(String err) { terminalWindow.appendAsync(err); }
             };
 
             Parser parser = new Parser(tmpFileSrc, outFn);
@@ -138,8 +137,14 @@ public class CodeRunner extends Controller {
                 return;
 
             Evaluvator eval = new Evaluvator(parser.err, outFn);
-            eval.pullAllGlobVarAndFn(parser.helper);
-            eval.runProgram(root);
+            FXMLPipeline.eval = eval;
+            try {
+                eval.pullAllGlobVarAndFn(parser.helper);
+                eval.runProgram(root);
+            } finally {
+                if (FXMLPipeline.eval == eval)
+                    FXMLPipeline.eval = null;
+            }
         }, "Interpreter Thread");
         interpreterThread.setDaemon(true);
         interpreterThread.start();

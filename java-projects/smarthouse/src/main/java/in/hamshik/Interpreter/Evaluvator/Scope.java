@@ -1,14 +1,14 @@
 package in.hamshik.Interpreter.Evaluvator;
 
-import java.util.HashMap;
 import java.util.Stack;
+import java.util.concurrent.ConcurrentHashMap;
 
 import in.hamshik.Helpers.VarHelpers.Type;
 import in.hamshik.Interpreter.Lexer.TokenType;
 import in.hamshik.Interpreter.shared.Union.*;
 
 class VarHandler {
-    final HashMap<String, Literal> varMap = new HashMap<>();
+    final ConcurrentHashMap<String, Literal> varMap = new ConcurrentHashMap<>();
 
     final Evaluvator eval;
 

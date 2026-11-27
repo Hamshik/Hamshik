@@ -1,7 +1,6 @@
 import "cloudVars.sa"
-import "fn.sa"
 
 fn setup() {
-    var temperature = 10;
-    printf("val of temp: ", @temperature);
+    while true:
+        printf("val of temp: ", @temperature, "\n");
 }

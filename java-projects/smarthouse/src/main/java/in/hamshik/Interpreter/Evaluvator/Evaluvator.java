@@ -109,6 +109,6 @@ public class Evaluvator {
             errOut.panic(null, ErrorCode.SEM_OTHER_ERROR, "Failed to convert JSON value to Literal for variable: " + varName);
             return;
         }
-        scope.setVar(varName, literalValue);
+        scope.setGlobVar(varName, literalValue);
     }
 }
