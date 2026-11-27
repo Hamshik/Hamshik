@@ -165,11 +165,13 @@ public class CodeRunner extends Controller {
                 var val = WifiSender.sendDataToESP32(FXMLPipeline.deviceMngCtrl.activeDevice,
                         CloudRequest.createGetVarJson(varName).toString());
                 var initValStr = DeviceMngCtrl.getVal(var.type(), val);
+                if (initValStr == null)
+                    return;
                 String varDef;
                 if (var.permission() == Permissions.RO)
                     varDef = String.format("var %s %s = %s;\n", typeStr, varName, initValStr);
                 else
-                    varDef = String.format("var mut %s %s = %s;\n", varName, typeStr, initValStr);
+                    varDef = String.format("var mut %s %s = %s;\n", typeStr, varName, initValStr);
                 
                 try {
                     Files.writeString(dir.resolve("cloudVars.sa"), varDef, java.nio.file.StandardOpenOption.APPEND);

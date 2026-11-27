@@ -73,6 +73,12 @@ public class ExprParser {
                 helper.unreadToken(next);
                 yield new ASTNode(null, tokenLocation(first), new Union.RawLiteral(first.val(), first.type()));
             }
+            case AT -> {
+                Token next = helper.nextToken();
+                if(next.type() != TokenType.IDENTIFIER)
+                    throw helper.syntaxError("Expected IDENTIFIER after the '@' symbol", next);
+                yield new ASTNode(null, tokenLocation(next), new Union.RawLiteral(next.val(), next.type()), true, false);
+            }
             case LPAREN -> {
                 ASTNode expression = parseExpr(helper.nextToken(), 1);
                 helper.consumeToken(TokenType.RPAREN, "Expected ')' after the expression");
@@ -132,9 +138,10 @@ public class ExprParser {
             case EQ, NEQ -> 6;
             case GT, LT, EGT, ELT -> 7;
             case PLUS, MINUS -> 8;
+            case LSHIFT, RSHIFT -> 8;
             case STAR, SLASH, MOD -> 9;
             case POW, XOR_POW -> 10;
-            case LSHIFT, RSHIFT -> 8;
+            case AT -> 11;
             default -> -1;
         };
     }

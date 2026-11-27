@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 import in.hamshik.App;
 import in.hamshik.Controller.CardCtrl.WifiCardCtrl;
@@ -182,9 +183,8 @@ public class DeviceMngCtrl extends Controller {
             var valObj = variable.getValue().getAsJsonObject();
             var typeEl = valObj.get("datatypes");
             var permEl = valObj.get("Permissions");
-            var initVal = valObj.get("initValue");
 
-            if (typeEl == null || permEl == null || initVal == null)
+            if (typeEl == null || permEl == null)
                 continue;
 
             int typeIdx = typeEl.getAsInt();
@@ -221,21 +221,39 @@ public class DeviceMngCtrl extends Controller {
             return;
 
         for (var entry : variables.entrySet()) {
-            FXMLPipeline.dashCtrl.updateVariable(entry.getKey(), entry.getValue());
+            FXMLPipeline.dashCtrl.updateVariable(entry.getKey(), getValue(entry.getValue()));
         }
     }
 
     public static String getVal(Type ty, JsonElement val) {
+        val = getValue(val);
+        if (val == null || val.isJsonNull() || !val.isJsonPrimitive())
+            return null;
+
         switch (ty) {
             case BOOL:
-                return val.getAsBoolean() ? "true" : "false";
+                var primitive = val.getAsJsonPrimitive();
+                if (!primitive.isBoolean())
+                    return null;
+                return primitive.getAsBoolean() ? "true" : "false";
             case FLOAT:
                 return val.getAsBigDecimal().toString();
             case INT:
                 return val.getAsBigInteger().toString();
             case STRING:
-                return val.getAsString();
+                return new JsonPrimitive(val.getAsString()).toString();
             default: return null;
         }
+    }
+
+    public static JsonElement getValue(JsonElement val) {
+        if (val == null)
+            return null;
+        if (val.isJsonObject()) {
+            JsonObject object = val.getAsJsonObject();
+            if (object.has("Value"))
+                return object.get("Value");
+        }
+        return val;
     }
 }

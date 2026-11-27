@@ -15,7 +15,7 @@ public enum TokenType {
 
     LBRACE("{"), RBRACE("}"), LBRACKET("["), RBRACKET("]"),
     LPAREN("("), RPAREN(")"),
-    SEMICOLON(";"), COLON(":"), COMMA(",");
+    SEMICOLON(";"), COLON(":"), COMMA(","), AT("@");
 
     public final String sym;
     public static final HashMap<String, TokenType> syms = new HashMap<>();

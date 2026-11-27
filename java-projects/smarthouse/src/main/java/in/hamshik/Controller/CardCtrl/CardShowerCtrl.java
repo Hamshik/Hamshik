@@ -102,7 +102,8 @@ public class CardShowerCtrl {
         }
         updateValue(toDstTy(info.var().type(),
             DeviceMngCtrl.getVal(info.var().type(),
-                WifiSender.sendDataToESP32(info.device(),CloudRequest.createGetVarJson(info.var().name()).toString()).get("Value"))
+                WifiSender.sendDataToESP32(info.device(),
+                    CloudRequest.createGetVarJson(info.var().name()).toString()))
             )
         );
     }
